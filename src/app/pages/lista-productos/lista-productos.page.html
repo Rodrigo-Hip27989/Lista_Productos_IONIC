@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Lista de Productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!selected_product && !can_add_item">
+  <ion-grid>
+    <ion-row [ngClass]="['title']">
+      <ion-col size="2">Num</ion-col>
+      <ion-col size="6">Nombre</ion-col>
+      <ion-col size="4">Total ($)</ion-col>
+    </ion-row>
+    <ion-row [ngClass]="['title']">
+      <ion-col size="2">{{products.length}}</ion-col>
+      <ion-col size="6">Todos</ion-col>
+      <ion-col size="4">{{calcular_costo_total() | currency}}</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let product of products" (dblclick)="select_product(product)">
+      <ion-col size="2">{{product.cantidad}}</ion-col>
+      <ion-col size="6">{{product.nombre}}</ion-col>
+      <ion-col size="4">{{product.precio_total | currency}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" *ngIf="!selected_product">
+    <ion-fab-button color="danger" (click)="delete_all_products_alert()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" *ngIf="!selected_product">
+    <ion-fab-button color="secondary" (click)="switch_can_add_item()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="can_add_item" [ngClass]="['mi_modal']">
+  <ion-button expand="block" fill="outline" color="secondary" (click)="switch_can_add_item()">Cerrar Formulario</ion-button>
+  <app-validation-reactive-product (product_validated_OUTPUT)="add_product($event)" [product_test_INPUT]="empty_product" [button_label]="'Agregar'"></app-validation-reactive-product>
+</ion-content>
+
+<ion-content *ngIf="selected_product" [ngClass]="['mi_modal']">
+  <ion-button expand="block" fill="outline" color="danger" (click)="delete_product_alert()">Eliminar</ion-button>
+  <ion-button expand="block" fill="outline" color="secondary" (click)="unselect_product()">Cerrar Formulario</ion-button>
+  <app-validation-reactive-product (product_validated_OUTPUT)="update_product($event)" [product_test_INPUT]="selected_product" [button_label]="'Actualizar'"></app-validation-reactive-product>
+</ion-content>
