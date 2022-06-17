@@ -12,13 +12,11 @@ import { Producto } from 'src/app/models/producto';
 export class ListaProductosPage implements OnInit {
   products:Producto[] = [];
   selected_product !: Producto;
-  empty_product !: Producto;
   can_add_item: boolean;
   products_token: string = "products_array";
 
   constructor(public alertController: AlertController) {
     this.can_add_item = false;
-    this.empty_product = new Producto("", 0, "", 0);
     this.inicializarLocalStorage();
     this.products = JSON.parse(localStorage.getItem(this.products_token));
   }

@@ -19,8 +19,8 @@
     </ion-row>
     <ion-row [ngClass]="['title']">
       <ion-col size="2">{{products.length}}</ion-col>
-      <ion-col size="2.8"></ion-col>
-      <ion-col size="4">Todos</ion-col>
+      <ion-col size="2.8">Tipos</ion-col>
+      <ion-col size="4">Productos</ion-col>
       <ion-col size="3.2">{{calcular_costo_total() | currency}}</ion-col>
     </ion-row>
     <app-grid-row-product *ngFor="let product of products" (dblclick)="select_product(product)" [product_INPUT]="product"></app-grid-row-product>
@@ -45,7 +45,7 @@
 
 <ion-content *ngIf="can_add_item" [ngClass]="['mi_modal']">
   <ion-button expand="block" fill="outline" color="secondary" (click)="switch_can_add_item()">Cerrar Formulario</ion-button>
-  <app-validation-reactive-product (product_validated_OUTPUT)="add_product($event)" [product_test_INPUT]="empty_product" [button_label]="'Agregar'"></app-validation-reactive-product>
+  <app-validation-reactive-product (product_validated_OUTPUT)="add_product($event)" [button_label]="'Agregar'"></app-validation-reactive-product>
 </ion-content>
 
 <ion-content *ngIf="selected_product" [ngClass]="['mi_modal']">

@@ -21,6 +21,9 @@ export class ValidationReactiveProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.product_test_INPUT === undefined){
+      this.product_test_INPUT = new Producto();
+    }
     this.form = this.fb.group({
       nombre: new FormControl(this.product_test_INPUT.nombre, [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]),
       cantidad: new FormControl(this.product_test_INPUT.cantidad, [Validators.required, Validators.max(99999999)]),

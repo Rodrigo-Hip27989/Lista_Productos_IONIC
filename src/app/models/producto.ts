@@ -6,11 +6,35 @@ export class Producto{
     precio_total: number;
 
     public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number){
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.medida = medida;
-        this.precio = precio;
-        if(this.cantidad !== undefined && this.precio !== undefined){
+        if(nombre !== undefined){
+            this.nombre = nombre;
+        }
+        else{
+            this.nombre = "";
+            console.log("No se proporciono el nombre");
+        }
+        if(cantidad !== undefined){
+            this.cantidad = cantidad;
+        }
+        else{
+            this.cantidad = 0;
+            console.log("No se proporciono la cantidad");
+        }
+        if(medida !== undefined){
+            this.medida = medida;
+        }
+        else{
+            this.medida = "";
+            console.log("No se proporciono la medida");
+        }
+        if(precio !== undefined){
+            this.precio = precio;
+        }
+        else{
+            this.precio = 0;
+            console.log("No se proporciono el precio");
+        }
+        if(cantidad !== undefined && precio !== undefined){
             this.precio_total = this.cantidad*this.precio;
         }
     }
