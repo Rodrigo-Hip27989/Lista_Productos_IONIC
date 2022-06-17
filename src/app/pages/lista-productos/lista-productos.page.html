@@ -23,12 +23,7 @@
       <ion-col size="4">Todos</ion-col>
       <ion-col size="3.2">{{calcular_costo_total() | currency}}</ion-col>
     </ion-row>
-    <ion-row *ngFor="let product of products" (dblclick)="select_product(product)">
-      <ion-col size="2">{{product.cantidad}}</ion-col>
-      <ion-col size="2.8">{{product.medida}}</ion-col>
-      <ion-col size="4">{{product.nombre}}</ion-col>
-      <ion-col size="3.2">{{product.precio_total | currency}}</ion-col>
-    </ion-row>
+    <app-grid-row-product *ngFor="let product of products" (dblclick)="select_product(product)" [product_INPUT]="product"></app-grid-row-product>
   </ion-grid>
 
 <!-- Botones de acción -->

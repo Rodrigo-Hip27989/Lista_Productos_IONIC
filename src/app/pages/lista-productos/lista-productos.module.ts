@@ -6,6 +6,7 @@ import { ListaProductosPageRoutingModule } from './lista-productos-routing.modul
 import { ListaProductosPage } from './lista-productos.page';
 
 import { ValidationReactiveProductComponent } from '../../components/validation-reactive-product/validation-reactive-product.component';
+import { GridRowProductComponent } from '../../components/grid-row-product/grid-row-product.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ValidationReactiveProductComponent } from '../../components/validation-
     IonicModule,
     ListaProductosPageRoutingModule
   ],
-  declarations: [ListaProductosPage, ValidationReactiveProductComponent]
+  declarations: [ListaProductosPage, ValidationReactiveProductComponent, GridRowProductComponent]
 })
 export class ListaProductosPageModule {}
