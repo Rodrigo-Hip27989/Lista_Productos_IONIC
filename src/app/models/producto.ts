@@ -11,35 +11,35 @@ export class Producto{
         }
         else{
             this.nombre = "";
-            console.log("No se proporciono el nombre");
+//            console.log("No se proporciono el nombre");
         }
         if(cantidad !== undefined){
             this.cantidad = cantidad;
         }
         else{
             this.cantidad = 0;
-            console.log("No se proporciono la cantidad");
+//            console.log("No se proporciono la cantidad");
         }
         if(medida !== undefined){
             this.medida = medida;
         }
         else{
             this.medida = "";
-            console.log("No se proporciono la medida");
+//            console.log("No se proporciono la medida");
         }
         if(precio !== undefined){
             this.precio = precio;
         }
         else{
             this.precio = 0;
-            console.log("No se proporciono el precio");
+//            console.log("No se proporciono el precio");
         }
         if(precio_total !== undefined){
             this.precio_total = precio_total;
         }
         else{
             this.precio_total = 0;
-            console.log("No se proporciono el precio total");
+//            console.log("No se proporciono el precio total");
         }
     }
 
