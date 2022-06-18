@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ListaProductosPageRoutingModule } from './lista-productos-routing.module';
-import { ListaProductosPage } from './lista-productos.page';
+import { ProductListPageRoutingModule } from './product-list-routing.module';
+import { ProductListPage } from './product-list.page';
 
 import { ValidationReactiveProductComponent } from '../../components/validation-reactive-product/validation-reactive-product.component';
 import { GridRowProductComponent } from '../../components/grid-row-product/grid-row-product.component';
@@ -14,8 +14,8 @@ import { GridRowProductComponent } from '../../components/grid-row-product/grid-
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    ListaProductosPageRoutingModule
+    ProductListPageRoutingModule
   ],
-  declarations: [ListaProductosPage, ValidationReactiveProductComponent, GridRowProductComponent]
+  declarations: [ProductListPage, ValidationReactiveProductComponent, GridRowProductComponent]
 })
-export class ListaProductosPageModule {}
+export class ProductListPageModule {}

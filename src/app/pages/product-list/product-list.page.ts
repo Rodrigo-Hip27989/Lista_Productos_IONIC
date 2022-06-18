@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Messages } from 'src/app/funciones-utiles/messages';
-import { Producto } from 'src/app/models/producto'; 
+import { Producto } from 'src/app/models/producto';
 
 @Component({
-  selector: 'app-lista-productos',
-  templateUrl: './lista-productos.page.html',
-  styleUrls: ['./lista-productos.page.scss'],
+  selector: 'app-product-list',
+  templateUrl: './product-list.page.html',
+  styleUrls: ['./product-list.page.scss'],
 })
 
-export class ListaProductosPage implements OnInit {
+export class ProductListPage implements OnInit {
   can_add_item: boolean;
   products_token: string = "products_array";
   products:Producto[] = [];
