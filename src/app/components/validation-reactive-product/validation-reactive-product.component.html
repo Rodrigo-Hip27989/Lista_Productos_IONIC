@@ -16,7 +16,8 @@
       </ion-item>
       <small *ngIf="form.get('cantidad').invalid && (form.get('cantidad').dirty ||form.get('cantidad').touched )">
         <small *ngIf="(form.get('cantidad')).errors?.required">La cantidad es requerida</small>
-        <small *ngIf="(form.get('cantidad')).errors?.maxlength">No mas de 8 digitos</small>
+        <small *ngIf="(form.get('cantidad')).errors?.max">No mas de 8 digitos</small>
+        <small *ngIf="(form.get('cantidad')).errors?.min">Debe ser mayor 1</small>
       </small>
       <ion-item>
         <ion-label position="floating">Medida</ion-label>
@@ -35,7 +36,8 @@
       </ion-item>
       <small *ngIf="form.get('precio').invalid && (form.get('precio').dirty ||form.get('precio').touched )">
         <small *ngIf="(form.get('precio')).errors?.required">El precio es requerido</small>
-        <small *ngIf="(form.get('precio')).errors?.maxlength">No mas de 8 digitos</small>
+        <small *ngIf="(form.get('precio')).errors?.min">No puede ser negativo</small>
+        <small *ngIf="(form.get('precio')).errors?.max">No mas de 8 digitos</small>
       </small>
       <hr>
       <ion-button expand="block" fill="solid" color="secondary" (click)="generarEjemplo()">Generar</ion-button>
