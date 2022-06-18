@@ -7,6 +7,7 @@ import { ProductListPage } from './product-list.page';
 
 import { ValidationReactiveProductComponent } from '../../components/validation-reactive-product/validation-reactive-product.component';
 import { GridRowProductComponent } from '../../components/grid-row-product/grid-row-product.component';
+import { GridRowProductHeaderComponent } from '../../components/grid-row-product-header/grid-row-product-header.component'; 
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { GridRowProductComponent } from '../../components/grid-row-product/grid-
     IonicModule,
     ProductListPageRoutingModule
   ],
-  declarations: [ProductListPage, ValidationReactiveProductComponent, GridRowProductComponent]
+  declarations: [ProductListPage, ValidationReactiveProductComponent, GridRowProductComponent, GridRowProductHeaderComponent]
 })
 export class ProductListPageModule {}

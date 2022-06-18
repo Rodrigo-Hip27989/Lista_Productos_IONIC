@@ -11,12 +11,7 @@
 
 <ion-content *ngIf="!selected_product && !can_add_item">
   <ion-grid>
-    <ion-row [ngClass]="['title']">
-      <ion-col size="2">Num</ion-col>
-      <ion-col size="2.8">Medida</ion-col>
-      <ion-col size="4">Nombre</ion-col>
-      <ion-col size="3.2">Total ($)</ion-col>
-    </ion-row>
+    <app-grid-row-product-header [product_header_INPUT]="['Num', 'Medida', 'Nombre', 'Total ($)']" [ngClass]="['title']"></app-grid-row-product-header>
     <app-grid-row-product [product_INPUT]="summary_products" (change)="update_summary_products()" [ngClass]="['title']"></app-grid-row-product>
     <app-grid-row-product *ngFor="let product of products" (dblclick)="select_product(product)" [product_INPUT]="product"></app-grid-row-product>
   </ion-grid>
