@@ -29,56 +29,60 @@ export class ListaProductosPage implements OnInit {
     }
   }
 
+  private update_localstorage(){
+    localStorage.setItem(this.products_token, JSON.stringify(this.products));
+  }
+
   private initialize_summary_products(){
     this.summary_products = new Producto("Productos", this.products.length, "Tipos");
     this.summary_products.precio_total = this.calcular_costo_total();
   }
 
+  private calcular_costo_total(): number{
+    let costo_total: number = 0;
+    this.products.forEach(product => {
+      costo_total += product.precio_total;
+    });
+    return costo_total;
+  }
+  
   ngOnInit() { }
 
   add_product(validated_product: Producto): void{
     this.products.push(validated_product);
-    localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    Messages.toast("Se ha agregado correctamente "+validated_product.nombre.toString());
+    this.update_localstorage();
     this.update_summary_products();
+    Messages.toast("Se ha agregado correctamente "+validated_product.nombre.toString());
   }
 
   update_product(validated_product: Producto): void{
     this.products[this.products.indexOf(this.selected_product)] = validated_product;
-    localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    Messages.toast("Se ha actualizado correctamente "+validated_product.nombre.toString());
+    this.update_localstorage();
     this.unselect_product();
     this.update_summary_products();
+    Messages.toast("Se ha actualizado correctamente "+validated_product.nombre.toString());
   }
 
   delete_product(): void{
     let deleted_items: Producto[] = this.products.splice(this.products.indexOf(this.selected_product), 1);
-    localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    Messages.toast("Se ha eliminado correctamente "+deleted_items[0].nombre);
+    this.update_localstorage();
     this.unselect_product();
     this.update_summary_products();
+    Messages.toast("Se ha eliminado correctamente "+deleted_items[0].nombre);
   }
 
   delete_all_products(): void{
     this.products.splice(0);
-    localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    Messages.toast("Se han eliminado todos los producos ");
+    this.update_localstorage();
     this.unselect_product();
     this.update_summary_products();
+    Messages.toast("Se han eliminado todos los producos ");
   }
 
   update_summary_products(){
     this.summary_products.cantidad = this.products.length;
     this.summary_products.precio_total = this.calcular_costo_total();
     console.log(this.summary_products.toString());
-  }
-
-  calcular_costo_total(): number{
-    let costo_total: number = 0;
-    this.products.forEach(product => {
-      costo_total += product.precio_total;
-    });
-    return costo_total;
   }
 
   switch_can_add_item(){
@@ -98,7 +102,7 @@ export class ListaProductosPage implements OnInit {
   async delete_product_alert(){
     const alert = await this.alertController.create({
       header: "Borrar Elemento", 
-      message: "¿Realmente quiere eliminar este producto?",
+      message: "¿Realmente quiere eliminar "+this.selected_product.nombre+" ?",
       buttons: [
         { text: 'NO', handler: () => { Messages.toast("Eliminación cancelada"); }},
         { text: 'SI', handler: () => { this.delete_product(); } }
