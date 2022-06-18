@@ -16,6 +16,7 @@ export class ValidationReactiveProductComponent implements OnInit {
   options_quantity: string[];
   form: FormGroup;
   unit_price_enabled: boolean;
+  simbolo_dedida="$";
 
   constructor(private fb: FormBuilder) {
     this.options_quantity = Producto.getMedidadDefault();
