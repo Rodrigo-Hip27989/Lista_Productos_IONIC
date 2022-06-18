@@ -10,15 +10,28 @@ import { Producto } from 'src/app/models/producto';
 })
 
 export class ListaProductosPage implements OnInit {
-  products:Producto[] = [];
-  selected_product !: Producto;
   can_add_item: boolean;
   products_token: string = "products_array";
+  products:Producto[] = [];
+  selected_product !: Producto;
+  summary_products !: Producto;
 
   constructor(public alertController: AlertController) {
     this.can_add_item = false;
     this.inicializarLocalStorage();
     this.products = JSON.parse(localStorage.getItem(this.products_token));
+    this.initialize_summary_products();
+  }
+
+  private inicializarLocalStorage(){
+    if(localStorage.getItem(this.products_token) === null){
+      localStorage.setItem(this.products_token, "[]");
+    }
+  }
+
+  private initialize_summary_products(){
+    this.summary_products = new Producto("Productos", this.products.length, "Tipos");
+    this.summary_products.precio_total = this.calcular_costo_total();
   }
 
   ngOnInit() { }
@@ -27,27 +40,37 @@ export class ListaProductosPage implements OnInit {
     this.products.push(validated_product);
     localStorage.setItem(this.products_token, JSON.stringify(this.products));
     Messages.toast("Se ha agregado correctamente "+validated_product.nombre.toString());
+    this.update_summary_products();
   }
 
   update_product(validated_product: Producto): void{
     this.products[this.products.indexOf(this.selected_product)] = validated_product;
     localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    this.unselect_product();
     Messages.toast("Se ha actualizado correctamente "+validated_product.nombre.toString());
+    this.unselect_product();
+    this.update_summary_products();
   }
 
   delete_product(): void{
     let deleted_items: Producto[] = this.products.splice(this.products.indexOf(this.selected_product), 1);
     localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    this.unselect_product();
     Messages.toast("Se ha eliminado correctamente "+deleted_items[0].nombre);
+    this.unselect_product();
+    this.update_summary_products();
   }
 
   delete_all_products(): void{
     this.products.splice(0);
     localStorage.setItem(this.products_token, JSON.stringify(this.products));
-    this.unselect_product();
     Messages.toast("Se han eliminado todos los producos ");
+    this.unselect_product();
+    this.update_summary_products();
+  }
+
+  update_summary_products(){
+    this.summary_products.cantidad = this.products.length;
+    this.summary_products.precio_total = this.calcular_costo_total();
+    console.log(this.summary_products.toString());
   }
 
   calcular_costo_total(): number{
@@ -56,12 +79,6 @@ export class ListaProductosPage implements OnInit {
       costo_total += product.precio_total;
     });
     return costo_total;
-  }
-
-  private inicializarLocalStorage(){
-    if(localStorage.getItem(this.products_token) === null){
-      localStorage.setItem(this.products_token, "[]");
-    }
   }
 
   switch_can_add_item(){

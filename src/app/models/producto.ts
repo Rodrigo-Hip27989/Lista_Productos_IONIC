@@ -37,6 +37,9 @@ export class Producto{
         if(cantidad !== undefined && precio !== undefined){
             this.precio_total = this.cantidad*this.precio;
         }
+        else{
+            this.precio_total = 0;
+        }
     }
 
     public static getMedidadDefault(): string[]{
