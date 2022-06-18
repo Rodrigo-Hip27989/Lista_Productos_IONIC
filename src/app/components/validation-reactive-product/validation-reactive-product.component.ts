@@ -15,21 +15,15 @@ export class ValidationReactiveProductComponent implements OnInit {
   @Output() product_validated_OUTPUT = new EventEmitter();
   options_quantity: string[];
   form: FormGroup;
-  unit_price_enabled: boolean = false;
+  unit_price_enabled: boolean;
 
   constructor(private fb: FormBuilder) {
     this.options_quantity = Producto.getMedidadDefault();
     this.unit_price_enabled = false;
   }
 
-  switch_type_price(): boolean{
-    if(this.unit_price_enabled){
-      this.unit_price_enabled = false;
-    }
-    else{
-      this.unit_price_enabled = true;
-    }
-    return this.unit_price_enabled;
+  switch_type_price(){
+    this.unit_price_enabled=!this.unit_price_enabled;
   }
 
   ngOnInit() {
