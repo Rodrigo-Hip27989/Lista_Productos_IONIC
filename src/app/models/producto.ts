@@ -5,7 +5,7 @@ export class Producto{
     precio:number;
     precio_total: number;
 
-    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number){
+    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number, precio_total?:number){
         if(nombre !== undefined){
             this.nombre = nombre;
         }
@@ -34,11 +34,12 @@ export class Producto{
             this.precio = 0;
             console.log("No se proporciono el precio");
         }
-        if(cantidad !== undefined && precio !== undefined){
-            this.precio_total = this.cantidad*this.precio;
+        if(precio_total !== undefined){
+            this.precio_total = precio_total;
         }
         else{
             this.precio_total = 0;
+            console.log("No se proporciono el precio total");
         }
     }
 

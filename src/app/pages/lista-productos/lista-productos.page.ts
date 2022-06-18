@@ -102,7 +102,7 @@ export class ListaProductosPage implements OnInit {
   async delete_product_alert(){
     const alert = await this.alertController.create({
       header: "Borrar Elemento", 
-      message: "¿Realmente quiere eliminar "+this.selected_product.nombre+" ?",
+      message: "¿Realmente quiere eliminar "+this.selected_product.nombre+"?",
       buttons: [
         { text: 'NO', handler: () => { Messages.toast("Eliminación cancelada"); }},
         { text: 'SI', handler: () => { this.delete_product(); } }
