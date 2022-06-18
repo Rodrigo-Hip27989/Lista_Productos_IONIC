@@ -15,9 +15,21 @@ export class ValidationReactiveProductComponent implements OnInit {
   @Output() product_validated_OUTPUT = new EventEmitter();
   options_quantity: string[];
   form: FormGroup;
+  unit_price_enabled: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.options_quantity = Producto.getMedidadDefault();
+    this.unit_price_enabled = false;
+  }
+
+  switch_type_price(): boolean{
+    if(this.unit_price_enabled){
+      this.unit_price_enabled = false;
+    }
+    else{
+      this.unit_price_enabled = true;
+    }
+    return this.unit_price_enabled;
   }
 
   ngOnInit() {
@@ -29,6 +41,7 @@ export class ValidationReactiveProductComponent implements OnInit {
       cantidad: new FormControl(this.product_test_INPUT.cantidad, [Validators.required, Validators.min(1), Validators.max(99999999)]),
       medida: new FormControl(this.product_test_INPUT.medida, [Validators.required, Validators.maxLength(16), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]),
       precio: new FormControl(this.product_test_INPUT.precio, [Validators.required, Validators.min(0), Validators.max(99999999)]),
+      precio_total: new FormControl(this.product_test_INPUT.precio_total, [Validators.required, Validators.min(0), Validators.max(99999999)]),
     });
   }
 
@@ -42,7 +55,17 @@ export class ValidationReactiveProductComponent implements OnInit {
     for (const propiedad in this.form.value) {
       product_update[propiedad] = this.form.value[propiedad];
     }
-    product_update.precio_total = product_update.cantidad*product_update.precio;
+    if(this.unit_price_enabled){
+      if(product_update.precio !==0){
+        product_update.precio_total = product_update.cantidad*product_update.precio;
+      }
+      else{
+        product_update.precio_total = 0;
+      }
+    }
+    else{
+      product_update.precio = product_update.precio_total/product_update.cantidad;
+    }
     this.product_validated_OUTPUT.emit(product_update);
     this.limpiarFormulario();
 //    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.form.value, null, 4));
@@ -53,7 +76,8 @@ export class ValidationReactiveProductComponent implements OnInit {
       nombre: [Randoms.getStr(7), [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]],
       cantidad: [Randoms.getInt(2), [Validators.required, Validators.min(1), Validators.max(99999999)]],
       medida: ["Piezas", [Validators.required, Validators.maxLength(16), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]],
-      precio: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],
+      precio: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
+      precio_total: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],
     });
   }
   
