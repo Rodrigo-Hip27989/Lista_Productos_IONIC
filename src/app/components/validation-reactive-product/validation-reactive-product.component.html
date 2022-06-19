@@ -22,7 +22,7 @@
       <ion-item>
         <ion-label position="floating">Medida</ion-label>
         <ion-select interface="popover" formControlName="medida" type="text">
-          <ion-select-option *ngFor="let opcion of options_quantity" value="{{opcion}}">{{opcion}}</ion-select-option>
+          <ion-select-option *ngFor="let opcion of options_measure" value="{{opcion}}">{{opcion}}</ion-select-option>
         </ion-select>
       </ion-item>
       <small *ngIf="form.get('medida').invalid && (form.get('medida').dirty ||form.get('medida').touched )">
