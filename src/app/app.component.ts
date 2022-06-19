@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Producto } from './models/producto';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -14,13 +15,12 @@ export class AppComponent {
   products_token: string = "products_array";
 
   constructor() {
-    this.inicializarLocalStorage();
+    this.initialize_localstorage_productos();
   }
 
-  private inicializarLocalStorage(){
+  private initialize_localstorage_productos(){
     if(localStorage.getItem(this.products_token) === null){
       localStorage.setItem(this.products_token, "[]");
     }
   }
-
 }
