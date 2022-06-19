@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Messages } from 'src/app/funciones-utiles/messages';
 import { Producto } from 'src/app/models/producto';
+import { DataExcelService } from 'src/app/services/data-excel.service';
 
 @Component({
   selector: 'app-product-list',
@@ -16,17 +17,10 @@ export class ProductListPage implements OnInit {
   selected_product !: Producto;
   summary_products !: Producto;
 
-  constructor(public alertController: AlertController) {
+  constructor(public alertController: AlertController, private dataExcel: DataExcelService) {
     this.can_add_item = false;
-    this.inicializarLocalStorage();
     this.products = JSON.parse(localStorage.getItem(this.products_token));
     this.initialize_summary_products();
-  }
-
-  private inicializarLocalStorage(){
-    if(localStorage.getItem(this.products_token) === null){
-      localStorage.setItem(this.products_token, "[]");
-    }
   }
 
   private update_localstorage(){
@@ -44,6 +38,11 @@ export class ProductListPage implements OnInit {
       costo_total += product.precio_total;
     });
     return costo_total;
+  }
+  
+  exportToExcel() {
+    this.dataExcel.exportToExcel(this.products, 'Productos');
+    Messages.toast("Se exporto a Excel...");
   }
   
   ngOnInit() { }

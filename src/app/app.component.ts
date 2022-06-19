@@ -11,5 +11,16 @@ export class AppComponent {
     { title: 'Configuraciones', url: '/app-settings', icon: 'settings' },
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  products_token: string = "products_array";
+
+  constructor() {
+    this.inicializarLocalStorage();
+  }
+
+  private inicializarLocalStorage(){
+    if(localStorage.getItem(this.products_token) === null){
+      localStorage.setItem(this.products_token, "[]");
+    }
+  }
+
 }
