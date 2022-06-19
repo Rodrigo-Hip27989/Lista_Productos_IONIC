@@ -12,7 +12,7 @@
 <ion-content *ngIf="!selected_product && !can_add_item">
   <ion-grid>
     <app-grid-row-product-header [product_header_INPUT]="['Num', 'Medida', 'Nombre', 'Total ($)']" [ngClass]="['title']"></app-grid-row-product-header>
-    <app-grid-row-product [product_INPUT]="summary_products" (change)="update_summary_products()" [ngClass]="['title']"></app-grid-row-product>
+    <app-grid-row-product-header [product_header_INPUT]="[products.length, 'Tipos', 'Producsto', (calcular_costo_total() | currency)]" [ngClass]="['title']"></app-grid-row-product-header>
     <app-grid-row-product *ngFor="let product of products" (dblclick)="select_product(product)" [product_INPUT]="product"></app-grid-row-product>
   </ion-grid>
 

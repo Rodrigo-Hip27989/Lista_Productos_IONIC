@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./grid-row-product-header.component.scss'],
 })
 export class GridRowProductHeaderComponent implements OnInit {
-  @Input() product_header_INPUT !: string[];
+  @Input() product_header_INPUT !: any[];
 
   constructor() { }
 

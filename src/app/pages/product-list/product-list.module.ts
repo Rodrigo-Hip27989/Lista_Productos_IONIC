@@ -17,6 +17,10 @@ import { GridRowProductHeaderComponent } from '../../components/grid-row-product
     IonicModule,
     ProductListPageRoutingModule
   ],
-  declarations: [ProductListPage, ValidationReactiveProductComponent, GridRowProductComponent, GridRowProductHeaderComponent]
+  declarations: [
+    ProductListPage, 
+    ValidationReactiveProductComponent, 
+    GridRowProductComponent, 
+    GridRowProductHeaderComponent]
 })
 export class ProductListPageModule {}

@@ -15,21 +15,14 @@ export class ProductListPage implements OnInit {
   products_token: string = "products_array";
   products:Producto[] = [];
   selected_product !: Producto;
-  summary_products !: Producto;
 
   constructor(public alertController: AlertController, private dataExcel: DataExcelService) {
     this.can_add_item = false;
     this.products = JSON.parse(localStorage.getItem(this.products_token));
-    this.initialize_summary_products();
   }
 
   private update_localstorage(){
     localStorage.setItem(this.products_token, JSON.stringify(this.products));
-  }
-
-  private initialize_summary_products(){
-    this.summary_products = new Producto("Productos", this.products.length, "Tipos");
-    this.summary_products.precio_total = this.calcular_costo_total();
   }
 
   private calcular_costo_total(): number{
@@ -50,7 +43,6 @@ export class ProductListPage implements OnInit {
   add_product(validated_product: Producto): void{
     this.products.push(validated_product);
     this.update_localstorage();
-    this.update_summary_products();
     Messages.toast("Se ha agregado correctamente "+validated_product.nombre.toString());
   }
 
@@ -58,7 +50,6 @@ export class ProductListPage implements OnInit {
     this.products[this.products.indexOf(this.selected_product)] = validated_product;
     this.update_localstorage();
     this.unselect_product();
-    this.update_summary_products();
     Messages.toast("Se ha actualizado correctamente "+validated_product.nombre.toString());
   }
 
@@ -66,7 +57,6 @@ export class ProductListPage implements OnInit {
     let deleted_items: Producto[] = this.products.splice(this.products.indexOf(this.selected_product), 1);
     this.update_localstorage();
     this.unselect_product();
-    this.update_summary_products();
     Messages.toast("Se ha eliminado correctamente "+deleted_items[0].nombre);
   }
 
@@ -74,14 +64,7 @@ export class ProductListPage implements OnInit {
     this.products.splice(0);
     this.update_localstorage();
     this.unselect_product();
-    this.update_summary_products();
     Messages.toast("Se han eliminado todos los producos ");
-  }
-
-  update_summary_products(){
-    this.summary_products.cantidad = this.products.length;
-    this.summary_products.precio_total = this.calcular_costo_total();
-    console.log(this.summary_products.toString());
   }
 
   switch_can_add_item(){
