@@ -28,7 +28,6 @@
       <small *ngIf="form.get('medida').invalid && (form.get('medida').dirty ||form.get('medida').touched )">
         <small *ngIf="(form.get('medida')).errors?.required">La medida es requerida</small>
         <small *ngIf="(form.get('medida')).errors?.maxlength">No mas de 16 caracteres</small>
-        <small *ngIf="(form.get('medida')).errors?.pattern">Caracteres permitidos => [A-Za-z]</small>
       </small>
       <ion-item>
         <ion-label>Precio Unitario</ion-label>
