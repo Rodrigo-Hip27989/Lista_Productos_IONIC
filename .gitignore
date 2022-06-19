@@ -17,6 +17,25 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 
+### Agregados por mi
+### Inicio
+/android
+/www
+.angular/
+e2e/
+node_modules/
+.browserslistrc
+.eslintrc.json
+.editorconfig
+angular.json
+capacitor.config.ts
+ionic.config.json
+karma.conf.js
+package*.json*
+tsconfig.*.*
+tsconfig.*
+### Fin
+
 /.angular
 /.idea
 /.ionic
@@ -30,3 +49,4 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
