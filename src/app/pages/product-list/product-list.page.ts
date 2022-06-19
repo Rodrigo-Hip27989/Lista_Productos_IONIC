@@ -35,7 +35,7 @@ export class ProductListPage implements OnInit {
   
   exportToExcel() {
     this.dataExcel.exportToExcel(this.products, 'Productos');
-    Messages.toast("Se exporto a Excel...");
+    Messages.toast_middle("Se exporto a Excel...");
   }
   
   ngOnInit() { }
@@ -43,28 +43,28 @@ export class ProductListPage implements OnInit {
   add_product(validated_product: Producto): void{
     this.products.push(validated_product);
     this.update_localstorage();
-    Messages.toast("Se ha agregado correctamente "+validated_product.nombre.toString());
+    Messages.toast_top("Se ha agregado correctamente "+validated_product.nombre.toString());
   }
 
   update_product(validated_product: Producto): void{
     this.products[this.products.indexOf(this.selected_product)] = validated_product;
     this.update_localstorage();
     this.unselect_product();
-    Messages.toast("Se ha actualizado correctamente "+validated_product.nombre.toString());
+    Messages.toast_top("Se ha actualizado correctamente "+validated_product.nombre.toString());
   }
 
   delete_product(): void{
     let deleted_items: Producto[] = this.products.splice(this.products.indexOf(this.selected_product), 1);
     this.update_localstorage();
     this.unselect_product();
-    Messages.toast("Se ha eliminado correctamente "+deleted_items[0].nombre);
+    Messages.toast_top("Se ha eliminado correctamente "+deleted_items[0].nombre);
   }
 
   delete_all_products(): void{
     this.products.splice(0);
     this.update_localstorage();
     this.unselect_product();
-    Messages.toast("Se han eliminado todos los producos ");
+    Messages.toast_top("Se han eliminado todos los producos ");
   }
 
   switch_can_add_item(){
@@ -86,7 +86,7 @@ export class ProductListPage implements OnInit {
       header: "Borrar Elemento", 
       message: "¿Realmente quiere eliminar "+this.selected_product.nombre+"?",
       buttons: [
-        { text: 'NO', handler: () => { Messages.toast("Eliminación cancelada"); }},
+        { text: 'NO', handler: () => { Messages.toast_bottom("Eliminación cancelada"); }},
         { text: 'SI', handler: () => { this.delete_product(); } }
       ],
     });
@@ -100,7 +100,7 @@ export class ProductListPage implements OnInit {
       header: "Borrar Todos", 
       message: "¿Realmente quiere borrar todos los productos?",
       buttons: [
-        { text: 'NO', handler: () => { Messages.toast("Eliminación cancelada"); }},
+        { text: 'NO', handler: () => { Messages.toast_bottom("Eliminación cancelada"); }},
         { text: 'SI', handler: () => { this.delete_all_products(); } }
       ],
     });
