@@ -22,7 +22,6 @@ export class ValidationReactiveProductComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.initialize_localstorage_measurement_units();
     this.options_measure = JSON.parse(localStorage.getItem(this.options_measure_token));
-//    this.options_measure = Producto.getMedidadDefault();
     this.unit_price_enabled = false;
   }
 
