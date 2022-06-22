@@ -4,8 +4,10 @@
 </ion-item>
  
 <ion-button expand="block" fill="outline" [disabled]="(textbox.value === '')" *ngIf="!selected_measure" (click)="add_product(textbox.value)">Agregar</ion-button>
-<ion-button expand="block" fill="outline" [disabled]="(textbox.value === '')" *ngIf="selected_measure" (click)="update_product(textbox.value)">Actualizar</ion-button>
+<ion-button expand="block" fill="outline" [disabled]="(textbox.value === '') || (textbox.value === selected_measure)" *ngIf="selected_measure" (click)="update_product(textbox.value)">Actualizar</ion-button>
 <ion-button expand="block" fill="outline" [disabled]="(textbox.value === '')" (click)="restore_textbox()" color="tertiary">Cancelar</ion-button>
+
+<!-- Lista de elementos -->
 
 <ion-list>
   <ion-item [ngClass]="['title']">

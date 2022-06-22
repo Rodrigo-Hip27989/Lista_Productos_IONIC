@@ -29,12 +29,17 @@ export class ConfigMeasureComponent implements OnInit {
     localStorage.setItem(this.measure_token, JSON.stringify(this.measures_array));
   }
 
-  add_product(meida : string): void{
-    this.measures_array.push(meida);
-    this.measures_array = this.measures_array.sort();
-    this.restore_textbox();
-    this.update_localstorage();
-    Messages.toast_middle("Se ha agregado correctamente ");
+  add_product(measure : string): void{
+    if(this.measures_array.indexOf(measure)>=0){
+      Messages.toast_middle("Ya existe un elemento con el mismo nombre");
+    }
+    else{
+      this.measures_array.push(measure);
+      this.measures_array = this.measures_array.sort();
+      this.restore_textbox();
+      this.update_localstorage();
+      Messages.toast_middle("Se ha agregado correctamente ");
+    }
   }
 
   update_product(measure: string): void{
