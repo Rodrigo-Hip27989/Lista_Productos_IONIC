@@ -7,6 +7,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!config_measure_enable">
+  <ion-list>
+    <ion-list-header>Unidades de  medida</ion-list-header>
+    <ion-button expand="block" fill="outline" (click)="switch_config_measure()">Cambiar medidas</ion-button>
+  </ion-list>
+</ion-content>
 
+<ion-content *ngIf="config_measure_enable">
+  <app-config-measure></app-config-measure>    
 </ion-content>
