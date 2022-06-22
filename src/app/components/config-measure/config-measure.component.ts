@@ -1,18 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Messages } from 'src/app/funciones-utiles/messages';
+import { Validations } from 'src/app/funciones-utiles/validations';
 
 @Component({
   selector: 'app-config-measure',
   templateUrl: './config-measure.component.html',
   styleUrls: ['./config-measure.component.scss'],
 })
+
 export class ConfigMeasureComponent implements OnInit {
   measure_token: string = "measure_array";
   measures_array: string[];
   selected_measure !: string;
-  textbox_binding = "";
+  textbox_binding: string;
+  textbox_valid: boolean;
 
   constructor() { 
+    this.textbox_binding = "";
+    this.textbox_valid = false;
     this.inicializarLocalStorage();
     this.measures_array = JSON.parse(localStorage.getItem(this.measure_token));
   }
@@ -29,32 +34,43 @@ export class ConfigMeasureComponent implements OnInit {
     localStorage.setItem(this.measure_token, JSON.stringify(this.measures_array));
   }
 
-  add_product(measure : string): void{
-    if(this.measures_array.indexOf(measure)>=0){
-      Messages.toast_middle("Ya existe un elemento con el mismo nombre");
+  validar_textbox(textbox: string): void{
+    if(Validations.texto(textbox)){
+      if(this.measures_array.indexOf(textbox)>=0){
+        this.textbox_valid = false;
+        Messages.toast_bottom("Ese nombre ya se esta usando");
+      }
+      else{
+        this.textbox_valid = true;
+      }
     }
     else{
-      this.measures_array.push(measure);
-      this.measures_array = this.measures_array.sort();
-      this.restore_textbox();
-      this.update_localstorage();
-      Messages.toast_middle("Se ha agregado correctamente ");
+      this.textbox_valid = false;
+      Messages.toast_bottom("Solo se permiten letras");
     }
+  }
+
+  add_product(measure : string): void{
+    this.measures_array.push(measure);
+    this.measures_array = this.measures_array.sort();
+    Messages.toast_middle("Se ha agregado correctamente "+measure);
+    this.update_localstorage();
+    this.restore_textbox();
   }
 
   update_product(measure: string): void{
     this.measures_array[this.measures_array.indexOf(this.selected_measure)] = measure;
     this.measures_array = this.measures_array.sort();
-    this.restore_textbox();
-    this.update_localstorage();
     Messages.toast_middle("Se ha actualizado correctamente "+measure);
+    this.update_localstorage();
+    this.restore_textbox();
   }
 
   delete_product(item: string): void{
     let deleted_items: string[] = this.measures_array.splice(this.measures_array.indexOf(item), 1);
-    this.restore_textbox();
-    this.update_localstorage();
     Messages.toast_middle("Se ha eliminado correctamente "+deleted_items[0]);
+    this.update_localstorage();
+    this.restore_textbox();
   }
 
   select_measure(measure: string): void{
@@ -65,10 +81,6 @@ export class ConfigMeasureComponent implements OnInit {
   restore_textbox(){
     this.textbox_binding = "";
     this.selected_measure = "";
-  }
-
-  clear_textbox(){
-    this.textbox_binding = "";
   }
 
 }
