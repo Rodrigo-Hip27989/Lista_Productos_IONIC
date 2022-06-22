@@ -13,9 +13,11 @@ export class AppComponent {
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   products_token: string = "products_array";
+  options_measure_token: string = "measurement_units";
 
   constructor() {
     this.initialize_localstorage_productos();
+    this.initialize_localstorage_measurement_units();
   }
 
   private initialize_localstorage_productos(){
@@ -23,4 +25,11 @@ export class AppComponent {
       localStorage.setItem(this.products_token, "[]");
     }
   }
+
+  private initialize_localstorage_measurement_units(){
+    if(localStorage.getItem(this.options_measure_token) === null || localStorage.getItem(this.options_measure_token) === "[]"){
+      localStorage.setItem(this.options_measure_token, JSON.stringify(Producto.getMedidadDefault()));
+    }
+  }
+
 }

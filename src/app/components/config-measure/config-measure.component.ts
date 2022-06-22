@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Messages } from 'src/app/funciones-utiles/messages';
 import { Validations } from 'src/app/funciones-utiles/validations';
+import { Producto } from 'src/app/models/producto';
 
 @Component({
   selector: 'app-config-measure',
@@ -9,7 +10,7 @@ import { Validations } from 'src/app/funciones-utiles/validations';
 })
 
 export class ConfigMeasureComponent implements OnInit {
-  measure_token: string = "measure_array";
+  measure_token: string = "measurement_units";
   measures_array: string[];
   selected_measure !: string;
   textbox_binding: string;
@@ -27,7 +28,7 @@ export class ConfigMeasureComponent implements OnInit {
       localStorage.setItem(this.measure_token, "[]");
     }
   }
-
+  
   ngOnInit() {}
 
   private update_localstorage(){
@@ -83,4 +84,8 @@ export class ConfigMeasureComponent implements OnInit {
     this.selected_measure = "";
   }
 
+  restore_default(){
+    this.measures_array = Producto.getMedidadDefault();
+    localStorage.setItem(this.measure_token, JSON.stringify(Producto.getMedidadDefault()));
+  }
 }

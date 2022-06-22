@@ -45,10 +45,10 @@ export class Producto{
 
     public static getMedidadDefault(): string[]{
         let medidasDefault: string[] = [];
-        let internacional: string[] = ["Gramo(s)", "Kilo(s)", "Litro(s)", "Metro(s)"];
-        let tanteo: string [] = ["Taza(s)", "Medida(s)", "Bolsa(s)", "Manojo(s)", "Ramo(s)"];
-        let comunes: string[] = ["Caja(s)", "Rollo(s)", "Paquete(s)", "Botella(s)", "Cono(s)"];
-        let unidades: string[] = ["Unidad(es)", "Pieza(s)"];
+        let internacional: string[] = ["Gramos", "Kilos", "Litros", "Metros"];
+        let tanteo: string [] = ["Tazas", "Medidas", "Bolsas", "Manojos", "Ramos"];
+        let comunes: string[] = ["Cajas", "Rollos", "Paquetes", "Botellas", "Conos"];
+        let unidades: string[] = ["Unidades", "Piezas"];
         medidasDefault = [...medidasDefault, ...internacional, ...tanteo, ...comunes, ...unidades];
         return medidasDefault;
     }

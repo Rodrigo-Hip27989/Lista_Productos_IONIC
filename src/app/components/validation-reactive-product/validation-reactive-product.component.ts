@@ -20,7 +20,6 @@ export class ValidationReactiveProductComponent implements OnInit {
   simbolo_dedida="$";
 
   constructor(private fb: FormBuilder) {
-    this.initialize_localstorage_measurement_units();
     this.options_measure = JSON.parse(localStorage.getItem(this.options_measure_token));
     this.unit_price_enabled = false;
   }
@@ -40,12 +39,6 @@ export class ValidationReactiveProductComponent implements OnInit {
       precio: new FormControl(this.product_test_INPUT.precio, [Validators.required, Validators.min(0), Validators.max(99999999)]),
       precio_total: new FormControl(this.product_test_INPUT.precio_total, [Validators.required, Validators.min(0), Validators.max(99999999)]),
     });
-  }
-
-  private initialize_localstorage_measurement_units(){
-    if(localStorage.getItem(this.options_measure_token) === null || localStorage.getItem(this.options_measure_token) === "[]"){
-      localStorage.setItem(this.options_measure_token, JSON.stringify(Producto.getMedidadDefault()));
-    }
   }
 
   enviarFormulario() {
