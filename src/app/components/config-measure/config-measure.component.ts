@@ -10,7 +10,7 @@ import { Producto } from 'src/app/models/producto';
 })
 
 export class ConfigMeasureComponent implements OnInit {
-  measure_token: string = "measurement_units";
+  measure_token: string = "measure_array";
   measures_array: string[];
   selected_measure !: string;
   textbox_binding: string;

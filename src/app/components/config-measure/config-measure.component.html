@@ -1,9 +1,15 @@
-<ion-item lines="none">
-  <ion-label position="floating">Nueva medida</ion-label>
-  <ion-input type="text"[(ngModel)]="textbox_binding" (keyup)="validar_textbox(textbox.value)" #textbox></ion-input>
-</ion-item>
- 
-<ion-button expand="block" fill="outline" [disabled]="!textbox.value" (click)="restore_textbox()" color="tertiary">Deshacer</ion-button>
+<ion-list>
+  <ion-item>
+    <ion-label position="floating">Nueva medida</ion-label>
+    <ion-input type="text"[(ngModel)]="textbox_binding" (keyup)="validar_textbox(textbox.value)" #textbox></ion-input>
+  </ion-item>
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button color="light" (click)="restore_textbox()">
+      <ion-icon name="backspace-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-list>
+
 <ion-button expand="block" fill="outline" [disabled]="!textbox_valid" *ngIf="!selected_measure" (click)="add_product(textbox.value)">Agregar</ion-button>
 <ion-button expand="block" fill="outline" [disabled]="!textbox_valid || (textbox.value === selected_measure)" *ngIf="selected_measure" (click)="update_product(textbox.value)">Actualizar</ion-button>
 <ion-button expand="block" fill="outline" color="danger" (click)="restore_default()">Restablecer</ion-button>
