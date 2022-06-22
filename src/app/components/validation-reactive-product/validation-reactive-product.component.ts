@@ -13,7 +13,7 @@ export class ValidationReactiveProductComponent implements OnInit {
   @Input() button_label: string;
   @Input() product_test_INPUT !: Producto;
   @Output() product_validated_OUTPUT = new EventEmitter();
-  options_measure_token: string = "measurement_units";
+  options_measure_token: string = "measure_array";
   options_measure: string[];
   form: FormGroup;
   unit_price_enabled: boolean;
