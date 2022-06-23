@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Messages } from 'src/app/funciones-utiles/messages';
 import { Validations } from 'src/app/funciones-utiles/validations';
 import { Producto } from 'src/app/models/producto';
@@ -16,7 +17,7 @@ export class ConfigMeasureComponent implements OnInit {
   textbox_binding: string;
   textbox_valid: boolean;
 
-  constructor() { 
+  constructor(public alertController: AlertController) { 
     this.textbox_binding = "";
     this.textbox_valid = false;
     this.inicializarLocalStorage();
@@ -84,8 +85,37 @@ export class ConfigMeasureComponent implements OnInit {
     this.selected_measure = "";
   }
 
-  restore_default(){
+  restore_measure_default(){
     this.measures_array = Producto.getMedidadDefault();
     localStorage.setItem(this.measure_token, JSON.stringify(Producto.getMedidadDefault()));
+  }
+
+  async restore_measure_default_alert(){
+    const alert = await this.alertController.create({
+      header: "Restablecer", 
+      message: "¿Realmente quiere restablecer a las medidas por defecto?",
+      buttons: [
+        { text: 'NO', handler: () => { Messages.toast_bottom("Operación cancelada"); }},
+        { text: 'SI', handler: () => { this.restore_measure_default(); } }
+      ],
+    });
+    await alert.present();
+  }
+
+  delete_all_measures(){
+    this.measures_array = [];
+    localStorage.setItem(this.measure_token, JSON.stringify(this.measures_array));
+  }
+
+  async delete_all_measures_alert(){
+    const alert = await this.alertController.create({
+      header: "Borrar Todos", 
+      message: "¿Realmente quiere borrar todos las medidas?",
+      buttons: [
+        { text: 'NO', handler: () => { Messages.toast_bottom("Eliminación cancelada"); }},
+        { text: 'SI', handler: () => { this.delete_all_measures(); } }
+      ],
+    });
+    await alert.present();
   }
 }
