@@ -71,7 +71,7 @@ export class ValidationReactiveProductComponent implements OnInit {
     this.form = this.fb.group({
       nombre: [Randoms.getStr(7), [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]],
       cantidad: [Randoms.getInt(2), [Validators.required, Validators.min(1), Validators.max(99999999)]],
-      medida: ["Pieza(s)", [Validators.required, Validators.maxLength(16)]],
+      medida: ["Piezas", [Validators.required, Validators.maxLength(16)]],
       precio: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
       precio_total: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],
     });
