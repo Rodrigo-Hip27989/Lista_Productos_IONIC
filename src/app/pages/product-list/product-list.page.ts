@@ -91,8 +91,6 @@ export class ProductListPage implements OnInit {
       ],
     });
     await alert.present();
-//    let result = await alert.onDidDismiss();
-//    console.log("Resultado: ", result);
   }
 
   async delete_all_products_alert(){
@@ -105,7 +103,5 @@ export class ProductListPage implements OnInit {
       ],
     });
     await alert.present();
-//    let result = await alert.onDidDismiss();
-//    console.log("Resultado: ", result);
   }
 }

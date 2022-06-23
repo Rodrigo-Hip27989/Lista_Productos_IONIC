@@ -13,7 +13,7 @@ export class AppComponent {
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   products_token: string = "products_array";
-  options_measure_token: string = "measurement_units";
+  options_measure_token: string = "measure_array";
 
   constructor() {
     this.initialize_localstorage_productos();
