@@ -10,8 +10,8 @@
   </ion-fab>
 </ion-list>
 
-<ion-button expand="block" fill="outline" [disabled]="!textbox_valid" *ngIf="!selected_measure" (click)="add_product(textbox.value)">Agregar</ion-button>
-<ion-button expand="block" fill="outline" [disabled]="!textbox_valid || (textbox.value === selected_measure)" *ngIf="selected_measure" (click)="update_product(textbox.value)">Actualizar</ion-button>
+<ion-button expand="block" fill="outline" *ngIf="!selected_measure" (click)="add_product(textbox.value)" [disabled]="!textbox_valid">Agregar</ion-button>
+<ion-button expand="block" fill="outline" *ngIf="selected_measure" (click)="update_product(textbox.value)" [disabled]="!textbox_valid || (textbox.value === selected_measure)">Actualizar</ion-button>
 <ion-button expand="block" fill="outline" color="danger" (click)="restore_measure_default_alert()">Restablecer</ion-button>
 <ion-button expand="block" fill="outline" color="danger" (click)="delete_all_measures_alert()">Borrar Todo</ion-button>
 
