@@ -1,5 +1,5 @@
-import { Randoms } from '../funciones-utiles/aleatorios';
-import { Menus } from '../funciones-utiles/menus'; 
+import { Randoms } from '../funciones/aleatorios';
+import { Menus } from '../funciones/menus';
 import { Producto } from '../models/producto'; 
 
 export class Productos{
