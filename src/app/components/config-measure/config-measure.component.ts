@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Messages } from 'src/app/funciones-utiles/messages';
-import { Validations } from 'src/app/funciones-utiles/validations';
+import { Messages } from 'src/app/funciones/messages';
+import { Validations } from 'src/app/funciones/validations';
 import { Producto } from 'src/app/models/producto';
 
 @Component({

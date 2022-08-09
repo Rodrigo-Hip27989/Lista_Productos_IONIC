@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Producto } from 'src/app/models/producto';
-import { Randoms } from 'src/app/funciones-utiles/aleatorios';
+import { Randoms } from 'src/app/funciones/aleatorios';
 
 @Component({
   selector: 'app-validation-reactive-product',
