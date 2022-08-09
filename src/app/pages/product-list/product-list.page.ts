@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { Messages } from 'src/app/funciones-utiles/messages';
+import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
-import { DataExcelService } from 'src/app/services/data-excel.service';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +14,7 @@ export class ProductListPage implements OnInit {
   products:Producto[] = [];
   selected_product !: Producto;
 
-  constructor(public alertController: AlertController, private dataExcel: DataExcelService) {
+  constructor() {
     this.can_add_item = false;
     this.products = JSON.parse(localStorage.getItem(this.products_token));
   }
@@ -31,11 +29,6 @@ export class ProductListPage implements OnInit {
       costo_total += product.precio_total;
     });
     return costo_total;
-  }
-  
-  exportToExcel() {
-    this.dataExcel.exportToExcel(this.products, 'Productos');
-    Messages.toast_middle("Se exporto a Excel...");
   }
   
   ngOnInit() { }
@@ -82,26 +75,23 @@ export class ProductListPage implements OnInit {
   }
 
   async delete_product_alert(){
-    const alert = await this.alertController.create({
-      header: "Borrar Elemento", 
-      message: "¿Realmente quiere eliminar "+this.selected_product.nombre+"?",
-      buttons: [
-        { text: 'NO', handler: () => { Messages.toast_bottom("Eliminación cancelada"); }},
-        { text: 'SI', handler: () => { this.delete_product(); } }
-      ],
-    });
-    await alert.present();
+    const opcion_si = () => {
+      this.delete_product();
+    }
+    const opcion_no = () => {
+      Messages.toast_bottom("Eliminación cancelada");
+    }
+    await Messages.alert_yes_no("Borrando Elemento", `¿Realmente quiere eliminar ${this.selected_product.nombre}?`, opcion_si, opcion_no);
   }
 
   async delete_all_products_alert(){
-    const alert = await this.alertController.create({
-      header: "Borrar Todos", 
-      message: "¿Realmente quiere borrar todos los productos?",
-      buttons: [
-        { text: 'NO', handler: () => { Messages.toast_bottom("Eliminación cancelada"); }},
-        { text: 'SI', handler: () => { this.delete_all_products(); } }
-      ],
-    });
-    await alert.present();
+    const opcion_si = () => {
+      this.delete_all_products();
+      Messages.toast_bottom("Se han eliminado todos los productos");
+    }
+    const opcion_no = () => {
+      Messages.toast_bottom("Eliminación cancelada");
+    }
+    await Messages.alert_yes_no("Eliminando Todo", "¿Realmente quiere borrar todos los productos?", opcion_si, opcion_no);
   }
 }
