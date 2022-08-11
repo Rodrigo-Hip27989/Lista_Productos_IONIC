@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'settings/measurement_units',
     loadChildren: () => import('./pages/config-measure/config-measure.module').then( m => m.ConfigMeasurePageModule)
+  },
+  {
+    path: 'settings/export_import_data',
+    loadChildren: () => import('./pages/export-import-data/export-import-data.module').then( m => m.ExportImportDataPageModule)
   }
 ];
 
