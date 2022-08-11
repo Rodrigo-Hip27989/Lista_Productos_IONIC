@@ -39,7 +39,7 @@ export class ConfigMeasureComponent implements OnInit {
     if(Validations.texto(textbox)){
       if(this.measures_array.indexOf(textbox)>=0){
         this.textbox_valid = false;
-        Messages.toast_bottom("Ese nombre ya se esta usando");
+        Messages.toast(`El nombre ${this.textbox_binding} ya esta en uso`, "middle", 2500);
       }
       else{
         this.textbox_valid = true;
@@ -47,7 +47,7 @@ export class ConfigMeasureComponent implements OnInit {
     }
     else{
       this.textbox_valid = false;
-      Messages.toast_bottom("Solo se permiten letras");
+      Messages.toast("Solo se permiten letras!", "middle", 2500);
     }
   }
 
@@ -85,7 +85,9 @@ export class ConfigMeasureComponent implements OnInit {
   }
 
   async restore_measure_default_alert(){
-    await Messages.alert_yes_no("Restablecer Medidas", "¿Desea continuar?", this.restore_measure_default(), Messages.toast_bottom("Operación cancelada"));
+    const opcion_si = () => { this.restore_measure_default(); }
+    const opcion_no = () => { Messages.toast_bottom("Operación cancelada"); }
+    await Messages.alert_yes_no("Restablecer Medidas", "¿Desea continuar?", opcion_si, opcion_no);
   }
 
   restore_measure_default(){
@@ -94,7 +96,9 @@ export class ConfigMeasureComponent implements OnInit {
   }
 
   async delete_all_measures_alert(){
-    await Messages.alert_yes_no("Borrar Medidas", "¿Desea continuar?", this.delete_all_measures(), Messages.toast_bottom("Eliminación cancelada"));
+    const opcion_si = () => { this.delete_all_measures(); }
+    const opcion_no = () => { Messages.toast_bottom("Eliminación cancelada"); }
+    await Messages.alert_yes_no("Borrar Medidas", "¿Desea continuar?", opcion_si, opcion_no);
   }
 
   delete_all_measures(){
