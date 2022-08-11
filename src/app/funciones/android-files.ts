@@ -21,9 +21,40 @@ export class AndroidFiles {
     return contents;
   };
 
+  static delete_file = async (sub_dir: string, name_file: string, extension: string) => {
+    await Filesystem.deleteFile({
+      path: sub_dir+'/'+name_file+extension,
+      directory: Directory.ExternalStorage,
+    });
+  };
+
+  static create_directory = async (path_dir: string) => {
+    const contents = await Filesystem.mkdir({
+        path: path_dir,
+        directory: Directory.ExternalStorage,
+    });
+    return contents;
+  };
+
   static read_directory = async (path_dir: string) => {
     const contents = await Filesystem.readdir({
         path: path_dir,
+        directory: Directory.ExternalStorage,
+    });
+    return contents;
+  };
+
+  static delete_directory = async (path_dir: string) => {
+    const contents = await Filesystem.rmdir({
+        path: path_dir,
+        directory: Directory.ExternalStorage,
+    });
+    return contents;
+  };
+
+  static about_file = async (path_file: string) => {
+    const contents = await Filesystem.stat({
+        path: path_file,
         directory: Directory.ExternalStorage,
     });
     return contents;
@@ -35,13 +66,6 @@ export class AndroidFiles {
         directory: Directory.ExternalStorage,
     });
     return contents;
-  };
-
-  static delete_file = async (sub_dir: string, name_file: string, extension: string) => {
-    await Filesystem.deleteFile({
-      path: sub_dir+'/'+name_file+extension,
-      directory: Directory.ExternalStorage,
-    });
   };
 
   public static export_file_desktop(data_source: string, name_file: string, extension: string) {
