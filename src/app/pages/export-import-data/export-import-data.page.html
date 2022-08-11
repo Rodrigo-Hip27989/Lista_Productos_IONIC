@@ -3,10 +3,36 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Exportar o Importar Datos</ion-title>
+    <ion-title>Exportar o Importar - Lista de Productos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-item lines="none">
+    <ion-label><strong>Ruta de exportacion: </strong>{{path_directory}}</ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label><strong>Nombre del Archivo: </strong>{{name_file}}</ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label><strong>Nota: </strong>Crear la carpeta si no existe</ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label>Opciones de Exportación</ion-label>
+  </ion-item>
+  <ion-button *ngIf="!is_mobile_platform" fill="outline" expand="full" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
+  <ion-button *ngIf="!is_mobile_platform" fill="outline" expand="full" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="export_products_csv()">Exportar como archivo CSV</ion-button>
+  <ion-item lines="none">
+    <ion-label>Opciones de Importación</ion-label>
+  </ion-item>
+  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="import_products_csv()">Importar archivo CSV </ion-button>
+  <ion-item lines="none">
+    <ion-label>Opciones para compartir</ion-label>
+  </ion-item>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" (click)="share_file_product_list_csv()">Compartir archivo CSV</ion-button>
+  <ion-item lines="none">
+    <ion-label>Opciones de eliminación</ion-label>
+  </ion-item>
+  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
 </ion-content>
