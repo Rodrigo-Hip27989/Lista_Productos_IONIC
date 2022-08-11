@@ -8,15 +8,15 @@ export class Messages{
   public constructor() { }
 
   public static async toast_top(mensaje_personalizado:string){
-    await this.toast("top", mensaje_personalizado, 1500)
+    await this.toast(mensaje_personalizado, "top", 1500)
   }
 
   public static async toast_middle(mensaje_personalizado:string){
-    await this.toast("middle", mensaje_personalizado, 1500)
+    await this.toast(mensaje_personalizado, "middle", 1500)
   }
 
   public static async toast_bottom(mensaje_personalizado:string){
-    await this.toast("bottom", mensaje_personalizado, 1500)
+    await this.toast(mensaje_personalizado, "bottom", 1500)
   }
 
   public static async toast(mensaje_personalizado:string, posicion: any, tiempo: number){
