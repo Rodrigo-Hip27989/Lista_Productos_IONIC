@@ -5,11 +5,11 @@ import { Producto } from 'src/app/models/producto';
 
 @Component({
   selector: 'app-config-measure',
-  templateUrl: './config-measure.component.html',
-  styleUrls: ['./config-measure.component.scss'],
+  templateUrl: './config-measure.page.html',
+  styleUrls: ['./config-measure.page.scss'],
 })
 
-export class ConfigMeasureComponent implements OnInit {
+export class ConfigMeasurePage implements OnInit {
   measure_token: string = "measure_array";
   measures_array: string[];
   selected_measure !: string;

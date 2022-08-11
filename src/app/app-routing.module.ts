@@ -16,8 +16,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/product-list/product-list.module').then( m => m.ProductListPageModule)
   },
   {
-    path: 'app-settings',
+    path: 'settings',
     loadChildren: () => import('./pages/app-settings/app-settings.module').then( m => m.AppSettingsPageModule)
+  },
+  {
+    path: 'settings/measurement_units',
+    loadChildren: () => import('./pages/config-measure/config-measure.module').then( m => m.ConfigMeasurePageModule)
   }
 ];
 

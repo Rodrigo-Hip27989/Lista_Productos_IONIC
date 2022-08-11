@@ -7,14 +7,6 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!config_measure_enable">
-  <ion-list>
-    <ion-list-header><strong>Valores por defecto</strong></ion-list-header>
-    <ion-button expand="block" fill="outline" (click)="switch_config_measure()">Cambiar medidas</ion-button>
-  </ion-list>
-</ion-content>
-
-<ion-content *ngIf="config_measure_enable">
-  <ion-button expand="block" (click)="switch_config_measure()">Regresar</ion-button>
-  <app-config-measure></app-config-measure>    
+<ion-content>
+  <ion-button expand="block" fill="outline" [routerLink]="['/settings/measurement_units']">Cambiar Medida</ion-button>
 </ion-content>
