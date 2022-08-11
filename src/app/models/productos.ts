@@ -12,7 +12,7 @@ export class Productos{
 
   public static show_product_list(products:Producto[]){
     for(let prod_tmp of products){
-      Messages.toast_middle(prod_tmp.toString());
+      console.log(prod_tmp.toString());
     }
   }
 
