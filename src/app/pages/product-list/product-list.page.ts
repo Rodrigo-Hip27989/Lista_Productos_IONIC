@@ -87,7 +87,6 @@ export class ProductListPage implements OnInit {
   async delete_all_products_alert(){
     const opcion_si = () => {
       this.delete_all_products();
-      Messages.toast_bottom("Se han eliminado todos los productos");
     }
     const opcion_no = () => {
       Messages.toast_bottom("Eliminación cancelada");

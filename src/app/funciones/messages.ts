@@ -8,28 +8,22 @@ export class Messages{
   public constructor() { }
 
   public static async toast_top(mensaje_personalizado:string){
-    const toast = await this.toastController.create({
-        message: mensaje_personalizado, 
-        duration: 1500, 
-        position: "top"
-    });
-    toast.present();
+    await this.toast("top", mensaje_personalizado, 1500)
   }
 
   public static async toast_middle(mensaje_personalizado:string){
-    const toast = await this.toastController.create({
-        message: mensaje_personalizado, 
-        duration: 1500, 
-        position: "middle"
-    });
-    toast.present();
+    await this.toast("middle", mensaje_personalizado, 1500)
   }
 
   public static async toast_bottom(mensaje_personalizado:string){
+    await this.toast("bottom", mensaje_personalizado, 1500)
+  }
+
+  public static async toast(mensaje_personalizado:string, posicion: any, tiempo: number){
     const toast = await this.toastController.create({
-        message: mensaje_personalizado, 
-        duration: 1500, 
-        position: "bottom"
+        message: mensaje_personalizado,
+        duration: tiempo,
+        position: posicion
     });
     toast.present();
   }
