@@ -21,6 +21,22 @@ export class AndroidFiles {
     return contents;
   };
 
+  static read_directory = async (path_dir: string) => {
+    const contents = await Filesystem.readdir({
+        path: path_dir,
+        directory: Directory.ExternalStorage,
+    });
+    return contents;
+  };
+
+  static get_uri = async (path_dir: string) => {
+    const contents = await Filesystem.getUri({
+        path: path_dir,
+        directory: Directory.ExternalStorage,
+    });
+    return contents;
+  };
+
   static delete_file = async (sub_dir: string, name_file: string, extension: string) => {
     await Filesystem.deleteFile({
       path: sub_dir+'/'+name_file+extension,
