@@ -27,17 +27,17 @@
   <ion-item lines="none">
     <ion-label>Opciones para compartir</ion-label>
   </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" (click)="share_file_product_list_csv()">Compartir archivo CSV</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" (click)="share_file_product_list_json()">Compartir archivo JSON</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="success" (click)="share_file_product_list_csv()">Compartir archivo CSV</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="success" (click)="share_file_product_list_json()">Compartir archivo JSON</ion-button>
   <ion-item lines="none">
     <ion-label>Opciones de eliminación</ion-label>
   </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="delete_file_products_json()">Eliminar archivo JSON - Exportado</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="danger" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="danger" (click)="delete_file_products_json()">Eliminar archivo JSON - Exportado</ion-button>
   <ion-item lines="none">
     <ion-label>Para Fines de Testing</ion-label>
   </ion-item>
-  <ion-button *ngIf="!is_mobile_platform" fill="outline" expand="full" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
-  <ion-button *ngIf="!is_mobile_platform" fill="outline" expand="full" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
-  <ion-button [disabled]="true" fill="solid" expand="full" (click)="ver_archivos_y_directorios()">ver_archivos_y_directorios</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="ver_archivos_y_directorios()">ver_archivos_y_directorios</ion-button>
 </ion-content>
