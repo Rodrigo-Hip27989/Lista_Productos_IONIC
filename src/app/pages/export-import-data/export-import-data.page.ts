@@ -37,18 +37,32 @@ export class ExportImportDataPage {
     localStorage.setItem(this.products_token, JSON.stringify(this.products_array));
   }
 
+  async ver_archivos_y_directorios(){
+    const content_directory = await AndroidFiles.read_directory(this.path_directory);
+    let list_of_files: string[] = content_directory.files;
+    if(list_of_files.length === 0){
+      await Messages.alert_ok("Resultado!", `No se encontraron archivo`);
+    }
+    else{
+      for(let i: number = 0; i<list_of_files.length; i++){
+        const info_file = await AndroidFiles.about_file(`${this.path_directory}/${list_of_files[i]}`);;
+        await Messages.alert_ok(`File [${i}]: ${list_of_files[i]}`, `${info_file.type}\n${info_file.size}\n${info_file.mtime}\n${info_file.uri}`);
+      }
+    }
+  }
+
   // FUNCIONES PRINCIPALES - PARA CSV
 
-  async export_products_csv(){
+  async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
      const exportar_archivo = () => {
-      AndroidFiles.export_file(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
+      AndroidFiles.export_file(datos, ruta_carpeta, nombre_archivo, extension);
       Messages.toast_top("Archivo exportado correctamente!");
     }
     const exportar_cancelado = () => {
       Messages.toast_top("Operacion cancelada!");
     }
-    const content_directory = await AndroidFiles.read_directory(this.path_directory);
-    if(await content_directory.files.indexOf(`${this.name_file}.csv`) === -1){
+    const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
+    if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       exportar_archivo();
     }
     else{
@@ -56,48 +70,97 @@ export class ExportImportDataPage {
     }
   }
 
-  async import_products_csv(){
-    const content_directory = await AndroidFiles.read_directory(this.path_directory);
-    if(await content_directory.files.indexOf(`${this.name_file}.csv`) === -1){
-      await Messages.alert_ok("File not found!", `\n${this.path_directory}/${this.name_file}.csv!`);
+  async export_products_csv(){
+    await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
+  }
+
+  async export_products_json(){
+    await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
+  }
+
+  async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
+    if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
+      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
     }
     else{
-      const contents = await AndroidFiles.read_file(this.path_directory, this.name_file, ".csv");
-      this.products_array.splice(0);
-      this.products_array = this.convert_csv_to_array_products(contents);
-      this.update_localstorage();
-      await Messages.toast_top("Archivo importado correctamente!");
+      const contents = await AndroidFiles.read_file(ruta_carpeta, nombre_archivo, extension);
+      if(extension === ".csv"){
+        this.products_array.splice(0);
+        this.products_array = this.convert_csv_to_array_products(contents);
+        this.update_localstorage();
+        await Messages.toast_top("Archivo importado correctamente!");
+      }
+      else if(extension === ".json"){
+        this.products_array.splice(0);
+        this.products_array = JSON.parse(contents.data);
+        this.update_localstorage();
+        await Messages.toast_top("Archivo importado correctamente!");
+      }
+      else{
+        await Messages.alert_ok("Aviso", `El tipo de archivo <strong>${extension}</strong> no esta soportado!`);
+      }
     }
   }
 
-  async delete_file_products_csv(){
-    const content_directory = await AndroidFiles.read_directory(this.path_directory);
-    if(await content_directory.files.indexOf(`${this.name_file}.csv`) === -1){
-      await Messages.alert_ok("File not found!", `\n${this.path_directory}/${this.name_file}.csv!`);
+  async import_products_csv(){
+    await this.import_products(this.path_directory, this.name_file, ".csv");
+  }
+
+  async import_products_json(){
+    await this.import_products(this.path_directory, this.name_file, ".json");
+  }
+
+  async delete_file_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
+    if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
+      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
     }
     else{
-      await AndroidFiles.delete_file(this.path_directory, this.name_file, ".csv");
+      await AndroidFiles.delete_file(ruta_carpeta, nombre_archivo, extension);
       Messages.toast_top("Archivo eliminado");
     }
   }
 
-  async share_file_product_list_csv(){
-    let directory_temp: string = "Download";
-    let description: string = `${this.name_file} - ${this.getCurrentDate()}`;
+  async delete_file_products_csv(){
+    this.delete_file_products(this.path_directory, this.name_file, ".csv");
+  }
+
+  async delete_file_products_json(){
+    this.delete_file_products(this.path_directory, this.name_file, ".json");
+  }
+
+  async share_file_product_list(directorio_descarga_temporal: string, nombre_archivo: string, extension: string){
+    let description: string = `${nombre_archivo} - ${this.getCurrentDate()}`;
     // Descarga temporal del archivo
-    await AndroidFiles.export_file(this.papa.unparse(this.products_array), directory_temp, this.name_file, ".csv");
+    if(extension === ".csv"){
+      await this.export_products(this.papa.unparse(this.products_array), directorio_descarga_temporal, nombre_archivo, extension);
+    }
+    else if(extension === ".json"){
+      await this.export_products(localStorage.getItem(this.products_token), directorio_descarga_temporal, nombre_archivo, extension);
+    }
+    else{
+      await Messages.alert_ok("Aviso", `El tipo de archivo <strong>${extension}</strong> no esta soportado!`);
+    }
     // Obtener ruta del archivo descargado
-    const full_path = await AndroidFiles.get_uri(directory_temp);
+    const full_path = await AndroidFiles.get_uri(directorio_descarga_temporal);
     await Share.share({
       title: description,
       text: description,
-      url: full_path.uri+'/'+this.name_file+'.csv',
+      url: full_path.uri+'/'+nombre_archivo+extension,
       dialogTitle: 'Compartir',
     });
-    await AndroidFiles.delete_file(directory_temp, this.name_file, ".csv");
+    await AndroidFiles.delete_file(directorio_descarga_temporal, nombre_archivo, extension);
   }
 
-  //FUNCIONES INTERNAS
+  async share_file_product_list_csv(){
+    let directorio_descarga_temporal: string = "Download";
+    this.share_file_product_list(directorio_descarga_temporal, this.name_file, ".csv");
+  }
+  async share_file_product_list_json(){
+    let directorio_descarga_temporal: string = "Download";
+    this.share_file_product_list(directorio_descarga_temporal, this.name_file, ".json");
+  }
 
   private getCurrentDate(): string{
     let fechaObj: Date = new Date();
