@@ -118,36 +118,30 @@ export class ExportImportDataPage implements OnInit{
     this.delete_file_products(this.path_directory, this.name_file, ".json");
   }
 
-  async share_file_product_list(directorio_descarga_temporal: string, nombre_archivo: string, extension: string){
+  async share_file_product_list(datos: string, directorio_descarga: string, nombre_archivo: string, extension: string){
     let description: string = `${nombre_archivo} - ${this.getCurrentDate()}`;
-    // Descarga temporal del archivo
-    if(extension === ".csv"){
-      await this.export_products(this.papa.unparse(this.products_array), directorio_descarga_temporal, nombre_archivo, extension);
-    }
-    else if(extension === ".json"){
-      await this.export_products(localStorage.getItem(this.products_token), directorio_descarga_temporal, nombre_archivo, extension);
-    }
-    else{
-      await Messages.alert_ok("Aviso", `El tipo de archivo <strong>${extension}</strong> no esta soportado!`);
-    }
+    // Descarga temporal del archivo en la ruta especificada
+    await AndroidFiles.export_file(datos, directorio_descarga, nombre_archivo, extension);
     // Obtener ruta del archivo descargado
-    const full_path = await AndroidFiles.get_uri(directorio_descarga_temporal);
+    const full_path = await AndroidFiles.get_uri(directorio_descarga);
     await Share.share({
       title: description,
       text: description,
       url: full_path.uri+'/'+nombre_archivo+extension,
       dialogTitle: 'Compartir',
     });
-    await AndroidFiles.delete_file(directorio_descarga_temporal, nombre_archivo, extension);
+    // Se elimina la descarga temporal del archivo en la ruta especificada
+    await AndroidFiles.delete_file(directorio_descarga, nombre_archivo, extension);
   }
 
   async share_file_product_list_csv(){
-    let directorio_descarga_temporal: string = "Download";
-    this.share_file_product_list(directorio_descarga_temporal, this.name_file, ".csv");
+    let datos: string = this.papa.unparse(this.products_array);
+    this.share_file_product_list(datos, "Download", this.name_file, ".csv");
   }
+
   async share_file_product_list_json(){
-    let directorio_descarga_temporal: string = "Download";
-    this.share_file_product_list(directorio_descarga_temporal, this.name_file, ".json");
+    let datos: string = localStorage.getItem(this.products_token);
+    this.share_file_product_list(datos, "Download", this.name_file, ".json");
   }
 
   // FUNCIONES SECUNDARIAS
