@@ -7,6 +7,7 @@ import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
 import { Productos } from 'src/app/models/productos';
 import { Share } from '@capacitor/share';
+import { Validations } from 'src/app/funciones/validations';
 
 @Component({
   selector: 'app-export-import-data',
@@ -20,12 +21,16 @@ export class ExportImportDataPage implements OnInit{
   path_directory: string;
   name_file: string;
   private is_mobile_platform: boolean;
+  valid_path_directory;
+  valid_name_file;
 
   constructor(private papa: Papa, private plt: Platform) {
     this.products_token = "products_array";
-    this.name_file = "products_movil";
+    this.name_file = "ListaProducts";
     this.path_directory = "Toronja/ListaProductos";
     this.is_mobile_platform = false;
+    this.valid_path_directory = false;
+    this.valid_name_file = false;
   }
 
   ngOnInit(): void {
@@ -36,13 +41,14 @@ export class ExportImportDataPage implements OnInit{
     }
     else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
       this.is_mobile_platform = false;
-    }    
+    }
   }
 
   // FUNCIONES PRINCIPALES
 
   async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
-     const exportar_archivo = () => {
+    AndroidFiles.create_directory(this.path_directory);
+    const exportar_archivo = () => {
       AndroidFiles.export_file(datos, ruta_carpeta, nombre_archivo, extension);
       Messages.toast_top("Archivo exportado correctamente!");
     }
@@ -67,6 +73,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
@@ -100,6 +107,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async delete_file_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
@@ -135,16 +143,41 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async share_file_product_list_csv(){
+    AndroidFiles.create_directory("Download");
     let datos: string = this.papa.unparse(this.products_array);
     this.share_file_product_list(datos, "Download", this.name_file, ".csv");
   }
 
   async share_file_product_list_json(){
+    AndroidFiles.create_directory("Download");
     let datos: string = localStorage.getItem(this.products_token);
     this.share_file_product_list(datos, "Download", this.name_file, ".json");
   }
 
   // FUNCIONES SECUNDARIAS
+
+  validate_path(ruta_directorio: string): void{
+    let posibles_directorios: string[] = ruta_directorio.split('/');
+    for(let i: number = 0; i< posibles_directorios.length; i++){
+      if(Validations.texto(posibles_directorios[i])){
+        this.valid_path_directory = true;
+      }
+      else{
+        this.valid_path_directory = false;
+        Messages.toast("Solo se permiten letras!", "middle", 2500);
+        break;
+      }
+    }
+  }
+
+  validate_name_file(ruta_archivo: string): void{
+    if(Validations.texto(ruta_archivo)){
+      this.valid_name_file = true;
+    }
+    else{
+      Messages.toast("Solo se permiten letras!", "middle", 2500);
+    }
+  }
 
   private update_localstorage(){
     localStorage.setItem(this.products_token, JSON.stringify(this.products_array));

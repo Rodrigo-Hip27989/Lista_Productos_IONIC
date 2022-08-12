@@ -7,13 +7,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <ion-item lines="none">
-    <ion-label><strong>Ruta de exportacion: </strong>{{path_directory}}</ion-label>
+    <ion-label><strong>Ruta de exportacion: </strong></ion-label>
   </ion-item>
   <ion-item lines="none">
-    <ion-label><strong>Nombre del Archivo: </strong>{{name_file}}</ion-label>
+    <ion-input type="text"[(ngModel)]="path_directory" (keyup)="validate_path(path_dir_input.value)" #path_dir_input></ion-input>
   </ion-item>
+  <ion-item lines="none">
+    <ion-label><strong>Nombre del Archivo: </strong></ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-input type="text"[(ngModel)]="name_file" (keyup)="validate_name_file(name_file_input.value)" #name_file_input></ion-input>
+  </ion-item>
+
   <ion-item lines="none">
     <ion-label>Opciones de Exportación</ion-label>
   </ion-item>
@@ -32,12 +39,13 @@
   <ion-item lines="none">
     <ion-label>Opciones de eliminación</ion-label>
   </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="danger" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="danger" (click)="delete_file_products_json()">Eliminar archivo JSON - Exportado</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="danger" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="danger" (click)="delete_file_products_json()">Eliminar archivo JSON - Exportado</ion-button>
   <ion-item lines="none">
     <ion-label>Para Fines de Testing</ion-label>
   </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="tertiary" (click)="ver_archivos_y_directorios()">ver_archivos_y_directorios</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
+  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="ver_archivos_y_directorios()">ver_archivos_y_directorios</ion-button>
 </ion-content>
+
