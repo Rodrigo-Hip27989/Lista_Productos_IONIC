@@ -39,25 +39,7 @@ export class ExportImportDataPage implements OnInit{
     }    
   }
 
-  private update_localstorage(){
-    localStorage.setItem(this.products_token, JSON.stringify(this.products_array));
-  }
-
-  async ver_archivos_y_directorios(){
-    const content_directory = await AndroidFiles.read_directory(this.path_directory);
-    let list_of_files: string[] = content_directory.files;
-    if(list_of_files.length === 0){
-      await Messages.alert_ok("Resultado!", `No se encontraron archivo`);
-    }
-    else{
-      for(let i: number = 0; i<list_of_files.length; i++){
-        const info_file = await AndroidFiles.about_file(`${this.path_directory}/${list_of_files[i]}`);;
-        await Messages.alert_ok(`File [${i}]: ${list_of_files[i]}`, `${info_file.type}\n${info_file.size}\n${info_file.mtime}\n${info_file.uri}`);
-      }
-    }
-  }
-
-  // FUNCIONES PRINCIPALES - PARA CSV
+  // FUNCIONES PRINCIPALES
 
   async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
      const exportar_archivo = () => {
@@ -168,6 +150,12 @@ export class ExportImportDataPage implements OnInit{
     this.share_file_product_list(directorio_descarga_temporal, this.name_file, ".json");
   }
 
+  // FUNCIONES SECUNDARIAS
+
+  private update_localstorage(){
+    localStorage.setItem(this.products_token, JSON.stringify(this.products_array));
+  }
+
   private getCurrentDate(): string{
     let fechaObj: Date = new Date();
     let obtener_hora: string = `${fechaObj.getHours()}.${fechaObj.getMinutes()}.${fechaObj.getSeconds()}`;
@@ -196,7 +184,26 @@ export class ExportImportDataPage implements OnInit{
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
-  /*   public check_platform(){
+  public export_products_json_desktop(){
+    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.name_file} - ${this.getCurrentDate()}`, ".json");
+    Messages.toast_top("Archivo descargado (desktop)");
+  }
+
+  async ver_archivos_y_directorios(){
+    const content_directory = await AndroidFiles.read_directory(this.path_directory);
+    let list_of_files: string[] = content_directory.files;
+    if(list_of_files.length === 0){
+      await Messages.alert_ok("Resultado!", `No se encontraron archivo`);
+    }
+    else{
+      for(let i: number = 0; i<list_of_files.length; i++){
+        const info_file = await AndroidFiles.about_file(`${this.path_directory}/${list_of_files[i]}`);;
+        await Messages.alert_ok(`File [${i}]: ${list_of_files[i]}`, `${info_file.type}\n${info_file.size}\n${info_file.mtime}\n${info_file.uri}`);
+      }
+    }
+  }
+
+/*   public check_platform(){
     const plataformas: any[] = ['android', 'ios', 'ipad', 'iphone', 'tablet', 'electron', 'pwa', 'mobile', 'mobileweb', 'desktop', 'hybrid', 'cordova', 'capacitor'];
 
     for(let i: number = 0; i<plataformas.length; i++){
@@ -209,10 +216,4 @@ export class ExportImportDataPage implements OnInit{
     }
   }
  */
-
-  public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.name_file} - ${this.getCurrentDate()}`, ".json");
-    Messages.toast_top("Archivo descargado (desktop)");
-  }
-
 }
