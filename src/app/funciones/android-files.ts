@@ -1,4 +1,5 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 export class AndroidFiles {
 
@@ -69,6 +70,17 @@ export class AndroidFiles {
     });
     return contents;
   };
+
+  static share_file = async (file_path: string, full_file_name: string, description_msg: string) => {
+    // Obtener ruta completa del archivo descargado
+    const full_path = await AndroidFiles.get_uri(file_path);
+    await Share.share({
+      title: description_msg,
+      text: description_msg,
+      url: full_path.uri+'/'+full_file_name,
+      dialogTitle: 'Share',
+    });
+  }
 
   public static export_file_desktop(data_source: string, name_file: string, extension: string) {
   //  Implementación ficticia para fines de descarga de escritorio

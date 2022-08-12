@@ -6,7 +6,6 @@ import { AndroidFiles } from 'src/app/funciones/android-files';
 import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
 import { Productos } from 'src/app/models/productos';
-import { Share } from '@capacitor/share';
 import { Validations } from 'src/app/funciones/validations';
 
 @Component({
@@ -129,17 +128,6 @@ export class ExportImportDataPage implements OnInit{
     this.delete_file_products(this.path_directory, this.name_file, ".json");
   }
 
-  async share_file_product_list(file_path: string, full_file_name: string, description_msg: string){
-    // Obtener ruta completa del archivo descargado
-    const full_path = await AndroidFiles.get_uri(file_path);
-    await Share.share({
-      title: description_msg,
-      text: description_msg,
-      url: full_path.uri+'/'+full_file_name,
-      dialogTitle: 'Share',
-    });
-  }
-
   async share_file_product_list_csv(){
     let dir_download_temp: string = "Download";
     let recovered_data: string = this.papa.unparse(this.products_array);
@@ -147,7 +135,7 @@ export class ExportImportDataPage implements OnInit{
     // Descarga temporal del archivo en la ruta especificada
     AndroidFiles.create_directory(dir_download_temp);
     await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".csv");
-    await this.share_file_product_list(dir_download_temp, `${this.name_file}.csv`, description_msg);
+    await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.csv`, description_msg);
     await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".csv");
   }
 
@@ -157,7 +145,7 @@ export class ExportImportDataPage implements OnInit{
     let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
     AndroidFiles.create_directory(dir_download_temp);
     await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".json");
-    await this.share_file_product_list(dir_download_temp, `${this.name_file}.json`, description_msg);
+    await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.json`, description_msg);
     await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".json");
   }
 
