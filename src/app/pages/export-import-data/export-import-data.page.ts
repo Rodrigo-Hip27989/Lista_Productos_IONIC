@@ -47,7 +47,6 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PRINCIPALES
 
   async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
-    AndroidFiles.create_directory(this.path_directory);
     const exportar_archivo = () => {
       AndroidFiles.export_file(datos, ruta_carpeta, nombre_archivo, extension);
       Messages.toast_top("Archivo exportado correctamente!");
@@ -65,15 +64,16 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async export_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
     await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
   }
 
   async export_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
     await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
   }
 
   async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
-    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
@@ -99,15 +99,16 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async import_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
     await this.import_products(this.path_directory, this.name_file, ".csv");
   }
 
   async import_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
     await this.import_products(this.path_directory, this.name_file, ".json");
   }
 
   async delete_file_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
-    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
@@ -119,39 +120,45 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async delete_file_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
     this.delete_file_products(this.path_directory, this.name_file, ".csv");
   }
 
   async delete_file_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
     this.delete_file_products(this.path_directory, this.name_file, ".json");
   }
 
-  async share_file_product_list(datos: string, directorio_descarga: string, nombre_archivo: string, extension: string){
-    let description: string = `${nombre_archivo} - ${this.getCurrentDate()}`;
-    // Descarga temporal del archivo en la ruta especificada
-    await AndroidFiles.export_file(datos, directorio_descarga, nombre_archivo, extension);
-    // Obtener ruta del archivo descargado
-    const full_path = await AndroidFiles.get_uri(directorio_descarga);
+  async share_file_product_list(file_path: string, full_file_name: string, description_msg: string){
+    // Obtener ruta completa del archivo descargado
+    const full_path = await AndroidFiles.get_uri(file_path);
     await Share.share({
-      title: description,
-      text: description,
-      url: full_path.uri+'/'+nombre_archivo+extension,
-      dialogTitle: 'Compartir',
+      title: description_msg,
+      text: description_msg,
+      url: full_path.uri+'/'+full_file_name,
+      dialogTitle: 'Share',
     });
-    // Se elimina la descarga temporal del archivo en la ruta especificada
-    await AndroidFiles.delete_file(directorio_descarga, nombre_archivo, extension);
   }
 
   async share_file_product_list_csv(){
-    AndroidFiles.create_directory("Download");
-    let datos: string = this.papa.unparse(this.products_array);
-    this.share_file_product_list(datos, "Download", this.name_file, ".csv");
+    let dir_download_temp: string = "Download";
+    let recovered_data: string = this.papa.unparse(this.products_array);
+    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
+    // Descarga temporal del archivo en la ruta especificada
+    AndroidFiles.create_directory(dir_download_temp);
+    await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".csv");
+    await this.share_file_product_list(dir_download_temp, `${this.name_file}.csv`, description_msg);
+    await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".csv");
   }
 
   async share_file_product_list_json(){
-    AndroidFiles.create_directory("Download");
-    let datos: string = localStorage.getItem(this.products_token);
-    this.share_file_product_list(datos, "Download", this.name_file, ".json");
+    let dir_download_temp: string = "Download";
+    let recovered_data: string = localStorage.getItem(this.products_token);
+    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
+    AndroidFiles.create_directory(dir_download_temp);
+    await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".json");
+    await this.share_file_product_list(dir_download_temp, `${this.name_file}.json`, description_msg);
+    await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".json");
   }
 
   // FUNCIONES SECUNDARIAS
