@@ -57,7 +57,7 @@ export class ProductListPage implements OnInit {
     this.products.splice(0);
     this.update_localstorage();
     this.unselect_product();
-    Messages.toast_middle("Se han eliminado todos los producos ");
+    Messages.toast_middle("Se han eliminado todos los productos");
   }
 
   switch_can_add_item(){

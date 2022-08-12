@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Papa } from 'ngx-papaparse';
 import { ReadFileResult } from '@capacitor/filesystem';
@@ -14,23 +14,29 @@ import { Share } from '@capacitor/share';
   styleUrls: ['./export-import-data.page.scss'],
 })
 
-export class ExportImportDataPage {
+export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
-  products_token: string = "products_array";
+  products_token: string;
   path_directory: string;
   name_file: string;
   private is_mobile_platform: boolean;
 
   constructor(private papa: Papa, private plt: Platform) {
+    this.products_token = "products_array";
     this.name_file = "products_movil";
-    this.path_directory = "Toronja/Worksheet";
+    this.path_directory = "Toronja/ListaProductos";
+    this.is_mobile_platform = false;
+  }
+
+  ngOnInit(): void {
     this.products_array = JSON.parse(localStorage.getItem(this.products_token));
     if (this.plt.is('capacitor')) { // Producción
       this.is_mobile_platform = true;
+      AndroidFiles.create_directory(this.path_directory);
     }
     else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
       this.is_mobile_platform = false;
-    }
+    }    
   }
 
   private update_localstorage(){
