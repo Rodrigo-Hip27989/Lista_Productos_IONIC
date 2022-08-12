@@ -32,7 +32,8 @@ export class AndroidFiles {
     const contents = await Filesystem.mkdir({
         path: path_dir,
         directory: Directory.ExternalStorage,
-    });
+        recursive: true,
+      });
     return contents;
   };
 
@@ -48,7 +49,8 @@ export class AndroidFiles {
     const contents = await Filesystem.rmdir({
         path: path_dir,
         directory: Directory.ExternalStorage,
-    });
+        recursive: true,
+      });
     return contents;
   };
 
