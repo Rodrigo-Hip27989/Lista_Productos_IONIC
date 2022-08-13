@@ -5,8 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { AppSettingsPageRoutingModule } from './app-settings-routing.module';
 import { AppSettingsPage } from './app-settings.page';
 
-import { ConfigMeasureComponent } from '../../components/config-measure/config-measure.component';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -14,6 +12,6 @@ import { ConfigMeasureComponent } from '../../components/config-measure/config-m
     IonicModule,
     AppSettingsPageRoutingModule
   ],
-  declarations: [AppSettingsPage, ConfigMeasureComponent]
+  declarations: [AppSettingsPage]
 })
 export class AppSettingsPageModule {}
