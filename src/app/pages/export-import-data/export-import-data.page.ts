@@ -107,7 +107,7 @@ export class ExportImportDataPage implements OnInit{
     AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
-      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
+      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}`);
     }
     else{
       const contents = await AndroidFiles.read_file(ruta_carpeta, `${nombre_archivo}${extension}`);
@@ -133,7 +133,7 @@ export class ExportImportDataPage implements OnInit{
     AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
-      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
+      await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}`);
     }
     else{
       await AndroidFiles.delete_file(ruta_carpeta, `${nombre_archivo}${extension}`);
@@ -153,7 +153,7 @@ export class ExportImportDataPage implements OnInit{
   validate_path(ruta_directorio: string): void{
     let posibles_directorios: string[] = ruta_directorio.split('/');
     for(let i: number = 0; i< posibles_directorios.length; i++){
-      if(Validations.texto(posibles_directorios[i])){
+      if(Validations.regex_no_blank_space.test(posibles_directorios[i])){
         this.valid_path_directory = true;
       }
       else{
@@ -165,7 +165,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   validate_name_file(ruta_archivo: string): void{
-    if(Validations.texto(ruta_archivo)){
+    if(Validations.regex_no_blank_space.test(ruta_archivo)){
       this.valid_name_file = true;
     }
     else{
@@ -214,7 +214,7 @@ export class ExportImportDataPage implements OnInit{
     const content_directory = await AndroidFiles.read_directory(this.path_directory);
     let list_of_files: string[] = content_directory.files;
     if(list_of_files.length === 0){
-      await Messages.alert_ok("Resultado!", `No se encontraron archivo`);
+      await Messages.alert_ok("Resultado!", `No se encontraron archivos`);
     }
     else{
       for(let i: number = 0; i<list_of_files.length; i++){
