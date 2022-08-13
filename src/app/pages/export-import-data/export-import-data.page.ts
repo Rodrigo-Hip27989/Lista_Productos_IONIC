@@ -18,6 +18,7 @@ export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
   products_token: string;
   path_directory: string;
+  path_directory_temp: string;
   name_file: string;
   private is_mobile_platform: boolean;
   valid_path_directory;
@@ -27,6 +28,7 @@ export class ExportImportDataPage implements OnInit{
     this.products_token = "products_array";
     this.name_file = "listaproducts";
     this.path_directory = "Toronja/ListaProductos";
+    this.path_directory_temp = "Download";
     this.is_mobile_platform = false;
     this.valid_path_directory = false;
     this.valid_name_file = false;
@@ -41,6 +43,50 @@ export class ExportImportDataPage implements OnInit{
     else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
       this.is_mobile_platform = false;
     }
+  }
+
+  // FUNCIONES PRINCIPALES
+
+  async export_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
+    await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
+  }
+
+  async export_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
+    await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
+  }
+
+  async import_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
+    await this.import_products(this.path_directory, this.name_file, ".csv");
+  }
+
+  async import_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
+    await this.import_products(this.path_directory, this.name_file, ".json");
+  }
+
+  async delete_file_products_csv(){
+    AndroidFiles.create_directory(this.path_directory);
+    this.delete_file_products(this.path_directory, this.name_file, ".csv");
+  }
+
+  async delete_file_products_json(){
+    AndroidFiles.create_directory(this.path_directory);
+    this.delete_file_products(this.path_directory, this.name_file, ".json");
+  }
+
+  async share_file_product_list_csv(){
+    let recovered_data: string = this.papa.unparse(this.products_array);
+    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
+    await this.share_file_product_list(recovered_data, this.path_directory_temp, `${this.name_file}.csv`, description_msg);
+  }
+
+  async share_file_product_list_json(){
+    let recovered_data: string = localStorage.getItem(this.products_token);
+    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
+    await this.share_file_product_list(recovered_data, this.path_directory_temp, `${this.name_file}.json`, description_msg);
   }
 
   // FUNCIONES PRINCIPALES
@@ -60,16 +106,6 @@ export class ExportImportDataPage implements OnInit{
     else{
       await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", exportar_archivo, exportar_cancelado);
     }
-  }
-
-  async export_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
-    await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
-  }
-
-  async export_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
-    await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
   }
 
   async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
@@ -97,16 +133,6 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async import_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
-    await this.import_products(this.path_directory, this.name_file, ".csv");
-  }
-
-  async import_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
-    await this.import_products(this.path_directory, this.name_file, ".json");
-  }
-
   async delete_file_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
@@ -118,35 +144,11 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async delete_file_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
-    this.delete_file_products(this.path_directory, this.name_file, ".csv");
-  }
-
-  async delete_file_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
-    this.delete_file_products(this.path_directory, this.name_file, ".json");
-  }
-
-  async share_file_product_list_csv(){
-    let dir_download_temp: string = "Download";
-    let recovered_data: string = this.papa.unparse(this.products_array);
-    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
-    // Descarga temporal del archivo en la ruta especificada
-    AndroidFiles.create_directory(dir_download_temp);
-    await AndroidFiles.export_file(recovered_data, dir_download_temp, `${this.name_file}.csv`);
-    await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.csv`, description_msg);
-    await AndroidFiles.delete_file(dir_download_temp, `${this.name_file}.csv`);
-  }
-
-  async share_file_product_list_json(){
-    let dir_download_temp: string = "Download";
-    let recovered_data: string = localStorage.getItem(this.products_token);
-    let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
-    AndroidFiles.create_directory(dir_download_temp);
-    await AndroidFiles.export_file(recovered_data, dir_download_temp, `${this.name_file}.json`);
-    await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.json`, description_msg);
-    await AndroidFiles.delete_file(dir_download_temp, `${this.name_file}.json`);
+  async share_file_product_list(data_to_string: string, path_file: string, full_file_name: string, description_msg: string){
+    AndroidFiles.create_directory(path_file);
+    await AndroidFiles.export_file(data_to_string, path_file, full_file_name);
+    await AndroidFiles.share_file(path_file, full_file_name, description_msg);
+    await AndroidFiles.delete_file(path_file, full_file_name);
   }
 
   // FUNCIONES SECUNDARIAS
