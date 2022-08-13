@@ -28,12 +28,12 @@ export class Messages{
     toast.present();
   }
 
-  public static async alert_yes_no(alert_titulo: string, alert_mensaje: string, opcion_si: any, opcion_no: any) {
+  public static async alert_yes_no(alert_titulo: string, alert_mensaje: string, opcion_si: any) {
     const alert = await this.alertController.create({
       header: alert_titulo,
       message: alert_mensaje,
       buttons: [
-        { text: 'NO', handler: () => { opcion_no(); } },
+        { text: 'NO', handler: () => { Messages.toast_middle("Operacion cancelada!"); } },
         { text: 'SI', handler: () => { opcion_si(); } }
       ],
     });

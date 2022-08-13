@@ -101,15 +101,12 @@ export class ExportImportDataPage implements OnInit{
       AndroidFiles.export_file(datos, ruta_carpeta, `${nombre_archivo}${extension}`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
-    const exportar_cancelado = () => {
-      Messages.toast_top("Operacion cancelada!");
-    }
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       exportar_archivo();
     }
     else{
-      await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", exportar_archivo, exportar_cancelado);
+      await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", exportar_archivo);
     }
   }
 

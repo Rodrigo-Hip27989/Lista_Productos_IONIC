@@ -85,8 +85,7 @@ export class ConfigMeasureComponent implements OnInit {
 
   async restore_measure_default_alert(){
     const opcion_si = () => { this.restore_measure_default(); }
-    const opcion_no = () => { Messages.toast_bottom("Operación cancelada"); }
-    await Messages.alert_yes_no("Restablecer Medidas", "¿Desea continuar?", opcion_si, opcion_no);
+    await Messages.alert_yes_no("Restablecer Medidas", "¿Desea continuar?", opcion_si);
   }
 
   restore_measure_default(){
@@ -96,8 +95,7 @@ export class ConfigMeasureComponent implements OnInit {
 
   async delete_all_measures_alert(){
     const opcion_si = () => { this.delete_all_measures(); }
-    const opcion_no = () => { Messages.toast_bottom("Eliminación cancelada"); }
-    await Messages.alert_yes_no("Borrar Medidas", "¿Desea continuar?", opcion_si, opcion_no);
+    await Messages.alert_yes_no("Borrar Medidas", "¿Desea continuar?", opcion_si);
   }
 
   delete_all_measures(){

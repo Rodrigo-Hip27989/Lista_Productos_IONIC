@@ -76,13 +76,11 @@ export class ProductListPage implements OnInit {
 
   async delete_product_alert(){
     const opcion_si = () => { this.delete_product() };
-    const opcion_no = () => { Messages.toast_bottom("Eliminación cancelada") };
-    await Messages.alert_yes_no("Borrando Elemento", `¿Realmente quiere eliminar ${this.selected_product.nombre}?`, opcion_si, opcion_no);
+    await Messages.alert_yes_no("Borrando Elemento", `¿Realmente quiere eliminar ${this.selected_product.nombre}?`, opcion_si);
   }
 
   async delete_all_products_alert(){
     const opcion_si = () => { this.delete_all_products() };
-    const opcion_no = () => { Messages.toast_bottom("Eliminación cancelada") };
-    await Messages.alert_yes_no("Eliminando Todo", "¿Realmente quiere borrar todos los productos?", opcion_si, opcion_no);
+    await Messages.alert_yes_no("Eliminando Todo", "¿Realmente quiere borrar todos los productos?", opcion_si);
   }
 }
