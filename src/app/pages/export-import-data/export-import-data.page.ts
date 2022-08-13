@@ -48,32 +48,26 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PRINCIPALES
 
   async export_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
     await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
   }
 
   async export_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
     await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
   }
 
   async import_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
     await this.import_products(this.path_directory, this.name_file, ".csv");
   }
 
   async import_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
     await this.import_products(this.path_directory, this.name_file, ".json");
   }
 
   async delete_file_products_csv(){
-    AndroidFiles.create_directory(this.path_directory);
     this.delete_file_products(this.path_directory, this.name_file, ".csv");
   }
 
   async delete_file_products_json(){
-    AndroidFiles.create_directory(this.path_directory);
     this.delete_file_products(this.path_directory, this.name_file, ".json");
   }
 
@@ -92,6 +86,7 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PRINCIPALES
 
   async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
+    AndroidFiles.create_directory(this.path_directory);
     const exportar_archivo = () => {
       AndroidFiles.export_file(datos, ruta_carpeta, `${nombre_archivo}${extension}`);
       Messages.toast_top("Archivo exportado correctamente!");
@@ -109,6 +104,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
@@ -134,6 +130,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async delete_file_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+    AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);

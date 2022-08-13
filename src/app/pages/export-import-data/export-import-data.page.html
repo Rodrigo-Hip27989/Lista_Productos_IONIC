@@ -11,41 +11,48 @@
   <ion-item lines="none">
     <ion-label><strong>Ruta de exportacion: </strong></ion-label>
   </ion-item>
-  <ion-item lines="none">
+  <ion-item>
     <ion-input type="text"[(ngModel)]="path_directory" (keyup)="validate_path(path_dir_input.value)" #path_dir_input></ion-input>
   </ion-item>
   <ion-item lines="none">
     <ion-label><strong>Nombre del Archivo: </strong></ion-label>
   </ion-item>
-  <ion-item lines="none">
+  <ion-item>
     <ion-input type="text"[(ngModel)]="name_file" (keyup)="validate_name_file(name_file_input.value)" #name_file_input></ion-input>
   </ion-item>
 
-  <ion-item lines="none">
-    <ion-label>Opciones de Exportación</ion-label>
-  </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="export_products_csv()">Exportar como archivo CSV</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="export_products_json()">Exportar como archivo JSON</ion-button>
-  <ion-item lines="none">
-    <ion-label>Opciones de Importación</ion-label>
-  </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="import_products_csv()">Importar archivo CSV </ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="solid" expand="full" (click)="import_products_json()">Importar archivo JSON </ion-button>
-  <ion-item lines="none">
-    <ion-label>Opciones para compartir</ion-label>
-  </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="success" (click)="share_file_product_list_csv()">Compartir archivo CSV</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" expand="full" color="success" (click)="share_file_product_list_json()">Compartir archivo JSON</ion-button>
-  <ion-item lines="none">
-    <ion-label>Opciones de eliminación</ion-label>
-  </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="danger" (click)="delete_file_products_csv()">Eliminar archivo CSV - Exportado</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="danger" (click)="delete_file_products_json()">Eliminar archivo JSON - Exportado</ion-button>
-  <ion-item lines="none">
-    <ion-label>Para Fines de Testing</ion-label>
-  </ion-item>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="export_products_csv_desktop()">Exportar como archivo CSV (Desktop)</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="export_products_json_desktop()">Exportar como archivo JSON (Desktop)</ion-button>
-  <ion-button [disabled]="!is_mobile_platform" fill="outline" color="tertiary" (click)="ver_archivos_y_directorios()">ver_archivos_y_directorios</ion-button>
+  <ion-button expand="block" fill="outline" color="success" (click)="import_products_csv()">
+    <ion-icon name="arrow-up"></ion-icon>&nbsp;&nbsp;Importar *.csv
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="success" (click)="import_products_json()">
+    <ion-icon name="arrow-up"></ion-icon>&nbsp;&nbsp;Importar *.json
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="primary" (click)="export_products_csv()">
+    <ion-icon name="arrow-down"></ion-icon>&nbsp;&nbsp;Exportar *.csv
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="primary" (click)="export_products_json()">
+    <ion-icon name="arrow-down"></ion-icon>&nbsp;&nbsp;Exportar *.json
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="danger" (click)="delete_file_products_csv()">
+    <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;Eliminar *.csv
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="danger" (click)="delete_file_products_json()">
+    <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;Eliminar *.json
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="tertiary" (click)="share_file_product_list_csv()">
+    <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.csv
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="tertiary" (click)="share_file_product_list_json()">
+    <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.json
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="warning" (click)="export_products_csv_desktop()">
+    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.csv (Test)
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="warning" (click)="export_products_json_desktop()">
+    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.json (Test)
+  </ion-button>
+  <ion-button expand="block" fill="outline" color="success" (click)="ver_archivos_y_directorios()">
+    <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;Ver Archivos del Directorio
+  </ion-button>
 </ion-content>
 
