@@ -25,7 +25,7 @@ export class ExportImportDataPage implements OnInit{
 
   constructor(private papa: Papa, private plt: Platform) {
     this.products_token = "products_array";
-    this.name_file = "ListaProducts";
+    this.name_file = "listaproducts";
     this.path_directory = "Toronja/ListaProductos";
     this.is_mobile_platform = false;
     this.valid_path_directory = false;
@@ -47,7 +47,7 @@ export class ExportImportDataPage implements OnInit{
 
   async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
     const exportar_archivo = () => {
-      AndroidFiles.export_file(datos, ruta_carpeta, nombre_archivo, extension);
+      AndroidFiles.export_file(datos, ruta_carpeta, `${nombre_archivo}${extension}`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
     const exportar_cancelado = () => {
@@ -78,7 +78,7 @@ export class ExportImportDataPage implements OnInit{
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
     }
     else{
-      const contents = await AndroidFiles.read_file(ruta_carpeta, nombre_archivo, extension);
+      const contents = await AndroidFiles.read_file(ruta_carpeta, `${nombre_archivo}${extension}`);
       if(extension === ".csv"){
         this.products_array.splice(0);
         this.products_array = this.convert_csv_to_array_products(contents);
@@ -113,7 +113,7 @@ export class ExportImportDataPage implements OnInit{
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}!`);
     }
     else{
-      await AndroidFiles.delete_file(ruta_carpeta, nombre_archivo, extension);
+      await AndroidFiles.delete_file(ruta_carpeta, `${nombre_archivo}${extension}`);
       Messages.toast_top("Archivo eliminado");
     }
   }
@@ -134,9 +134,9 @@ export class ExportImportDataPage implements OnInit{
     let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
     // Descarga temporal del archivo en la ruta especificada
     AndroidFiles.create_directory(dir_download_temp);
-    await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".csv");
+    await AndroidFiles.export_file(recovered_data, dir_download_temp, `${this.name_file}.csv`);
     await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.csv`, description_msg);
-    await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".csv");
+    await AndroidFiles.delete_file(dir_download_temp, `${this.name_file}.csv`);
   }
 
   async share_file_product_list_json(){
@@ -144,9 +144,9 @@ export class ExportImportDataPage implements OnInit{
     let recovered_data: string = localStorage.getItem(this.products_token);
     let description_msg: string = `${this.name_file} - ${this.getCurrentDate()}`;
     AndroidFiles.create_directory(dir_download_temp);
-    await AndroidFiles.export_file(recovered_data, dir_download_temp, this.name_file, ".json");
+    await AndroidFiles.export_file(recovered_data, dir_download_temp, `${this.name_file}.json`);
     await AndroidFiles.share_file(dir_download_temp, `${this.name_file}.json`, description_msg);
-    await AndroidFiles.delete_file(dir_download_temp, this.name_file, ".json");
+    await AndroidFiles.delete_file(dir_download_temp, `${this.name_file}.json`);
   }
 
   // FUNCIONES SECUNDARIAS

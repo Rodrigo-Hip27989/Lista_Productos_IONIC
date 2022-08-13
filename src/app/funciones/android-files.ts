@@ -3,9 +3,9 @@ import { Share } from '@capacitor/share';
 
 export class AndroidFiles {
 
-  static export_file = async (datos_source: string, sub_dir: string, name_file: string, extension: string) => {
+  static export_file = async (datos_source: string, sub_dir: string, full_file_name: string) => {
     await Filesystem.writeFile({
-      path: sub_dir+'/'+name_file+extension,
+      path: sub_dir+'/'+full_file_name,
       data: datos_source,
       directory: Directory.ExternalStorage,
       encoding: Encoding.UTF8,
@@ -13,18 +13,18 @@ export class AndroidFiles {
     });
   };
 
-  static read_file = async (sub_dir: string, name_file: string, extension: string) => {
+  static read_file = async (sub_dir: string, full_file_name: string) => {
     const contents = await Filesystem.readFile({
-        path: sub_dir+'/'+name_file+extension,
+        path: sub_dir+'/'+full_file_name,
         directory: Directory.ExternalStorage,
         encoding: Encoding.UTF8,
     });
     return contents;
   };
 
-  static delete_file = async (sub_dir: string, name_file: string, extension: string) => {
+  static delete_file = async (sub_dir: string, full_file_name: string) => {
     await Filesystem.deleteFile({
-      path: sub_dir+'/'+name_file+extension,
+      path: sub_dir+'/'+full_file_name,
       directory: Directory.ExternalStorage,
     });
   };
