@@ -48,11 +48,19 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PRINCIPALES
 
   async export_products_csv(){
-    await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv");
+    const exportar_archivo = () => {
+      AndroidFiles.export_file(this.papa.unparse(this.products_array), this.path_directory, `${this.name_file}.csv`);
+      Messages.toast_top("Archivo exportado correctamente!");
+    }
+    await this.export_products(this.papa.unparse(this.products_array), this.path_directory, this.name_file, ".csv", exportar_archivo);
   }
 
   async export_products_json(){
-    await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json");
+    const exportar_archivo = () => {
+      AndroidFiles.export_file(localStorage.getItem(this.products_token), this.path_directory, `${this.name_file}.json`);
+      Messages.toast_top("Archivo exportado correctamente!");
+    }
+    await this.export_products(localStorage.getItem(this.products_token), this.path_directory, this.name_file, ".json", exportar_archivo);
   }
 
   async import_products_csv(){
@@ -60,6 +68,8 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.path_directory, `${this.name_file}.csv`);
       this.products_array.splice(0);
       this.products_array = this.convert_csv_to_array_products(contents);
+      this.update_localstorage();
+      await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_products(this.path_directory, this.name_file, ".csv", importar_csv);
   }
@@ -69,6 +79,8 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.path_directory, `${this.name_file}.json`);
       this.products_array.splice(0);
       this.products_array = JSON.parse(contents.data);
+      this.update_localstorage();
+      await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_products(this.path_directory, this.name_file, ".json", importar_json);
   }
@@ -95,18 +107,14 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES PRINCIPALES
 
-  async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string){
+  async export_products(datos: string, ruta_carpeta: string, nombre_archivo: string, extension: string, accion_de_exportar: any){
     AndroidFiles.create_directory(this.path_directory);
-    const exportar_archivo = () => {
-      AndroidFiles.export_file(datos, ruta_carpeta, `${nombre_archivo}${extension}`);
-      Messages.toast_top("Archivo exportado correctamente!");
-    }
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
-      exportar_archivo();
+      accion_de_exportar();
     }
     else{
-      await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", exportar_archivo);
+      await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", accion_de_exportar);
     }
   }
 
@@ -118,8 +126,6 @@ export class ExportImportDataPage implements OnInit{
     }
     else{
       await accion_de_importar();
-      this.update_localstorage();
-      await Messages.toast_top("Archivo importado correctamente!");
     }
   }
 
