@@ -56,11 +56,21 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async import_products_csv(){
-    await this.import_products(this.path_directory, this.name_file, ".csv");
+    const importar_csv = async () => {
+      const contents = await AndroidFiles.read_file(this.path_directory, `${this.name_file}.csv`);
+      this.products_array.splice(0);
+      this.products_array = this.convert_csv_to_array_products(contents);
+    }
+    await this.import_products(this.path_directory, this.name_file, ".csv", importar_csv);
   }
 
   async import_products_json(){
-    await this.import_products(this.path_directory, this.name_file, ".json");
+    const importar_json = async () => {
+      const contents = await AndroidFiles.read_file(this.path_directory, `${this.name_file}.json`);
+      this.products_array.splice(0);
+      this.products_array = JSON.parse(contents.data);
+    }
+    await this.import_products(this.path_directory, this.name_file, ".json", importar_json);
   }
 
   async delete_file_products_csv(){
@@ -103,29 +113,16 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string){
+  async import_products(ruta_carpeta: string, nombre_archivo: string, extension: string, accion_de_importar: any){
     AndroidFiles.create_directory(this.path_directory);
     const content_directory = await AndroidFiles.read_directory(ruta_carpeta);
     if(await content_directory.files.indexOf(`${nombre_archivo}${extension}`) === -1){
       await Messages.alert_ok("File not found!", `\n${ruta_carpeta}/${nombre_archivo}${extension}`);
     }
     else{
-      const contents = await AndroidFiles.read_file(ruta_carpeta, `${nombre_archivo}${extension}`);
-      if(extension === ".csv"){
-        this.products_array.splice(0);
-        this.products_array = this.convert_csv_to_array_products(contents);
-        this.update_localstorage();
-        await Messages.toast_top("Archivo importado correctamente!");
-      }
-      else if(extension === ".json"){
-        this.products_array.splice(0);
-        this.products_array = JSON.parse(contents.data);
-        this.update_localstorage();
-        await Messages.toast_top("Archivo importado correctamente!");
-      }
-      else{
-        await Messages.alert_ok("Aviso", `El tipo de archivo <strong>${extension}</strong> no esta soportado!`);
-      }
+      await accion_de_importar();
+      this.update_localstorage();
+      await Messages.toast_top("Archivo importado correctamente!");
     }
   }
 
