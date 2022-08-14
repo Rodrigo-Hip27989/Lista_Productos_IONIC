@@ -18,7 +18,6 @@ export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
   file_name: string;
   file_directory: string;
-  file_directory_share: string;
   //Centinelas
   private is_mobile_platform: boolean;
   valid_file_directory;
@@ -31,7 +30,6 @@ export class ExportImportDataPage implements OnInit{
     this.products_token = "products_array";
     this.file_name = "lista_products";
     this.file_directory = "Toronja/Lista_Productos";
-    this.file_directory_share = "Download";
     this.is_mobile_platform = false;
     this.valid_file_directory = false;
     this.valid_file_name = false;
@@ -99,13 +97,13 @@ export class ExportImportDataPage implements OnInit{
   async share_file_product_list_csv(){
     let recovered_data_csv: string = this.papa.unparse(this.products_array);
     let description_msg: string = `${this.file_name}__${this.getLocalDate()}`;
-    await this.share_any_file(this.file_directory_share, `${this.file_name}.csv`, description_msg, recovered_data_csv);
+    await this.share_any_file(this.file_directory, `${this.file_name}.csv`, description_msg, recovered_data_csv);
   }
 
   async share_file_product_list_json(){
     let recovered_data_json: string = localStorage.getItem(this.products_token);
     let description_msg: string = `${this.file_name}__${this.getLocalDate()}`;
-    await this.share_any_file(this.file_directory_share, `${this.file_name}.json`, description_msg, recovered_data_json);
+    await this.share_any_file(this.file_directory, `${this.file_name}.json`, description_msg, recovered_data_json);
   }
 
   // FUNCIONES PRINCIPALES
