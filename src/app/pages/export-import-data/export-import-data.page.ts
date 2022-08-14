@@ -98,13 +98,13 @@ export class ExportImportDataPage implements OnInit{
 
   async share_file_product_list_csv(){
     let recovered_data_csv: string = this.papa.unparse(this.products_array);
-    let description_msg: string = `${this.file_name} - ${this.getLocalDate()}`;
+    let description_msg: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory_share, `${this.file_name}.csv`, description_msg, recovered_data_csv);
   }
 
   async share_file_product_list_json(){
     let recovered_data_json: string = localStorage.getItem(this.products_token);
-    let description_msg: string = `${this.file_name} - ${this.getLocalDate()}`;
+    let description_msg: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory_share, `${this.file_name}.json`, description_msg, recovered_data_json);
   }
 
@@ -113,7 +113,7 @@ export class ExportImportDataPage implements OnInit{
   async export_any_file(file_directory: string, full_file_name: string, accion_de_exportar: any){
     AndroidFiles.create_directory(file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(`${full_file_name}`) === -1){
+    if(await content_directory.files.indexOf(full_file_name) === -1){
       accion_de_exportar();
     }
     else{
@@ -124,7 +124,7 @@ export class ExportImportDataPage implements OnInit{
   async import_any_file(file_directory: string, full_file_name: string, accion_de_importar: any){
     AndroidFiles.create_directory(file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(`${full_file_name}`) === -1){
+    if(await content_directory.files.indexOf(full_file_name) === -1){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
@@ -135,11 +135,11 @@ export class ExportImportDataPage implements OnInit{
   async delete_any_file(file_directory: string, full_file_name: string){
     AndroidFiles.create_directory(this.file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(`${full_file_name}`) === -1){
+    if(await content_directory.files.indexOf(full_file_name) === -1){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
-      await AndroidFiles.delete_file(file_directory, `${full_file_name}`);
+      await AndroidFiles.delete_file(file_directory, full_file_name);
       Messages.toast_top("Archivo eliminado");
     }
   }
@@ -201,12 +201,12 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PARA TESTING
 
   public export_products_csv_desktop(){
-    AndroidFiles.export_file_desktop(this.papa.unparse(this.products_array), `${this.file_name} - ${this.getLocalDate()}`, ".csv");
+    AndroidFiles.export_file_desktop(this.papa.unparse(this.products_array), `${this.file_name}__${this.getLocalDate()}`, ".csv");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
   public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.file_name} - ${this.getLocalDate()}`, ".json");
+    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.file_name}__${this.getLocalDate()}`, ".json");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
