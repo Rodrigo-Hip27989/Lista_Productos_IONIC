@@ -12,13 +12,13 @@
     <ion-label><strong>Ruta de exportacion: </strong></ion-label>
   </ion-item>
   <ion-item>
-    <ion-input type="text"[(ngModel)]="path_directory" (keyup)="validate_path(path_dir_input.value)" #path_dir_input></ion-input>
+    <ion-input type="text"[(ngModel)]="file_directory" (keyup)="validate_path(path_dir_input.value)" #path_dir_input></ion-input>
   </ion-item>
   <ion-item lines="none">
     <ion-label><strong>Nombre del Archivo: </strong></ion-label>
   </ion-item>
   <ion-item>
-    <ion-input type="text"[(ngModel)]="name_file" (keyup)="validate_name_file(name_file_input.value)" #name_file_input></ion-input>
+    <ion-input type="text"[(ngModel)]="file_name" (keyup)="validate_name_file(name_file_input.value)" #name_file_input></ion-input>
   </ion-item>
 
   <ion-button expand="block" fill="outline" color="success" (click)="import_products_csv()">
