@@ -126,7 +126,7 @@ export class ExportImportDataPage implements OnInit{
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
-      await accion_de_importar();
+      await Messages.alert_yes_no("Aviso!", "¿Desea reemplazar sus datos actuales?", accion_de_importar);
     }
   }
 
