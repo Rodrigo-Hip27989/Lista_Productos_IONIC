@@ -98,13 +98,13 @@ export class ExportImportDataPage implements OnInit{
 
   async share_file_product_list_csv(){
     let recovered_data_csv: string = this.papa.unparse(this.products_array);
-    let description_msg: string = `${this.file_name} - ${this.getCurrentDate()}`;
+    let description_msg: string = `${this.file_name} - ${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory_share, `${this.file_name}.csv`, description_msg, recovered_data_csv);
   }
 
   async share_file_product_list_json(){
     let recovered_data_json: string = localStorage.getItem(this.products_token);
-    let description_msg: string = `${this.file_name} - ${this.getCurrentDate()}`;
+    let description_msg: string = `${this.file_name} - ${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory_share, `${this.file_name}.json`, description_msg, recovered_data_json);
   }
 
@@ -180,11 +180,8 @@ export class ExportImportDataPage implements OnInit{
     localStorage.setItem(this.products_token, JSON.stringify(this.products_array));
   }
 
-  private getCurrentDate(): string{
-    let fechaObj: Date = new Date();
-    let obtener_hora: string = `${fechaObj.getHours()}.${fechaObj.getMinutes()}.${fechaObj.getSeconds()}`;
-    let obtener_fecha: string = `${fechaObj.toDateString()} - ${obtener_hora}`;
-    return obtener_fecha;
+  private getLocalDate(): string{
+    return (new Date()).toDateString().replace(/ /g, "_");
   }
 
   private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
@@ -204,12 +201,12 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PARA TESTING
 
   public export_products_csv_desktop(){
-    AndroidFiles.export_file_desktop(this.papa.unparse(this.products_array), `${this.file_name} - ${this.getCurrentDate()}`, ".csv");
+    AndroidFiles.export_file_desktop(this.papa.unparse(this.products_array), `${this.file_name} - ${this.getLocalDate()}`, ".csv");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
   public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.file_name} - ${this.getCurrentDate()}`, ".json");
+    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.file_name} - ${this.getLocalDate()}`, ".json");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
