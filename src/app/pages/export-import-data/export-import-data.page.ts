@@ -19,24 +19,30 @@ export class ExportImportDataPage implements OnInit{
   file_name: string;
   file_directory: string;
   //Centinelas
-  private is_mobile_platform: boolean;
-  valid_file_directory;
   valid_file_name;
+  valid_file_directory;
+  private is_mobile_platform: boolean;
   //Tokens para recuperar del localstorage
-  products_token: string;
-
+  token_products_array: string;
+  token_file_name: string;
+  token_file_directory: string;
 
   constructor(private papa: Papa, private plt: Platform) {
-    this.products_token = "products_array";
-    this.file_name = "lista_products";
-    this.file_directory = "Toronja/Lista_Productos";
-    this.is_mobile_platform = false;
+    //Centinelas
     this.valid_file_directory = false;
     this.valid_file_name = false;
+    this.is_mobile_platform = false;
+    //Tokens para recuperar del localstorage
+    this.token_products_array = "products_array";
+    this.token_file_name = "file_name";
+    this.token_file_directory = "file_directory";
+    //Ruta de archivo(s)
+    this.file_name = "lista_products";
+    this.file_directory = "Toronja/Lista_Productos";
   }
 
   ngOnInit(): void {
-    this.products_array = JSON.parse(localStorage.getItem(this.products_token));
+    this.products_array = JSON.parse(localStorage.getItem(this.token_products_array));
     if (this.plt.is('capacitor')) { // Producción
       this.is_mobile_platform = true;
       AndroidFiles.create_directory(this.file_directory);
@@ -58,7 +64,7 @@ export class ExportImportDataPage implements OnInit{
 
   async export_products_json(){
     const exportar_json = () => {
-      AndroidFiles.export_file(localStorage.getItem(this.products_token), this.file_directory, `${this.file_name}.json`);
+      AndroidFiles.export_file(localStorage.getItem(this.token_products_array), this.file_directory, `${this.file_name}.json`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
     await this.export_any_file(this.file_directory, `${this.file_name}.json`, exportar_json);
@@ -101,7 +107,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async share_file_product_list_json(){
-    let recovered_data_json: string = localStorage.getItem(this.products_token);
+    let recovered_data_json: string = localStorage.getItem(this.token_products_array);
     let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory, `${new_file_name}.json`, this.file_name, recovered_data_json);
   }
@@ -175,7 +181,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   private update_localstorage(){
-    localStorage.setItem(this.products_token, JSON.stringify(this.products_array));
+    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
   }
 
   private getLocalDate(): string{
@@ -204,7 +210,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(localStorage.getItem(this.products_token), `${this.file_name}__${this.getLocalDate()}`, ".json");
+    AndroidFiles.export_file_desktop(localStorage.getItem(this.token_products_array), `${this.file_name}__${this.getLocalDate()}`, ".json");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
