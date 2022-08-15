@@ -1,6 +1,7 @@
 <ion-footer class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
     <ion-list>
+      <ion-button expand="block" fill="outline" color="success" (click)="limpiarFormulario()">Limpiar Formulario</ion-button>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="nombre"></ion-input>
@@ -52,9 +53,8 @@
         <small *ngIf="(form.get('precio_total')).errors?.max">No mas de 8 digitos</small>
       </small>
       <hr>
-      <ion-button expand="block" fill="solid" color="secondary" (click)="generarEjemplo()">Generar</ion-button>
-      <ion-button expand="block" fill="solid" color="primary" [disabled]="!form.valid" type="submit">{{button_label}}</ion-button>
-      <ion-button expand="block" fill="solid" color="success" (click)="limpiarFormulario()">Limpiar Formulario</ion-button>
+      <ion-button expand="block" fill="outline" color="tertiary" (click)="generarEjemplo()">Generar</ion-button>
+      <ion-button expand="block" fill="outline" color="secondary" [disabled]="!form.valid" type="submit">{{button_label}}</ion-button>
     </ion-list>
   </form>
 </ion-footer>
