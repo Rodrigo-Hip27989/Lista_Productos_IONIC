@@ -29,8 +29,8 @@ export class ExportImportDataPage implements OnInit{
 
   constructor(private papa: Papa, private plt: Platform) {
     //Centinelas
-    this.valid_file_directory = false;
-    this.valid_file_name = false;
+    this.valid_file_directory = true;
+    this.valid_file_name = true;
     this.is_mobile_platform = false;
     //Tokens para recuperar del localstorage
     this.token_products_array = "products_array";
@@ -50,17 +50,6 @@ export class ExportImportDataPage implements OnInit{
     else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
       this.is_mobile_platform = false;
     }
-  }
-
-
-  private update_localstorage_array_productos(){
-    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
-  }
-
-  private update_localstorage_routes(){
-    localStorage.setItem(this.token_file_name, this.file_name);
-    localStorage.setItem(this.token_file_directory, this.file_directory);
-    Messages.toast_middle("Ruta de archivos Actualizada!");
   }
 
   // FUNCIONES PRINCIPALES
@@ -168,6 +157,16 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES SECUNDARIAS
 
+  private update_localstorage_array_productos(){
+    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
+  }
+
+  private update_localstorage_routes(){
+    localStorage.setItem(this.token_file_name, this.file_name);
+    localStorage.setItem(this.token_file_directory, this.file_directory);
+    Messages.toast_middle("Ruta de archivos Actualizada!");
+  }
+
   validate_path(ruta_directorio: string): void{
     let posibles_directorios: string[] = ruta_directorio.split('/');
     for(let i: number = 0; i< posibles_directorios.length; i++){
@@ -176,7 +175,7 @@ export class ExportImportDataPage implements OnInit{
       }
       else{
         this.valid_file_directory = false;
-        Messages.toast("Solo se permiten letras!", "middle", 2500);
+        Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2500);
         break;
       }
     }
@@ -187,7 +186,8 @@ export class ExportImportDataPage implements OnInit{
       this.valid_file_name = true;
     }
     else{
-      Messages.toast("Solo se permiten letras!", "middle", 2500);
+      this.valid_file_name = false;
+      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2500);
     }
   }
 

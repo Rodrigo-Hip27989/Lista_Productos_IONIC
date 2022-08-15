@@ -5,7 +5,7 @@
 export class Validations{
     static regex_texto = /^[A-Za-z][A-Za-z\ ]{0,15}$/;
     static regex_numero = /^[1-9][0-9]{0,2}$/;
-    static regex_no_blank_space = /^[A-Za-z][A-Za-z_]{0,15}$/;
+    static regex_no_blank_space = /^[A-Za-z][A-Za-z0-9_]{0,127}$/;
     
     public static numero(numero:string): boolean{
         let regex_valido = this.regex_numero.test(numero);
