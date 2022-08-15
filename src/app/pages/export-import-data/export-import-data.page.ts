@@ -37,8 +37,8 @@ export class ExportImportDataPage implements OnInit{
     this.token_file_name = "file_name";
     this.token_file_directory = "file_directory";
     //Ruta de archivo(s)
-    this.file_name = "lista_products";
-    this.file_directory = "Toronja/Lista_Productos";
+    this.file_name = localStorage.getItem(this.token_file_name);
+    this.file_directory = localStorage.getItem(this.token_file_directory);
   }
 
   ngOnInit(): void {
@@ -50,6 +50,17 @@ export class ExportImportDataPage implements OnInit{
     else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
       this.is_mobile_platform = false;
     }
+  }
+
+
+  private update_localstorage_array_productos(){
+    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
+  }
+
+  private update_localstorage_routes(){
+    localStorage.setItem(this.token_file_name, this.file_name);
+    localStorage.setItem(this.token_file_directory, this.file_directory);
+    Messages.toast_middle("Ruta de archivos Actualizada!");
   }
 
   // FUNCIONES PRINCIPALES
@@ -75,7 +86,7 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.csv`);
       this.products_array.splice(0);
       this.products_array = this.convert_csv_to_array_products(contents);
-      this.update_localstorage();
+      this.update_localstorage_array_productos();
       await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_any_file(this.file_directory, `${this.file_name}.csv`, importar_csv);
@@ -86,7 +97,7 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.json`);
       this.products_array.splice(0);
       this.products_array = JSON.parse(contents.data);
-      this.update_localstorage();
+      this.update_localstorage_array_productos();
       await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_any_file(this.file_directory, `${this.file_name}.json`, importar_json);
@@ -178,10 +189,6 @@ export class ExportImportDataPage implements OnInit{
     else{
       Messages.toast("Solo se permiten letras!", "middle", 2500);
     }
-  }
-
-  private update_localstorage(){
-    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
   }
 
   private getLocalDate(): string{

@@ -14,10 +14,13 @@ export class AppComponent {
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   products_token: string = "products_array";
   options_measure_token: string = "measure_array";
+  token_file_name: string = "file_name";
+  token_file_directory: string = "file_directory";
 
   constructor() {
     this.initialize_localstorage_productos();
     this.initialize_localstorage_measurement_units();
+    this.initialize_localstorage_path_import_export();
   }
 
   private initialize_localstorage_productos(){
@@ -29,6 +32,15 @@ export class AppComponent {
   private initialize_localstorage_measurement_units(){
     if(localStorage.getItem(this.options_measure_token) === null || localStorage.getItem(this.options_measure_token) === "[]"){
       localStorage.setItem(this.options_measure_token, JSON.stringify(Producto.getMedidadDefault()));
+    }
+  }
+
+  private initialize_localstorage_path_import_export(){
+    if(localStorage.getItem(this.token_file_name) === null){
+      localStorage.setItem(this.token_file_name, "lista_productos");
+    }
+    if(localStorage.getItem(this.token_file_directory) === null){
+      localStorage.setItem(this.token_file_directory, "Toronja/Lista_Productos");
     }
   }
 

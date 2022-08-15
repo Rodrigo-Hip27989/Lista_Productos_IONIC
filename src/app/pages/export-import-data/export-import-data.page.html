@@ -20,7 +20,11 @@
   <ion-item>
     <ion-input type="text"[(ngModel)]="file_name" (keyup)="validate_name_file(name_file_input.value)" #name_file_input></ion-input>
   </ion-item>
-
+  <br/>
+  <ion-button [disabled]="(!valid_file_name || !valid_file_directory)" expand="block" fill="solid" color="primary" (click)="update_localstorage_routes()">
+    <ion-icon name="save"></ion-icon>&nbsp;&nbsp;Actualizar - Nombre y Ruta
+  </ion-button>
+  <br/>
   <ion-button expand="block" fill="outline" color="success" (click)="import_products_csv()">
     <ion-icon name="arrow-up"></ion-icon>&nbsp;&nbsp;Importar *.csv
   </ion-button>
