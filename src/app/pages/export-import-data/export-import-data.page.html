@@ -49,14 +49,14 @@
   <ion-button [disabled]="(!valid_file_name || !valid_file_directory)" (click)="share_file_product_list_json()" expand="block" fill="outline" color="tertiary">
     <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.json
   </ion-button>
-  <ion-button [disabled]="(!valid_file_name || !valid_file_directory)" (click)="export_products_csv_desktop()" expand="block" fill="outline" color="warning">
-    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.csv (Test)
-  </ion-button>
-  <ion-button [disabled]="(!valid_file_name || !valid_file_directory)" (click)="export_products_json_desktop()" expand="block" fill="outline" color="warning">
-    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.json (Test)
-  </ion-button>
   <ion-button [disabled]="(!valid_file_name || !valid_file_directory)" (click)="ver_archivos_y_directorios()" expand="block" fill="outline" color="success">
     <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;Ver Archivos del Directorio
+  </ion-button>
+  <ion-button *ngIf="!is_mobile_platform" [disabled]="(!valid_file_name || !valid_file_directory)" (click)="export_products_csv_desktop()" expand="block" fill="outline" color="warning">
+    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.csv (Test)
+  </ion-button>
+  <ion-button *ngIf="!is_mobile_platform" [disabled]="(!valid_file_name || !valid_file_directory)" (click)="export_products_json_desktop()" expand="block" fill="outline" color="warning">
+    <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.json (Test)
   </ion-button>
 </ion-content>
 
