@@ -21,7 +21,7 @@ export class ExportImportDataPage implements OnInit{
   //Centinelas
   valid_file_name;
   valid_file_directory;
-  private is_mobile_platform: boolean;
+  is_mobile_platform: boolean;
   //Tokens para recuperar del localstorage
   token_products_array: string;
   token_file_name: string;
@@ -224,13 +224,18 @@ export class ExportImportDataPage implements OnInit{
   async ver_archivos_y_directorios(){
     const content_directory = await AndroidFiles.read_directory(this.file_directory);
     let list_of_files: string[] = content_directory.files;
-    if(list_of_files.length === 0){
-      await Messages.alert_ok("Resultado!", `No se encontraron archivos`);
-    }
-    else{
+    await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos Encontrados`);
+    if(list_of_files.length !== 0){
       for(let i: number = 0; i<list_of_files.length; i++){
-        const info_file = await AndroidFiles.about_file(`${this.file_directory}/${list_of_files[i]}`);
-        await Messages.alert_ok(`File [${i}]: ${list_of_files[i]}`, `${info_file.type}\n${info_file.size}\n${info_file.mtime}\n${info_file.uri}`);
+        const file_info = await AndroidFiles.about_file(`${this.file_directory}/${list_of_files[i]}`);
+        const file_details = `
+        <strong>* Tipo: </strong>${file_info.type}<hr/>
+        <strong>* Nombre: </strong>${list_of_files[i]}<hr/>
+        <strong>* Creado: </strong>${(new Date(file_info.ctime)).toDateString()}<hr/>
+        <strong>* Modificado: </strong>${(new Date(file_info.mtime)).toDateString()}<hr/>
+        <strong>* Tamaño: </strong>${file_info.size}<hr/>
+        <strong>* Ruta: </strong>${file_info.uri}`;
+        await Messages.alert_ok(`Archivo - [${i}]`, file_details);
       }
     }
   }
