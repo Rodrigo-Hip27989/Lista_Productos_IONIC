@@ -23,7 +23,7 @@
       <ion-item>
         <ion-label position="floating">Medida</ion-label>
         <ion-select interface="popover" formControlName="medida" type="text">
-          <ion-select-option *ngFor="let opcion of options_measure" value="{{opcion}}">{{opcion}}</ion-select-option>
+          <ion-select-option *ngFor="let opcion of measuring_options" value="{{opcion}}">{{opcion}}</ion-select-option>
         </ion-select>
       </ion-item>
       <small *ngIf="form.get('medida').invalid && (form.get('medida').dirty ||form.get('medida').touched )">
@@ -36,7 +36,7 @@
       </ion-item>
       <ion-item [disabled]="!unit_price_enabled">
         <ion-label position="floating">Precio Unitario</ion-label>
-        <ion-input type="number" formControlName="precio" placeholder="{{simbolo_dedida}}"></ion-input>
+        <ion-input type="number" formControlName="precio" placeholder="{{measurement_symbol}}"></ion-input>
       </ion-item>
       <small *ngIf="(form.get('precio').invalid && (form.get('precio').dirty ||form.get('precio').touched )) && unit_price_enabled">
         <small *ngIf="(form.get('precio')).errors?.required">El precio es requerido</small>
@@ -45,7 +45,7 @@
       </small>
       <ion-item [disabled]="unit_price_enabled">
         <ion-label position="floating">Precio Total</ion-label>
-        <ion-input type="number" formControlName="precio_total" placeholder="{{simbolo_dedida}}"></ion-input>
+        <ion-input type="number" formControlName="precio_total" placeholder="{{measurement_symbol}}"></ion-input>
       </ion-item>
       <small *ngIf="(form.get('precio_total').invalid && (form.get('precio_total').dirty ||form.get('precio_total').touched )) && !unit_price_enabled">
         <small *ngIf="(form.get('precio_total')).errors?.required">El precio es requerido</small>

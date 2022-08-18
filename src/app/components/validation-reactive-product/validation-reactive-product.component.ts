@@ -13,15 +13,17 @@ export class ValidationReactiveProductComponent implements OnInit {
   @Input() button_label: string;
   @Input() product_test_INPUT !: Producto;
   @Output() product_validated_OUTPUT = new EventEmitter();
-  options_measure_token: string = "measure_array";
-  options_measure: string[];
-  form: FormGroup;
+  measuring_options_token: string;
+  measuring_options: string[];
+  measurement_symbol: string;
   unit_price_enabled: boolean;
-  simbolo_dedida="$";
+  form: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.options_measure = JSON.parse(localStorage.getItem(this.options_measure_token));
+    this.measuring_options_token = "measure_array";
+    this.measuring_options = JSON.parse(localStorage.getItem(this.measuring_options_token));
     this.unit_price_enabled = false;
+    this.measurement_symbol ="$";
   }
 
   switch_type_price(){
