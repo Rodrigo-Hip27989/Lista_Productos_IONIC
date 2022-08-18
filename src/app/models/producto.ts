@@ -23,7 +23,7 @@ export class Producto{
         return medidasDefault;
     }
 
-    public static convert_array_str(array_str: string[]): Producto{
+    public static parse_array_str1d_to_obj(array_str: string[]): Producto{
         // El orden debe ser: nombre, cantidad, medida, precio, precio_total
         let producto_temp: Producto = new Producto();
         producto_temp.nombre = array_str[0];

@@ -16,12 +16,12 @@ export class Productos{
     }
   }
 
-  public static convert_array_str_to_array_products(data_source: string[][]): Producto[]{
+  public static parse_array_str2d_to_array_obj1d(data_source: string[][]): Producto[]{
     let productos_array: Producto[] = [];
 
     for(let i: number = 0; i<data_source.length; i++){
       let producto_temp: Producto = new Producto();
-      productos_array.push(Producto.convert_array_str(data_source[i]));
+      productos_array.push(Producto.parse_array_str1d_to_obj(data_source[i]));
     }
     return productos_array;
   }

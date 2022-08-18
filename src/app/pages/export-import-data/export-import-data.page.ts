@@ -206,7 +206,7 @@ export class ExportImportDataPage implements OnInit{
         data_csv_body = parsedData.data;
       }
     });
-    return Productos.convert_array_str_to_array_products(data_csv_body);
+    return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
   }
 
   // FUNCIONES PARA TESTING
