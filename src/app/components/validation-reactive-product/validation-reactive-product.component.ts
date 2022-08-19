@@ -17,6 +17,7 @@ export class ValidationReactiveProductComponent implements OnInit {
   measuring_options: string[];
   measurement_symbol: string;
   unit_price_enabled: boolean;
+  date_picker: string;
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -24,6 +25,7 @@ export class ValidationReactiveProductComponent implements OnInit {
     this.measuring_options = JSON.parse(localStorage.getItem(this.measuring_options_token));
     this.unit_price_enabled = false;
     this.measurement_symbol ="$";
+    this.date_picker = "";
   }
 
   switch_type_price(){
@@ -79,6 +81,10 @@ export class ValidationReactiveProductComponent implements OnInit {
     });
   }
   
+  save_date_picker(fechaRecivida: string){
+    this.date_picker = fechaRecivida;
+  }
+
   limpiarFormulario() {
     this.form.reset();
   }
