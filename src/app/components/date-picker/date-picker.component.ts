@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-date-picker',
@@ -8,19 +8,20 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 export class DatePickerComponent implements OnInit {
   @Output() newItemEvent = new EventEmitter();
-  selected_date: string;
+  @Input() selected_date_INPUT: string;
   datePicker_enable: boolean;
 
   constructor() { 
-    this.selected_date = (new Date()).toLocaleString();
+    this.selected_date_INPUT = (new Date()).toLocaleString();
     this.datePicker_enable = false;
   }
 
   ngOnInit() {}
 
   select_date(confirmed_date: string){
-    this.selected_date = (new Date(confirmed_date)).toLocaleString();
-    this.newItemEvent.emit(this.selected_date);
+    this.selected_date_INPUT = (new Date(confirmed_date)).toLocaleString();
+    this.newItemEvent.emit(this.selected_date_INPUT);
+    this.datePicker_enable = false;
   }
 
   switch_visibility_date_picker(){
