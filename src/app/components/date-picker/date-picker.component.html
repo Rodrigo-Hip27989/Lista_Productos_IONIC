@@ -1,0 +1,13 @@
+<ion-item button (click)="switch_visibility_date_picker()">
+  <ion-label>Fecha: </ion-label>
+  <ion-label>{{selected_date}}</ion-label>
+  <ion-icon name="calendar" slot="end"></ion-icon>
+</ion-item>
+<ion-datetime (ionChange)="select_date(datetime.value)" *ngIf="datePicker_enable" size="cover" #datetime>
+  <span slot="time-label">Hora</span>
+  <ion-buttons slot="buttons">
+    <ion-button color="danger" (click)="datetime.reset()">Borrar</ion-button>
+    <ion-button color="primary" (click)="datetime.cancel()">Cancelar</ion-button>
+    <ion-button color="primary" (click)="datetime.confirm()">Confirmar</ion-button>
+  </ion-buttons>
+</ion-datetime>
