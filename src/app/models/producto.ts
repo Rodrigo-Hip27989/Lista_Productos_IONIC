@@ -4,13 +4,15 @@ export class Producto{
     medida:string;
     precio:number;
     precio_total: number;
+    fecha: string;
 
-    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number, precio_total?:number){
+    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number, precio_total?:number, fecha?:string){
         (nombre !== undefined) ? this.nombre = nombre : this.nombre = "";
         (cantidad !== undefined) ? this.cantidad = cantidad : this.cantidad = 0;
         (medida !== undefined) ? this.medida = medida : this.medida = "";
         (precio !== undefined) ? this.precio = precio : this.precio = 0;
         (precio_total !== undefined) ? this.precio_total = precio_total : this.precio_total = 0;
+        (fecha !== undefined) ? this.fecha = fecha : this.fecha = "";
     }
 
     public static getMedidadDefault(): string[]{
@@ -31,6 +33,7 @@ export class Producto{
         producto_temp.medida = array_str[2];
         producto_temp.precio = Number(array_str[3]);
         producto_temp.precio_total = Number(array_str[4]);
+        producto_temp.fecha = array_str[5];
         return producto_temp;
     }
 
