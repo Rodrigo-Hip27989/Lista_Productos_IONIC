@@ -17,7 +17,6 @@ export class ValidationReactiveProductComponent implements OnInit {
   measuring_options: string[];
   measurement_symbol: string;
   unit_price_enabled: boolean;
-  date_picker: string;
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -25,7 +24,6 @@ export class ValidationReactiveProductComponent implements OnInit {
     this.measuring_options = JSON.parse(localStorage.getItem(this.measuring_options_token));
     this.unit_price_enabled = false;
     this.measurement_symbol ="$";
-    this.date_picker = "";
   }
 
   switch_type_price(){
@@ -66,9 +64,11 @@ export class ValidationReactiveProductComponent implements OnInit {
     else{
       product_update.precio = product_update.precio_total/product_update.cantidad;
     }
+    //Esto es necesario por que no hay un ion-item para la propiedad fecha en el formulario
+    product_update.fecha = this.product_test_INPUT.fecha;
+//    console.log("Producto con Fecha (Emitido): ", product_update);
     this.product_validated_OUTPUT.emit(product_update);
     this.limpiarFormulario();
-//    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.form.value, null, 4));
   }
 
   generarEjemplo(){
@@ -79,13 +79,15 @@ export class ValidationReactiveProductComponent implements OnInit {
       precio: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
       precio_total: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],
     });
+    this.product_test_INPUT.fecha = (new Date()).toLocaleString();
   }
   
   save_date_picker(fechaRecivida: string){
-    this.date_picker = fechaRecivida;
+    this.product_test_INPUT.fecha = fechaRecivida;
   }
 
   limpiarFormulario() {
+    this.product_test_INPUT.fecha = "";
     this.form.reset();
   }
 }

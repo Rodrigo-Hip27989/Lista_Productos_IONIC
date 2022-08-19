@@ -52,8 +52,7 @@
         <small *ngIf="(form.get('precio_total')).errors?.min">No puede ser negativo</small>
         <small *ngIf="(form.get('precio_total')).errors?.max">No mas de 8 digitos</small>
       </small>
-      <ion-label position="floating">{{date_picker}}</ion-label>
-      <app-date-picker (newItemEvent)="save_date_picker($event)"></app-date-picker>
+      <app-date-picker (newItemEvent)="save_date_picker($event)" [selected_date_INPUT]="this.product_test_INPUT.fecha"></app-date-picker>
       <hr>
       <ion-button expand="block" fill="outline" color="tertiary" (click)="generarEjemplo()">Generar</ion-button>
       <ion-button expand="block" fill="outline" color="secondary" [disabled]="!form.valid" type="submit">{{button_label}}</ion-button>
