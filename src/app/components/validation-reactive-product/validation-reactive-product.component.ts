@@ -40,6 +40,7 @@ export class ValidationReactiveProductComponent implements OnInit {
       medida: new FormControl(this.product_test_INPUT.medida, [Validators.required, Validators.maxLength(16)]),
       precio: new FormControl(this.product_test_INPUT.precio, [Validators.required, Validators.min(0), Validators.max(99999999)]),
       precio_total: new FormControl(this.product_test_INPUT.precio_total, [Validators.required, Validators.min(0), Validators.max(99999999)]),
+      nota: new FormControl(this.product_test_INPUT.nota, [Validators.maxLength(512)]),
     });
   }
 
@@ -78,6 +79,7 @@ export class ValidationReactiveProductComponent implements OnInit {
       medida: ["Piezas", [Validators.required, Validators.maxLength(16)]],
       precio: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
       precio_total: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],
+      nota: new FormControl("", [Validators.maxLength(512)]),
     });
     this.product_test_INPUT.fecha = (new Date()).toLocaleString();
   }

@@ -53,6 +53,12 @@
         <small *ngIf="(form.get('precio_total')).errors?.max">No mas de 8 digitos</small>
       </small>
       <app-date-picker (newItemEvent)="save_date_picker($event)" [selected_date_INPUT]="this.product_test_INPUT.fecha"></app-date-picker>
+      <ion-item>
+        <ion-textarea type="text" formControlName="nota" placeholder="Nota"></ion-textarea>
+      </ion-item>
+      <small>
+        <small *ngIf="(form.get('nota')).errors?.maxlength">El máximo de caracteres es 512</small>
+      </small>
       <hr>
       <ion-button expand="block" fill="outline" color="tertiary" (click)="generarEjemplo()">Generar</ion-button>
       <ion-button expand="block" fill="outline" color="secondary" [disabled]="!form.valid" type="submit">{{button_label}}</ion-button>
