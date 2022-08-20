@@ -5,14 +5,16 @@ export class Producto{
     precio:number;
     precio_total: number;
     fecha: string;
+    nota: string;
 
-    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number, precio_total?:number, fecha?:string){
+    public constructor(nombre?: string, cantidad?:number, medida?:string, precio?:number, precio_total?:number, fecha?:string, nota?:string){
         (nombre !== undefined) ? this.nombre = nombre : this.nombre = "";
         (cantidad !== undefined) ? this.cantidad = cantidad : this.cantidad = 0;
         (medida !== undefined) ? this.medida = medida : this.medida = "";
         (precio !== undefined) ? this.precio = precio : this.precio = 0;
         (precio_total !== undefined) ? this.precio_total = precio_total : this.precio_total = 0;
         (fecha !== undefined) ? this.fecha = fecha : this.fecha = "";
+        (nota !== undefined) ? this.nota = nota : this.nota = "";
     }
 
     public static getMedidadDefault(): string[]{
