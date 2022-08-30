@@ -28,10 +28,9 @@ node_modules/
 .eslintrc.json
 .editorconfig
 angular.json
-capacitor.config.ts
 ionic.config.json
 karma.conf.js
-package*.json*
+package-lock.json
 tsconfig.*.*
 tsconfig.*
 ### Fin
@@ -42,11 +41,9 @@ tsconfig.*
 /.sass-cache
 /.sourcemaps
 /.versions
-/.vscode
 /coverage
 /dist
 /node_modules
 /platforms
 /plugins
 /www
-
