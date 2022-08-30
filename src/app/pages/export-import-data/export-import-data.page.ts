@@ -19,29 +19,17 @@ export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
   file_name: string;
   file_directory: string;
-  //Centinelas
-  valid_file_name;
-  valid_file_directory;
-  is_mobile_platform: boolean;
 
   constructor(private papa: Papa, private plt: Platform) {
-    //Centinelas
-    this.valid_file_directory = true;
-    this.valid_file_name = true;
-    this.is_mobile_platform = false;
     //Ruta de archivo(s)
     this.file_name = LStorageConfig.getFileName();
     this.file_directory = LStorageConfig.getFileDirectory();
+    this.products_array = LStorageData.getProductsArray();
   }
 
   ngOnInit(): void {
-    this.products_array = LStorageData.getProductsArray();
     if (this.plt.is('capacitor')) { // Producción
-      this.is_mobile_platform = true;
       AndroidFiles.create_directory(this.file_directory);
-    }
-    else if(this.plt.is('desktop') || this.plt.is('mobileweb')){ //Desarrollo
-      this.is_mobile_platform = false;
     }
   }
 
@@ -156,30 +144,6 @@ export class ExportImportDataPage implements OnInit{
     Messages.toast_middle("Ruta de archivos Actualizada!");
   }
 
-  validate_path(ruta_directorio: string): void{
-    let posibles_directorios: string[] = ruta_directorio.split('/');
-    for(let i: number = 0; i< posibles_directorios.length; i++){
-      if(Validations.regex_no_blank_space.test(posibles_directorios[i])){
-        this.valid_file_directory = true;
-      }
-      else{
-        this.valid_file_directory = false;
-        Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2500);
-        break;
-      }
-    }
-  }
-
-  validate_name_file(ruta_archivo: string): void{
-    if(Validations.regex_no_blank_space.test(ruta_archivo)){
-      this.valid_file_name = true;
-    }
-    else{
-      this.valid_file_name = false;
-      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2500);
-    }
-  }
-
   private getLocalDate(): string{
     return (new Date()).toDateString().replace(/ /g, "_");
   }
@@ -226,6 +190,24 @@ export class ExportImportDataPage implements OnInit{
         await Messages.alert_ok(`Archivo - [${i}]`, file_details);
       }
     }
+  }
+
+// Validaciones
+
+  is_valid_file_directory(file_directory: string): void{
+    if(!Validations.file_directory_str(file_directory)){
+      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2000);
+    }
+  }
+
+  is_valid_file_name(file_name: string): void{
+    if(!Validations.file_name_str(file_name)){
+      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2000);
+    }
+  }
+
+  is_valid_form(): boolean{
+    return (Validations.file_name_str(this.file_name) && Validations.file_directory_str(this.file_directory));
   }
 
 /*   public check_platform(){
