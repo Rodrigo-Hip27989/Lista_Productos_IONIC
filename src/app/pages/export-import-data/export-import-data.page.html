@@ -12,13 +12,13 @@
     <ion-label><strong>Ruta de exportacion: </strong></ion-label>
   </ion-item>
   <ion-item>
-    <ion-input type="text"[(ngModel)]="file_directory" (keyup)="is_valid_file_directory(file_directory_input.value)" #file_directory_input></ion-input>
+    <ion-input type="text"[(ngModel)]="file_directory" (ionBlur)="is_valid_file_directory(file_directory_input.value)" #file_directory_input></ion-input>
   </ion-item>
   <ion-item lines="none">
     <ion-label><strong>Nombre del Archivo (sin extension): </strong></ion-label>
   </ion-item>
   <ion-item>
-    <ion-input type="text"[(ngModel)]="file_name" (keyup)="is_valid_file_name(file_name_input.value)" #file_name_input></ion-input>
+    <ion-input type="text"[(ngModel)]="file_name" (ionBlur)="is_valid_file_name(file_name_input.value)" #file_name_input></ion-input>
   </ion-item>
   <br/>
   <ion-button [disabled]="!is_valid_form()" (click)="update_localstorage_routes()" expand="block" fill="solid" color="primary">

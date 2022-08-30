@@ -97,8 +97,8 @@ export class ExportImportDataPage implements OnInit{
 
   async export_any_file(file_directory: string, full_file_name: any, accion_de_exportar: any){
     AndroidFiles.create_directory(file_directory);
-    const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(full_file_name) === -1){
+    const files_and_dirs: FileInfo[] = (await AndroidFiles.read_directory(file_directory)).files;
+    if(!this.exist_file_or_dir(files_and_dirs, full_file_name)){
       accion_de_exportar();
     }
     else{
@@ -108,8 +108,8 @@ export class ExportImportDataPage implements OnInit{
 
   async import_any_file(file_directory: string, full_file_name: any, accion_de_importar: any){
     AndroidFiles.create_directory(file_directory);
-    const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(full_file_name) === -1){
+    const files_and_dirs: FileInfo[] = (await AndroidFiles.read_directory(file_directory)).files;
+    if(!this.exist_file_or_dir(files_and_dirs, full_file_name)){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
@@ -119,8 +119,8 @@ export class ExportImportDataPage implements OnInit{
 
   async delete_any_file(file_directory: string, full_file_name: any){
     AndroidFiles.create_directory(this.file_directory);
-    const content_directory = await AndroidFiles.read_directory(file_directory);
-    if(await content_directory.files.indexOf(full_file_name) === -1){
+    const files_and_dirs: FileInfo[] = (await AndroidFiles.read_directory(file_directory)).files;
+    if(!this.exist_file_or_dir(files_and_dirs, full_file_name)){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
@@ -193,6 +193,17 @@ export class ExportImportDataPage implements OnInit{
   }
 
 // Validaciones
+
+  exist_file_or_dir(files_and_dirs: FileInfo[], full_file_name: string): boolean{
+    let status_file_exist: boolean = false;
+    for(let i: number = 0; i<files_and_dirs.length; i++){
+      if(files_and_dirs[i].name === full_file_name){
+        status_file_exist = true;
+        break;
+      }
+    }
+    return status_file_exist;
+  }
 
   is_valid_file_directory(file_directory: string): void{
     if(!Validations.file_directory_str(file_directory)){
