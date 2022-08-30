@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Papa } from 'ngx-papaparse';
-import { ReadFileResult } from '@capacitor/filesystem';
+import { FileInfo, ReadFileResult } from '@capacitor/filesystem';
+import { LStorageConfig, LStorageData } from 'src/app/funciones/local_storage';
 import { AndroidFiles } from 'src/app/funciones/android-files';
 import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
@@ -22,27 +23,19 @@ export class ExportImportDataPage implements OnInit{
   valid_file_name;
   valid_file_directory;
   is_mobile_platform: boolean;
-  //Tokens para recuperar del localstorage
-  token_products_array: string;
-  token_file_name: string;
-  token_file_directory: string;
 
   constructor(private papa: Papa, private plt: Platform) {
     //Centinelas
     this.valid_file_directory = true;
     this.valid_file_name = true;
     this.is_mobile_platform = false;
-    //Tokens para recuperar del localstorage
-    this.token_products_array = "products_array";
-    this.token_file_name = "file_name";
-    this.token_file_directory = "file_directory";
     //Ruta de archivo(s)
-    this.file_name = localStorage.getItem(this.token_file_name);
-    this.file_directory = localStorage.getItem(this.token_file_directory);
+    this.file_name = LStorageConfig.getFileName();
+    this.file_directory = LStorageConfig.getFileDirectory();
   }
 
   ngOnInit(): void {
-    this.products_array = JSON.parse(localStorage.getItem(this.token_products_array));
+    this.products_array = LStorageData.getProductsArray();
     if (this.plt.is('capacitor')) { // Producción
       this.is_mobile_platform = true;
       AndroidFiles.create_directory(this.file_directory);
@@ -64,7 +57,7 @@ export class ExportImportDataPage implements OnInit{
 
   async export_products_json(){
     const exportar_json = () => {
-      AndroidFiles.export_file(localStorage.getItem(this.token_products_array), this.file_directory, `${this.file_name}.json`);
+      AndroidFiles.export_file(LStorageData.getProductsStringify(), this.file_directory, `${this.file_name}.json`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
     await this.export_any_file(this.file_directory, `${this.file_name}.json`, exportar_json);
@@ -75,7 +68,7 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.csv`);
       this.products_array.splice(0);
       this.products_array = this.convert_csv_to_array_products(contents);
-      this.update_localstorage_array_productos();
+      LStorageData.setProductsArray(this.products_array);
       await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_any_file(this.file_directory, `${this.file_name}.csv`, importar_csv);
@@ -86,7 +79,7 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.json`);
       this.products_array.splice(0);
       this.products_array = JSON.parse(contents.data);
-      this.update_localstorage_array_productos();
+      LStorageData.setProductsArray(this.products_array);
       await Messages.toast_top("Archivo importado correctamente!");
     }
     await this.import_any_file(this.file_directory, `${this.file_name}.json`, importar_json);
@@ -107,14 +100,14 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async share_file_product_list_json(){
-    let recovered_data_json: string = localStorage.getItem(this.token_products_array);
+    let recovered_data_json: string = LStorageData.getProductsStringify();
     let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory, `${new_file_name}.json`, this.file_name, recovered_data_json);
   }
 
   // FUNCIONES PRINCIPALES
 
-  async export_any_file(file_directory: string, full_file_name: string, accion_de_exportar: any){
+  async export_any_file(file_directory: string, full_file_name: any, accion_de_exportar: any){
     AndroidFiles.create_directory(file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
     if(await content_directory.files.indexOf(full_file_name) === -1){
@@ -125,7 +118,7 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async import_any_file(file_directory: string, full_file_name: string, accion_de_importar: any){
+  async import_any_file(file_directory: string, full_file_name: any, accion_de_importar: any){
     AndroidFiles.create_directory(file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
     if(await content_directory.files.indexOf(full_file_name) === -1){
@@ -136,7 +129,7 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async delete_any_file(file_directory: string, full_file_name: string){
+  async delete_any_file(file_directory: string, full_file_name: any){
     AndroidFiles.create_directory(this.file_directory);
     const content_directory = await AndroidFiles.read_directory(file_directory);
     if(await content_directory.files.indexOf(full_file_name) === -1){
@@ -157,13 +150,9 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES SECUNDARIAS
 
-  private update_localstorage_array_productos(){
-    localStorage.setItem(this.token_products_array, JSON.stringify(this.products_array));
-  }
-
   private update_localstorage_routes(){
-    localStorage.setItem(this.token_file_name, this.file_name);
-    localStorage.setItem(this.token_file_directory, this.file_directory);
+    LStorageConfig.setFileName(this.file_name);
+    LStorageConfig.setFileDirectory(this.file_directory);
     Messages.toast_middle("Ruta de archivos Actualizada!");
   }
 
@@ -217,24 +206,23 @@ export class ExportImportDataPage implements OnInit{
   }
 
   public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(localStorage.getItem(this.token_products_array), `${this.file_name}__${this.getLocalDate()}`, ".json");
+    AndroidFiles.export_file_desktop(LStorageData.getProductsStringify(), `${this.file_name}__${this.getLocalDate()}`, ".json");
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
   async ver_archivos_y_directorios(){
     const content_directory = await AndroidFiles.read_directory(this.file_directory);
-    let list_of_files: string[] = content_directory.files;
+    let list_of_files: FileInfo[] = content_directory.files;
     await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos Encontrados`);
     if(list_of_files.length !== 0){
       for(let i: number = 0; i<list_of_files.length; i++){
-        const file_info = await AndroidFiles.about_file(`${this.file_directory}/${list_of_files[i]}`);
         const file_details = `
-        <strong>* Tipo: </strong>${file_info.type}<hr/>
-        <strong>* Nombre: </strong>${list_of_files[i]}<hr/>
-        <strong>* Creado: </strong>${(new Date(file_info.ctime)).toDateString()}<hr/>
-        <strong>* Modificado: </strong>${(new Date(file_info.mtime)).toDateString()}<hr/>
-        <strong>* Tamaño: </strong>${file_info.size}<hr/>
-        <strong>* Ruta: </strong>${file_info.uri}`;
+        <strong>* Tipo: </strong>${list_of_files[i].type}<hr/>
+        <strong>* Nombre: </strong>${list_of_files[i].name}<hr/>
+        <strong>* Creado: </strong>${(new Date(list_of_files[i].ctime)).toDateString()}<hr/>
+        <strong>* Modificado: </strong>${(new Date(list_of_files[i].mtime)).toDateString()}<hr/>
+        <strong>* Tamaño: </strong>${list_of_files[i].size}<hr/>
+        <strong>* Ruta: </strong>${list_of_files[i].uri}`;
         await Messages.alert_ok(`Archivo - [${i}]`, file_details);
       }
     }
