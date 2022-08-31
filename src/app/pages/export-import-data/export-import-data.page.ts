@@ -37,7 +37,7 @@ export class ExportImportDataPage implements OnInit{
 
   async export_products(extension: string){
     const exportar_data = async () => {
-      await AndroidFiles.export_file(this.get_data_products_str(extension), this.file_directory, `${this.file_name}${extension}`);
+      await AndroidFiles.export_file(this.get_data_products_str(this.products_array, extension), this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("La exportación ha terminado!");
     }
     await this.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
@@ -82,7 +82,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async validate_file_deletion(file_directory: string, full_file_name: any, accion_de_eliminar: any){
-    AndroidFiles.create_directory(this.file_directory);
+    AndroidFiles.create_directory(file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
     }
@@ -92,7 +92,7 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async share_file_products(extension: string){
-    let recovered_data: string = this.get_data_products_str(extension);
+    let recovered_data: string = this.get_data_products_str(this.products_array, extension);
     let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
   }
@@ -124,9 +124,9 @@ export class ExportImportDataPage implements OnInit{
     return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
   }
 
-  get_data_products_str(extension: string): string{
+  get_data_products_str(products_array: Producto[], extension: string): string{
     if(extension === ".csv"){
-      return this.papa.unparse(this.products_array);
+      return this.papa.unparse(products_array);
     }
     else if(extension === ".json"){
       return LStorageData.getProductsStringify();
@@ -159,12 +159,12 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PARA TESTING
 
   public export_products_desktop(extension: string){
-    AndroidFiles.export_file_desktop(this.get_data_products_str(extension), `${this.file_name}__${this.getLocalDate()}`, extension);
+    AndroidFiles.export_file_desktop(this.get_data_products_str(this.products_array, extension), `${this.file_name}__${this.getLocalDate()}`, extension);
     Messages.toast_top("La descarga ha terminado!");
   }
 
-  async ver_archivos_y_directorios(){
-    const content_directory = await AndroidFiles.read_directory(this.file_directory);
+  async ver_archivos_y_directorios(file_directory: string){
+    const content_directory = await AndroidFiles.read_directory(file_directory);
     let list_of_files: FileInfo[] = content_directory.files;
     await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
     if(list_of_files.length !== 0){

@@ -49,7 +49,7 @@
   <ion-button [disabled]="!is_valid_form()" (click)="share_file_products('.json')" expand="block" fill="outline" color="tertiary">
     <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.json
   </ion-button>
-  <ion-button [disabled]="!is_valid_form()" (click)="ver_archivos_y_directorios()" expand="block" fill="outline" color="success">
+  <ion-button [disabled]="!is_valid_form()" (click)="ver_archivos_y_directorios(file_directory)" expand="block" fill="outline" color="success">
     <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;Ver Archivos del Directorio
   </ion-button>
   <ion-button [disabled]="!is_valid_form()" (click)="export_products_desktop('.csv')" *ngIf="(plt.is('desktop') || plt.is('mobileweb'))" expand="block" fill="outline" color="warning">
