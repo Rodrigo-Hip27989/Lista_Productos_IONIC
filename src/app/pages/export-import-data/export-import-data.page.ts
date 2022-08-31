@@ -38,7 +38,7 @@ export class ExportImportDataPage implements OnInit{
   async export_products(extension: string){
     const exportar_data = async () => {
       await AndroidFiles.export_file(this.get_data_products_str(extension), this.file_directory, `${this.file_name}${extension}`);
-      Messages.toast_top("Archivo exportado correctamente!");
+      Messages.toast_top("La exportación ha terminado!");
     }
     await this.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
   }
@@ -49,7 +49,7 @@ export class ExportImportDataPage implements OnInit{
       accion_de_exportar();
     }
     else{
-      await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", accion_de_exportar);
+      await Messages.alert_yes_no("Advertencia!", `¿Desea reemplazar el archivo <strong>${full_file_name}</strong>?`, accion_de_exportar);
     }
   }
 
@@ -58,7 +58,7 @@ export class ExportImportDataPage implements OnInit{
       const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}${extension}`);
       this.products_array = this.get_data_products_array(extension, contents);
       LStorageData.setProductsArray(this.products_array);
-      Messages.toast_top("Archivo importado correctamente!");
+      Messages.toast_top("La importación ha terminado!");
     }
     await this.validate_file_import(this.file_directory, `${this.file_name}${extension}`, importar_data);
   }
@@ -66,17 +66,17 @@ export class ExportImportDataPage implements OnInit{
   async validate_file_import(file_directory: string, full_file_name: any, accion_de_importar: any){
     AndroidFiles.create_directory(file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
-      await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
+      await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
     }
     else{
-      await Messages.alert_yes_no("Aviso!", "¿Desea reemplazar sus datos actuales?", accion_de_importar);
+      await Messages.alert_yes_no("Advertencia!", "¿Desea reemplazar los datos en la aplicación?", accion_de_importar);
     }
   }
 
   async delete_file_products(extension: string){
     const eliminar_archivo = async () => {
       await AndroidFiles.delete_file(this.file_directory, `${this.file_name}${extension}`);
-      Messages.toast_top("Archivo eliminado");
+      Messages.toast_top("La eliminación ha terminado");
     }
     this.validate_file_deletion(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
   }
@@ -84,10 +84,10 @@ export class ExportImportDataPage implements OnInit{
   async validate_file_deletion(file_directory: string, full_file_name: any, accion_de_eliminar: any){
     AndroidFiles.create_directory(this.file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
-      await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
+      await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
     }
     else{
-      await Messages.alert_yes_no("Aviso!", "¿Desea eliminar el archivo?", accion_de_eliminar);
+      await Messages.alert_yes_no("Advertencia!", `¿Desea eliminar el archivo <strong>${full_file_name}</strong>?`, accion_de_eliminar);
     }
   }
 
@@ -153,20 +153,20 @@ export class ExportImportDataPage implements OnInit{
   private update_localstorage_routes(){
     LStorageConfig.setFileName(this.file_name);
     LStorageConfig.setFileDirectory(this.file_directory);
-    Messages.toast_middle("Ruta de archivos Actualizada!");
+    Messages.toast_middle("Configuración actualizada!");
   }
 
   // FUNCIONES PARA TESTING
 
   public export_products_desktop(extension: string){
     AndroidFiles.export_file_desktop(this.get_data_products_str(extension), `${this.file_name}__${this.getLocalDate()}`, extension);
-    Messages.toast_top("Archivo descargado (desktop)");
+    Messages.toast_top("La descarga ha terminado!");
   }
 
   async ver_archivos_y_directorios(){
     const content_directory = await AndroidFiles.read_directory(this.file_directory);
     let list_of_files: FileInfo[] = content_directory.files;
-    await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos Encontrados`);
+    await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
     if(list_of_files.length !== 0){
       for(let i: number = 0; i<list_of_files.length; i++){
         const file_details = `
@@ -185,13 +185,13 @@ export class ExportImportDataPage implements OnInit{
 
   is_valid_file_directory(file_directory: string): void{
     if(!Validations.file_directory_str(file_directory)){
-      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2000);
+      Messages.toast("No se permite espacios en blanco o caracteres especiales!", "middle", 2000);
     }
   }
 
   is_valid_file_name(file_name: string): void{
     if(!Validations.file_name_str(file_name)){
-      Messages.toast("No se permite espacios en blanco ni caracteres especiales!", "middle", 2000);
+      Messages.toast("No se permite espacios en blanco o caracteres especiales!", "middle", 2000);
     }
   }
 
