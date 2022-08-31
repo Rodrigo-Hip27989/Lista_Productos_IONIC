@@ -1,4 +1,4 @@
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding, FileInfo } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 
 export class AndroidFiles {
@@ -80,6 +80,19 @@ export class AndroidFiles {
       url: full_path.uri+'/'+full_file_name,
       dialogTitle: 'Share',
     });
+  }
+
+
+  public static async exist_file_or_dir(file_directory: string, full_file_name: string): Promise<boolean>{
+    const files_and_dirs: FileInfo[] = (await AndroidFiles.read_directory(file_directory)).files;
+    let status_file_exist: boolean = false;
+    for(let i: number = 0; i<files_and_dirs.length; i++){
+      if(files_and_dirs[i].name === full_file_name){
+        status_file_exist = true;
+        break;
+      }
+    }
+    return status_file_exist;
   }
 
   public static export_file_desktop(data_source: string, name_file: string, extension: string) {
