@@ -35,65 +35,13 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES PRINCIPALES
 
-  async export_products_csv(){
-    const exportar_csv = () => {
-      AndroidFiles.export_file(this.papa.unparse(this.products_array), this.file_directory, `${this.file_name}.csv`);
+  async export_products(extension: string){
+    const exportar_data = async () => {
+      await AndroidFiles.export_file(this.get_data_products_str(extension), this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
-    await this.export_any_file(this.file_directory, `${this.file_name}.csv`, exportar_csv);
+    await this.export_any_file(this.file_directory, `${this.file_name}${extension}`, exportar_data);
   }
-
-  async export_products_json(){
-    const exportar_json = () => {
-      AndroidFiles.export_file(LStorageData.getProductsStringify(), this.file_directory, `${this.file_name}.json`);
-      Messages.toast_top("Archivo exportado correctamente!");
-    }
-    await this.export_any_file(this.file_directory, `${this.file_name}.json`, exportar_json);
-  }
-
-  async import_products_csv(){
-    const importar_csv = async () => {
-      const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.csv`);
-      this.products_array.splice(0);
-      this.products_array = this.convert_csv_to_array_products(contents);
-      LStorageData.setProductsArray(this.products_array);
-      await Messages.toast_top("Archivo importado correctamente!");
-    }
-    await this.import_any_file(this.file_directory, `${this.file_name}.csv`, importar_csv);
-  }
-
-  async import_products_json(){
-    const importar_json = async () => {
-      const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}.json`);
-      this.products_array.splice(0);
-      this.products_array = JSON.parse(contents.data);
-      LStorageData.setProductsArray(this.products_array);
-      await Messages.toast_top("Archivo importado correctamente!");
-    }
-    await this.import_any_file(this.file_directory, `${this.file_name}.json`, importar_json);
-  }
-
-  async delete_file_products_csv(){
-    this.delete_any_file(this.file_directory, `${this.file_name}.csv`);
-  }
-
-  async delete_file_products_json(){
-    this.delete_any_file(this.file_directory, `${this.file_name}.json`);
-  }
-
-  async share_file_product_list_csv(){
-    let recovered_data_csv: string = this.papa.unparse(this.products_array);
-    let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
-    await this.share_any_file(this.file_directory, `${new_file_name}.csv`, this.file_name, recovered_data_csv);
-  }
-
-  async share_file_product_list_json(){
-    let recovered_data_json: string = LStorageData.getProductsStringify();
-    let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
-    await this.share_any_file(this.file_directory, `${new_file_name}.json`, this.file_name, recovered_data_json);
-  }
-
-  // FUNCIONES PRINCIPALES
 
   async export_any_file(file_directory: string, full_file_name: any, accion_de_exportar: any){
     AndroidFiles.create_directory(file_directory);
@@ -103,6 +51,16 @@ export class ExportImportDataPage implements OnInit{
     else{
       await Messages.alert_yes_no("File already exist!", "¿Desea reemplazar el archivo existente?", accion_de_exportar);
     }
+  }
+
+  async import_products(extension: string){
+    const importar_data = async () => {
+      const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}${extension}`);
+      this.products_array = this.get_data_products_array(extension, contents);
+      LStorageData.setProductsArray(this.products_array);
+      Messages.toast_top("Archivo importado correctamente!");
+    }
+    await this.import_any_file(this.file_directory, `${this.file_name}${extension}`, importar_data);
   }
 
   async import_any_file(file_directory: string, full_file_name: any, accion_de_importar: any){
@@ -115,15 +73,28 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async delete_any_file(file_directory: string, full_file_name: any){
+  async delete_file_products(extension: string){
+    const eliminar_archivo = async () => {
+      await AndroidFiles.delete_file(this.file_directory, `${this.file_name}${extension}`);
+      Messages.toast_top("Archivo eliminado");
+    }
+    this.delete_any_file(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
+  }
+
+  async delete_any_file(file_directory: string, full_file_name: any, accion_de_eliminar: any){
     AndroidFiles.create_directory(this.file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
     }
     else{
-      await AndroidFiles.delete_file(file_directory, full_file_name);
-      Messages.toast_top("Archivo eliminado");
+      await Messages.alert_yes_no("Aviso!", "¿Desea eliminar el archivo?", accion_de_eliminar);
     }
+  }
+
+  async share_file_product_list(extension: string){
+    let recovered_data: string = this.get_data_products_str(extension);
+    let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
+    await this.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
   }
 
   async share_any_file(file_directory: string, full_file_name: string, description_msg: string, data_to_string: string){
@@ -131,6 +102,30 @@ export class ExportImportDataPage implements OnInit{
     await AndroidFiles.export_file(data_to_string, file_directory, full_file_name);
     await AndroidFiles.share_file(file_directory, full_file_name, description_msg);
     await AndroidFiles.delete_file(file_directory, full_file_name);
+  }
+
+  get_data_products_str(extension: string): string{
+    if(extension === ".csv"){
+      return this.papa.unparse(this.products_array);
+    }
+    else if(extension === ".json"){
+      return LStorageData.getProductsStringify();
+    }
+    else{
+      return null;
+    }
+  }
+
+  get_data_products_array(extension: string, contents: ReadFileResult): Producto[]{
+    if(extension === ".csv"){
+      return this.convert_csv_to_array_products(contents);
+    }
+    else if(extension === ".json"){
+      return JSON.parse(contents.data);
+    }
+    else{
+      return null;
+    }
   }
 
   // FUNCIONES SECUNDARIAS
