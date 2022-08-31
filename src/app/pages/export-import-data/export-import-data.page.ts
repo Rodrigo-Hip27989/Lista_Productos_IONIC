@@ -129,7 +129,7 @@ export class ExportImportDataPage implements OnInit{
       return this.papa.unparse(products_array);
     }
     else if(extension === ".json"){
-      return LStorageData.getProductsStringify();
+      return JSON.stringify(products_array);
     }
     else{
       return null;

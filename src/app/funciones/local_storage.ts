@@ -29,10 +29,6 @@ export class LStorageData{
         return JSON.parse(localStorage.getItem(LStorageData.token_products_array));
     }
 
-    public static getProductsStringify(): string{
-        return localStorage.getItem(LStorageData.token_products_array);
-    }
-
     public static setProductsArray(products_array: Producto[]): void{
         localStorage.setItem(LStorageData.token_products_array, JSON.stringify(products_array));
     }
