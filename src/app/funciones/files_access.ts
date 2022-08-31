@@ -1,7 +1,7 @@
 import { Filesystem, Directory, Encoding, FileInfo } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 
-export class AndroidFiles {
+export class FilesAccess {
 
   static export_file = async (datos_source: string, sub_dir: string, full_file_name: string) => {
     await Filesystem.writeFile({
@@ -73,7 +73,7 @@ export class AndroidFiles {
 
   static share_file = async (file_path: string, full_file_name: string, description_msg: string) => {
     // Obtener ruta completa del archivo descargado
-    const full_path = await AndroidFiles.get_uri(file_path);
+    const full_path = await FilesAccess.get_uri(file_path);
     await Share.share({
       title: description_msg,
       text: description_msg,
@@ -84,7 +84,7 @@ export class AndroidFiles {
 
 
   public static async exist_file_or_dir(file_directory: string, full_file_name: string): Promise<boolean>{
-    const files_and_dirs: FileInfo[] = (await AndroidFiles.read_directory(file_directory)).files;
+    const files_and_dirs: FileInfo[] = (await FilesAccess.read_directory(file_directory)).files;
     let status_file_exist: boolean = false;
     for(let i: number = 0; i<files_and_dirs.length; i++){
       if(files_and_dirs[i].name === full_file_name){

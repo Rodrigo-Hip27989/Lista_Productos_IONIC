@@ -3,7 +3,7 @@ import { Platform } from '@ionic/angular';
 import { Papa } from 'ngx-papaparse';
 import { FileInfo, ReadFileResult } from '@capacitor/filesystem';
 import { LStorageConfig, LStorageData } from 'src/app/funciones/local_storage';
-import { AndroidFiles } from 'src/app/funciones/android-files';
+import { FilesAccess } from 'src/app/funciones/files_access';
 import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
 import { Productos } from 'src/app/models/productos';
@@ -29,7 +29,7 @@ export class ExportImportDataPage implements OnInit{
 
   ngOnInit(): void {
     if (this.plt.is('capacitor')) { // Producción
-      AndroidFiles.create_directory(this.file_directory);
+      FilesAccess.create_directory(this.file_directory);
     }
   }
 
@@ -37,15 +37,15 @@ export class ExportImportDataPage implements OnInit{
 
   async export_products(extension: string){
     const exportar_data = async () => {
-      await AndroidFiles.export_file(this.get_data_products_str(this.products_array, extension), this.file_directory, `${this.file_name}${extension}`);
+      await FilesAccess.export_file(this.get_data_products_str(this.products_array, extension), this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("La exportación ha terminado!");
     }
     await this.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
   }
 
   async validate_file_export(file_directory: string, full_file_name: any, accion_de_exportar: any){
-    AndroidFiles.create_directory(file_directory);
-    if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
+    FilesAccess.create_directory(file_directory);
+    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
       accion_de_exportar();
     }
     else{
@@ -55,7 +55,7 @@ export class ExportImportDataPage implements OnInit{
 
   async import_products(extension: string){
     const importar_data = async () => {
-      const contents = await AndroidFiles.read_file(this.file_directory, `${this.file_name}${extension}`);
+      const contents = await FilesAccess.read_file(this.file_directory, `${this.file_name}${extension}`);
       this.products_array = this.get_data_products_array(extension, contents);
       LStorageData.setProductsArray(this.products_array);
       Messages.toast_top("La importación ha terminado!");
@@ -64,8 +64,8 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async validate_file_import(file_directory: string, full_file_name: any, accion_de_importar: any){
-    AndroidFiles.create_directory(file_directory);
-    if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
+    FilesAccess.create_directory(file_directory);
+    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
     }
     else{
@@ -75,15 +75,15 @@ export class ExportImportDataPage implements OnInit{
 
   async delete_file_products(extension: string){
     const eliminar_archivo = async () => {
-      await AndroidFiles.delete_file(this.file_directory, `${this.file_name}${extension}`);
+      await FilesAccess.delete_file(this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("La eliminación ha terminado");
     }
     this.validate_file_deletion(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
   }
 
   async validate_file_deletion(file_directory: string, full_file_name: any, accion_de_eliminar: any){
-    AndroidFiles.create_directory(file_directory);
-    if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
+    FilesAccess.create_directory(file_directory);
+    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
     }
     else{
@@ -98,10 +98,10 @@ export class ExportImportDataPage implements OnInit{
   }
 
   async share_any_file(file_directory: string, full_file_name: string, description_msg: string, data_to_string: string){
-    AndroidFiles.create_directory(file_directory);
-    await AndroidFiles.export_file(data_to_string, file_directory, full_file_name);
-    await AndroidFiles.share_file(file_directory, full_file_name, description_msg);
-    await AndroidFiles.delete_file(file_directory, full_file_name);
+    FilesAccess.create_directory(file_directory);
+    await FilesAccess.export_file(data_to_string, file_directory, full_file_name);
+    await FilesAccess.share_file(file_directory, full_file_name, description_msg);
+    await FilesAccess.delete_file(file_directory, full_file_name);
   }
 
   // FUNCIONES PARA OBTENER DATOS
@@ -159,12 +159,12 @@ export class ExportImportDataPage implements OnInit{
   // FUNCIONES PARA TESTING
 
   public export_products_desktop(extension: string){
-    AndroidFiles.export_file_desktop(this.get_data_products_str(this.products_array, extension), `${this.file_name}__${this.getLocalDate()}`, extension);
+    FilesAccess.export_file_desktop(this.get_data_products_str(this.products_array, extension), `${this.file_name}__${this.getLocalDate()}`, extension);
     Messages.toast_top("La descarga ha terminado!");
   }
 
   async ver_archivos_y_directorios(file_directory: string){
-    const content_directory = await AndroidFiles.read_directory(file_directory);
+    const content_directory = await FilesAccess.read_directory(file_directory);
     let list_of_files: FileInfo[] = content_directory.files;
     await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
     if(list_of_files.length !== 0){
