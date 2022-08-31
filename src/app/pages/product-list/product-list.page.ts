@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
+import { LStorageData } from 'src/app/funciones/local_storage';
 
 @Component({
   selector: 'app-product-list',
@@ -10,17 +11,12 @@ import { Producto } from 'src/app/models/producto';
 
 export class ProductListPage implements OnInit {
   can_add_item: boolean;
-  products_token: string = "products_array";
   products:Producto[] = [];
   selected_product !: Producto;
 
   constructor() {
     this.can_add_item = false;
-    this.products = JSON.parse(localStorage.getItem(this.products_token));
-  }
-
-  private update_localstorage(){
-    localStorage.setItem(this.products_token, JSON.stringify(this.products));
+    this.products = LStorageData.getProductsArray();
   }
 
   private calcular_costo_total(): number{
@@ -35,27 +31,27 @@ export class ProductListPage implements OnInit {
 
   add_product(validated_product: Producto): void{
     this.products.push(validated_product);
-    this.update_localstorage();
+    LStorageData.setProductsArray(this.products)
     Messages.toast_middle("Se ha agregado correctamente "+validated_product.nombre.toString());
   }
 
   update_product(validated_product: Producto): void{
     this.products[this.products.indexOf(this.selected_product)] = validated_product;
-    this.update_localstorage();
+    LStorageData.setProductsArray(this.products)
     this.unselect_product();
     Messages.toast_middle("Se ha actualizado correctamente "+validated_product.nombre.toString());
   }
 
   delete_product(): void{
     let deleted_items: Producto[] = this.products.splice(this.products.indexOf(this.selected_product), 1);
-    this.update_localstorage();
+    LStorageData.setProductsArray(this.products)
     this.unselect_product();
     Messages.toast_middle("Se ha eliminado correctamente "+deleted_items[0].nombre);
   }
 
   delete_all_products(): void{
     this.products.splice(0);
-    this.update_localstorage();
+    LStorageData.setProductsArray(this.products)
     this.unselect_product();
     Messages.toast_middle("Se han eliminado todos los productos");
   }
