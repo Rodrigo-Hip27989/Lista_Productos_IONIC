@@ -4,6 +4,7 @@ import { Papa } from 'ngx-papaparse';
 import { FileInfo, ReadFileResult } from '@capacitor/filesystem';
 import { LStorageConfig, LStorageData } from 'src/app/funciones/local_storage';
 import { FilesAccess } from 'src/app/funciones/files_access';
+import { FilesAccessValidation } from 'src/app/funciones/files_validations'; 
 import { Messages } from 'src/app/funciones/messages';
 import { Producto } from 'src/app/models/producto';
 import { Productos } from 'src/app/models/productos';
@@ -40,17 +41,7 @@ export class ExportImportDataPage implements OnInit{
       await FilesAccess.export_file(this.get_data_products_str(this.products_array, extension), this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("La exportación ha terminado!");
     }
-    await this.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
-  }
-
-  async validate_file_export(file_directory: string, full_file_name: any, accion_de_exportar: any){
-    FilesAccess.create_directory(file_directory);
-    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
-      accion_de_exportar();
-    }
-    else{
-      await Messages.alert_yes_no("Advertencia!", `¿Desea reemplazar el archivo <strong>${full_file_name}</strong>?`, accion_de_exportar);
-    }
+    await FilesAccessValidation.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
   }
 
   async import_products(extension: string){
@@ -60,17 +51,7 @@ export class ExportImportDataPage implements OnInit{
       LStorageData.setProductsArray(this.products_array);
       Messages.toast_top("La importación ha terminado!");
     }
-    await this.validate_file_import(this.file_directory, `${this.file_name}${extension}`, importar_data);
-  }
-
-  async validate_file_import(file_directory: string, full_file_name: any, accion_de_importar: any){
-    FilesAccess.create_directory(file_directory);
-    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
-      await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
-    }
-    else{
-      await Messages.alert_yes_no("Advertencia!", "¿Desea reemplazar los datos en la aplicación?", accion_de_importar);
-    }
+    await FilesAccessValidation.validate_file_import(this.file_directory, `${this.file_name}${extension}`, importar_data);
   }
 
   async delete_file_products(extension: string){
@@ -78,51 +59,16 @@ export class ExportImportDataPage implements OnInit{
       await FilesAccess.delete_file(this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("La eliminación ha terminado");
     }
-    this.validate_file_deletion(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
-  }
-
-  async validate_file_deletion(file_directory: string, full_file_name: any, accion_de_eliminar: any){
-    FilesAccess.create_directory(file_directory);
-    if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
-      await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
-    }
-    else{
-      await Messages.alert_yes_no("Advertencia!", `¿Desea eliminar el archivo <strong>${full_file_name}</strong>?`, accion_de_eliminar);
-    }
+    await FilesAccessValidation.validate_file_deletion(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
   }
 
   async share_file_products(extension: string){
     let recovered_data: string = this.get_data_products_str(this.products_array, extension);
     let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
-    await this.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
-  }
-
-  async share_any_file(file_directory: string, full_file_name: string, description_msg: string, data_to_string: string){
-    FilesAccess.create_directory(file_directory);
-    await FilesAccess.export_file(data_to_string, file_directory, full_file_name);
-    await FilesAccess.share_file(file_directory, full_file_name, description_msg);
-    await FilesAccess.delete_file(file_directory, full_file_name);
+    await FilesAccessValidation.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
   }
 
   // FUNCIONES PARA OBTENER DATOS
-
-  private getLocalDate(): string{
-    return (new Date()).toDateString().replace(/ /g, "_");
-  }
-
-  private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
-    // Guarda las cabeceras y los datos del contenido recibido
-    let data_csv_headerRow: string[] = [];
-    let data_csv_body: string[][] = [];
-
-    this.papa.parse(contents.data, {
-      complete: parsedData => {
-        data_csv_headerRow = parsedData.data.splice(0, 1)[0];
-        data_csv_body = parsedData.data;
-      }
-    });
-    return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
-  }
 
   get_data_products_str(products_array: Producto[], extension: string): string{
     if(extension === ".csv"){
@@ -146,6 +92,24 @@ export class ExportImportDataPage implements OnInit{
     else{
       return null;
     }
+  }
+
+  private getLocalDate(): string{
+    return (new Date()).toDateString().replace(/ /g, "_");
+  }
+
+  private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
+    // Guarda las cabeceras y los datos del contenido recibido
+    let data_csv_headerRow: string[] = [];
+    let data_csv_body: string[][] = [];
+
+    this.papa.parse(contents.data, {
+      complete: parsedData => {
+        data_csv_headerRow = parsedData.data.splice(0, 1)[0];
+        data_csv_body = parsedData.data;
+      }
+    });
+    return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
   }
 
   // FUNCIONES PARA GUARDAR DATOS
@@ -199,17 +163,4 @@ export class ExportImportDataPage implements OnInit{
     return (Validations.file_name_str(this.file_name) && Validations.file_directory_str(this.file_directory));
   }
 
-/*   public check_platform(){
-    const plataformas: any[] = ['android', 'ios', 'ipad', 'iphone', 'tablet', 'electron', 'pwa', 'mobile', 'mobileweb', 'desktop', 'hybrid', 'cordova', 'capacitor'];
-
-    for(let i: number = 0; i<plataformas.length; i++){
-      if (this.plt.is(plataformas[i])) {
-        alert(`You are USING ==> ${plataformas[i]}`);
-      }
-      else{
-        alert(`You are NOT using ==> ${plataformas[i]}`);
-      }
-    }
-  }
- */
 }
