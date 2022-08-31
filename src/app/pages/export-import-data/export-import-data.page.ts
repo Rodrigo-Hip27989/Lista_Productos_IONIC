@@ -40,10 +40,10 @@ export class ExportImportDataPage implements OnInit{
       await AndroidFiles.export_file(this.get_data_products_str(extension), this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("Archivo exportado correctamente!");
     }
-    await this.export_any_file(this.file_directory, `${this.file_name}${extension}`, exportar_data);
+    await this.validate_file_export(this.file_directory, `${this.file_name}${extension}`, exportar_data);
   }
 
-  async export_any_file(file_directory: string, full_file_name: any, accion_de_exportar: any){
+  async validate_file_export(file_directory: string, full_file_name: any, accion_de_exportar: any){
     AndroidFiles.create_directory(file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
       accion_de_exportar();
@@ -60,10 +60,10 @@ export class ExportImportDataPage implements OnInit{
       LStorageData.setProductsArray(this.products_array);
       Messages.toast_top("Archivo importado correctamente!");
     }
-    await this.import_any_file(this.file_directory, `${this.file_name}${extension}`, importar_data);
+    await this.validate_file_import(this.file_directory, `${this.file_name}${extension}`, importar_data);
   }
 
-  async import_any_file(file_directory: string, full_file_name: any, accion_de_importar: any){
+  async validate_file_import(file_directory: string, full_file_name: any, accion_de_importar: any){
     AndroidFiles.create_directory(file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
@@ -78,10 +78,10 @@ export class ExportImportDataPage implements OnInit{
       await AndroidFiles.delete_file(this.file_directory, `${this.file_name}${extension}`);
       Messages.toast_top("Archivo eliminado");
     }
-    this.delete_any_file(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
+    this.validate_file_deletion(this.file_directory, `${this.file_name}${extension}`, eliminar_archivo);
   }
 
-  async delete_any_file(file_directory: string, full_file_name: any, accion_de_eliminar: any){
+  async validate_file_deletion(file_directory: string, full_file_name: any, accion_de_eliminar: any){
     AndroidFiles.create_directory(this.file_directory);
     if(!await AndroidFiles.exist_file_or_dir(file_directory, full_file_name)){
       await Messages.alert_ok("File not found!", `\n${file_directory}/${full_file_name}`);
@@ -91,7 +91,7 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  async share_file_product_list(extension: string){
+  async share_file_products(extension: string){
     let recovered_data: string = this.get_data_products_str(extension);
     let new_file_name: string = `${this.file_name}__${this.getLocalDate()}`;
     await this.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
@@ -102,6 +102,26 @@ export class ExportImportDataPage implements OnInit{
     await AndroidFiles.export_file(data_to_string, file_directory, full_file_name);
     await AndroidFiles.share_file(file_directory, full_file_name, description_msg);
     await AndroidFiles.delete_file(file_directory, full_file_name);
+  }
+
+  // FUNCIONES PARA OBTENER DATOS
+
+  private getLocalDate(): string{
+    return (new Date()).toDateString().replace(/ /g, "_");
+  }
+
+  private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
+    // Guarda las cabeceras y los datos del contenido recibido
+    let data_csv_headerRow: string[] = [];
+    let data_csv_body: string[][] = [];
+
+    this.papa.parse(contents.data, {
+      complete: parsedData => {
+        data_csv_headerRow = parsedData.data.splice(0, 1)[0];
+        data_csv_body = parsedData.data;
+      }
+    });
+    return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
   }
 
   get_data_products_str(extension: string): string{
@@ -128,7 +148,7 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  // FUNCIONES SECUNDARIAS
+  // FUNCIONES PARA GUARDAR DATOS
 
   private update_localstorage_routes(){
     LStorageConfig.setFileName(this.file_name);
@@ -136,33 +156,10 @@ export class ExportImportDataPage implements OnInit{
     Messages.toast_middle("Ruta de archivos Actualizada!");
   }
 
-  private getLocalDate(): string{
-    return (new Date()).toDateString().replace(/ /g, "_");
-  }
-
-  private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
-    // Guarda las cabeceras y los datos del contenido recibido
-    let data_csv_headerRow: string[] = [];
-    let data_csv_body: string[][] = [];
-
-    this.papa.parse(contents.data, {
-      complete: parsedData => {
-        data_csv_headerRow = parsedData.data.splice(0, 1)[0];
-        data_csv_body = parsedData.data;
-      }
-    });
-    return Productos.parse_array_str2d_to_array_obj1d(data_csv_body);
-  }
-
   // FUNCIONES PARA TESTING
 
-  public export_products_csv_desktop(){
-    AndroidFiles.export_file_desktop(this.papa.unparse(this.products_array), `${this.file_name}__${this.getLocalDate()}`, ".csv");
-    Messages.toast_top("Archivo descargado (desktop)");
-  }
-
-  public export_products_json_desktop(){
-    AndroidFiles.export_file_desktop(LStorageData.getProductsStringify(), `${this.file_name}__${this.getLocalDate()}`, ".json");
+  public export_products_desktop(extension: string){
+    AndroidFiles.export_file_desktop(this.get_data_products_str(extension), `${this.file_name}__${this.getLocalDate()}`, extension);
     Messages.toast_top("Archivo descargado (desktop)");
   }
 
@@ -184,7 +181,7 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-// Validaciones
+  // VALIDACIONES DE RUTA Y ARCHIVO
 
   is_valid_file_directory(file_directory: string): void{
     if(!Validations.file_directory_str(file_directory)){

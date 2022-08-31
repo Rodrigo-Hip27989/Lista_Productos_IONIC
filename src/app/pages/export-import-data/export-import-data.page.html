@@ -43,19 +43,19 @@
   <ion-button [disabled]="!is_valid_form()" (click)="delete_file_products('.json')" expand="block" fill="outline" color="danger">
     <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;Eliminar *.json
   </ion-button>
-  <ion-button [disabled]="!is_valid_form()" (click)="share_file_product_list('.csv')" expand="block" fill="outline" color="tertiary">
+  <ion-button [disabled]="!is_valid_form()" (click)="share_file_products('.csv')" expand="block" fill="outline" color="tertiary">
     <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.csv
   </ion-button>
-  <ion-button [disabled]="!is_valid_form()" (click)="share_file_product_list('.json')" expand="block" fill="outline" color="tertiary">
+  <ion-button [disabled]="!is_valid_form()" (click)="share_file_products('.json')" expand="block" fill="outline" color="tertiary">
     <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Compartir *.json
   </ion-button>
   <ion-button [disabled]="!is_valid_form()" (click)="ver_archivos_y_directorios()" expand="block" fill="outline" color="success">
     <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;Ver Archivos del Directorio
   </ion-button>
-  <ion-button [disabled]="!is_valid_form()" (click)="export_products_csv_desktop()" *ngIf="(plt.is('desktop') || plt.is('mobileweb'))" expand="block" fill="outline" color="warning">
+  <ion-button [disabled]="!is_valid_form()" (click)="export_products_desktop('.csv')" *ngIf="(plt.is('desktop') || plt.is('mobileweb'))" expand="block" fill="outline" color="warning">
     <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.csv (Test)
   </ion-button>
-  <ion-button [disabled]="!is_valid_form()" (click)="export_products_json_desktop()" *ngIf="(plt.is('desktop') || plt.is('mobileweb'))" expand="block" fill="outline" color="warning">
+  <ion-button [disabled]="!is_valid_form()" (click)="export_products_desktop('.json')" *ngIf="(plt.is('desktop') || plt.is('mobileweb'))" expand="block" fill="outline" color="warning">
     <ion-icon name="cloud-download"></ion-icon>&nbsp;&nbsp;Descargar *.json (Test)
   </ion-button>
 </ion-content>
