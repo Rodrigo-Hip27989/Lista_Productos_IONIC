@@ -19,11 +19,13 @@ import { Validations } from 'src/app/funciones/validations';
 export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
   file_name: string;
+  file_extension_options: string[];
   file_directory: string;
 
   constructor(private papa: Papa, private plt: Platform) {
     //Ruta de archivo(s)
     this.file_name = LStorageConfig.getFileName();
+    this.file_extension_options = ['.csv', '.json'];
     this.file_directory = LStorageConfig.getFileDirectory();
     this.products_array = LStorageData.getProductsArray();
     FilesAccess.create_directory(this.file_directory);
