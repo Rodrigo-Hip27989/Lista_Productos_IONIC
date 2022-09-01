@@ -26,13 +26,10 @@ export class ExportImportDataPage implements OnInit{
     this.file_name = LStorageConfig.getFileName();
     this.file_directory = LStorageConfig.getFileDirectory();
     this.products_array = LStorageData.getProductsArray();
+    FilesAccess.create_directory(this.file_directory);
   }
 
-  ngOnInit(): void {
-    if (this.plt.is('capacitor')) { // Producción
-      FilesAccess.create_directory(this.file_directory);
-    }
-  }
+  ngOnInit(): void {}
 
   // FUNCIONES PRINCIPALES
 
@@ -117,6 +114,7 @@ export class ExportImportDataPage implements OnInit{
   private update_localstorage_routes(){
     LStorageConfig.setFileName(this.file_name);
     LStorageConfig.setFileDirectory(this.file_directory);
+    FilesAccess.create_directory(this.file_directory);
     Messages.toast_middle("Configuración actualizada!");
   }
 
@@ -131,18 +129,20 @@ export class ExportImportDataPage implements OnInit{
     const content_directory = await FilesAccess.read_directory(file_directory);
     let list_of_files: FileInfo[] = content_directory.files;
     await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
-    if(list_of_files.length !== 0){
-      for(let i: number = 0; i<list_of_files.length; i++){
-        const file_details = `
-        <strong>* Tipo: </strong>${list_of_files[i].type}<hr/>
-        <strong>* Nombre: </strong>${list_of_files[i].name}<hr/>
-        <strong>* Creado: </strong>${(new Date(list_of_files[i].ctime)).toDateString()}<hr/>
-        <strong>* Modificado: </strong>${(new Date(list_of_files[i].mtime)).toDateString()}<hr/>
-        <strong>* Tamaño: </strong>${list_of_files[i].size}<hr/>
-        <strong>* Ruta: </strong>${list_of_files[i].uri}`;
-        await Messages.alert_ok(`Archivo - [${i}]`, file_details);
-      }
+    for(let i: number = 0; i<list_of_files.length; i++){
+      await Messages.alert_ok(`Archivo - [${i}]`, this.showFileDetailsStr(list_of_files[i]));
     }
+  }
+
+  private showFileDetailsStr(file: FileInfo): string{
+    const file_details = `
+    <strong>* Tipo: </strong>${file.type}<hr/>
+    <strong>* Nombre: </strong>${file.name}<hr/>
+    <strong>* Creado: </strong>${(new Date(file.ctime)).toDateString()}<hr/>
+    <strong>* Modificado: </strong>${(new Date(file.mtime)).toDateString()}<hr/>
+    <strong>* Tamaño: </strong>${file.size} bytes<hr/>
+    <strong>* Ruta: </strong>${file.uri}`;
+    return file_details;
   }
 
   // VALIDACIONES DE RUTA Y ARCHIVO
