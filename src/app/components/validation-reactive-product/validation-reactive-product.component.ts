@@ -36,7 +36,7 @@ export class ValidationReactiveProductComponent implements OnInit {
     }
     this.form = this.fb.group({
       nombre: new FormControl(this.product_test_INPUT.nombre, [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]),
-      cantidad: new FormControl(this.product_test_INPUT.cantidad, [Validators.required, Validators.min(1), Validators.max(99999999)]),
+      cantidad: new FormControl(this.product_test_INPUT.cantidad, [Validators.required, Validators.min(0.001), Validators.max(99999999)]),
       medida: new FormControl(this.product_test_INPUT.medida, [Validators.required, Validators.maxLength(16)]),
       precio: new FormControl(this.product_test_INPUT.precio, [Validators.required, Validators.min(0), Validators.max(99999999)]),
       precio_total: new FormControl(this.product_test_INPUT.precio_total, [Validators.required, Validators.min(0), Validators.max(99999999)]),
@@ -75,7 +75,7 @@ export class ValidationReactiveProductComponent implements OnInit {
   generarEjemplo(){
     this.form = this.fb.group({
       nombre: [Randoms.getStr(7), [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]],
-      cantidad: [Randoms.getInt(2), [Validators.required, Validators.min(1), Validators.max(99999999)]],
+      cantidad: [Randoms.getInt(2), [Validators.required, Validators.min(0.001), Validators.max(99999999)]],
       medida: ["Piezas", [Validators.required, Validators.maxLength(16)]],
       precio: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
       precio_total: [Randoms.getInt(2), [Validators.required, Validators.min(0), Validators.max(99999999)]],

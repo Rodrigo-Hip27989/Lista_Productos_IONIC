@@ -18,7 +18,7 @@
       <small *ngIf="form.get('cantidad').invalid && (form.get('cantidad').dirty ||form.get('cantidad').touched )">
         <small *ngIf="(form.get('cantidad')).errors?.required">La cantidad es requerida</small>
         <small *ngIf="(form.get('cantidad')).errors?.max">No mas de 8 digitos</small>
-        <small *ngIf="(form.get('cantidad')).errors?.min">Debe ser mayor 1</small>
+        <small *ngIf="(form.get('cantidad')).errors?.min">La cantidad minima es 0.001</small>
       </small>
       <ion-item>
         <ion-label position="floating">Medida</ion-label>
