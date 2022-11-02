@@ -22,13 +22,12 @@ export class ExportImportDataPage implements OnInit{
   file_extension_options: string[];
   file_directory: string;
 
-  constructor(private papa: Papa, private plt: Platform) {
+  constructor(private papa: Papa, public plt: Platform) {
     //Ruta de archivo(s)
     this.file_name = LStorageConfig.getFileName();
     this.file_extension_options = ['.csv', '.json'];
     this.file_directory = LStorageConfig.getFileDirectory();
     this.products_array = LStorageData.getProductsArray();
-    FilesAccess.create_directory(this.file_directory);
   }
 
   ngOnInit(): void {}
@@ -113,10 +112,9 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES PARA GUARDAR DATOS
 
-  private update_localstorage_routes(){
+  public update_localstorage_routes(){
     LStorageConfig.setFileName(this.file_name);
     LStorageConfig.setFileDirectory(this.file_directory);
-    FilesAccess.create_directory(this.file_directory);
     Messages.toast_middle("Configuración actualizada!");
   }
 
@@ -149,13 +147,13 @@ export class ExportImportDataPage implements OnInit{
 
   // VALIDACIONES DE RUTA Y ARCHIVO
 
-  is_valid_file_directory(file_directory: string): void{
+  is_valid_file_directory(file_directory: any): void{
     if(!Validations.file_directory_str(file_directory)){
       Messages.toast("No se permite espacios en blanco o caracteres especiales!", "middle", 2000);
     }
   }
 
-  is_valid_file_name(file_name: string): void{
+  is_valid_file_name(file_name: any): void{
     if(!Validations.file_name_str(file_name)){
       Messages.toast("No se permite espacios en blanco o caracteres especiales!", "middle", 2000);
     }
