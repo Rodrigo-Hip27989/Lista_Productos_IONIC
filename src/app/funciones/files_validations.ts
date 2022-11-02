@@ -5,7 +5,7 @@ import { Messages } from "./messages";
 export class FilesAccessValidation {
 
     static validate_file_export = async (file_directory: string, full_file_name: any, accion_de_exportar: any) => {
-        if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
+        if(!await FilesAccess.exist_file(file_directory, full_file_name)){
           accion_de_exportar();
         }
         else{
@@ -14,7 +14,7 @@ export class FilesAccessValidation {
     };
 
     static validate_file_import = async (file_directory: string, full_file_name: any, accion_de_importar: any) => {
-        if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
+        if(!await FilesAccess.exist_file(file_directory, full_file_name)){
           await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
         }
         else{
@@ -23,7 +23,7 @@ export class FilesAccessValidation {
     };
 
     static validate_file_deletion = async (file_directory: string, full_file_name: any, accion_de_eliminar: any) => {
-        if(!await FilesAccess.exist_file_or_dir(file_directory, full_file_name)){
+        if(!await FilesAccess.exist_file(file_directory, full_file_name)){
           await Messages.alert_ok("Error!", `\nArchivo <strong>${full_file_name}</strong> no encontrado`);
         }
         else{
