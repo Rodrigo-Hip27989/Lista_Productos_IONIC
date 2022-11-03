@@ -1,5 +1,5 @@
 import { Producto } from '../models/producto';
-import { Randoms } from '../funciones/aleatorios';
+import { Randoms } from '../funciones/randoms';
 import { Messages } from 'src/app/funciones/messages';
 
 export class Productos{
