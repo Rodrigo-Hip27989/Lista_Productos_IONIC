@@ -8,7 +8,8 @@ import { Producto } from './models/producto';
 export class AppComponent {
   public appPages = [
     { title: 'Home', url: '/home', icon: 'home' },
-    { title: 'Lista Productos', url: '/product-list', icon: 'list' },
+    { title: 'Calcular Gastos', url: '/product-list', icon: 'calculator' },
+//    { title: 'Listas de Gastos', url: '/product-list', icon: 'list' },
     { title: 'Configuraciones', url: '/settings', icon: 'settings' },
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

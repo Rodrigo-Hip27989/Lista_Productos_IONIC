@@ -155,4 +155,15 @@ export class FilesAccess {
       Messages.alert_ok("Oops", `Ocurrio un error al exportar el archivo desde el navegador`);
     }
   }
+
+  public static showFileDetailsStr(file: FileInfo): string{
+    const file_details = `
+    <strong>* Tipo: </strong>${file.type}<hr/>
+    <strong>* Nombre: </strong>${file.name}<hr/>
+    <strong>* Creado: </strong>${(new Date(file.ctime)).toDateString()}<hr/>
+    <strong>* Modificado: </strong>${(new Date(file.mtime)).toDateString()}<hr/>
+    <strong>* Tamaño: </strong>${file.size} bytes<hr/>
+    <strong>* Ruta: </strong>${file.uri}`;
+    return file_details;
+  }
 }

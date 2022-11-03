@@ -66,6 +66,15 @@ export class ExportImportDataPage implements OnInit{
     await FilesAccessValidation.share_any_file(this.file_directory, `${new_file_name}${extension}`, this.file_name, recovered_data);
   }
 
+  async ver_archivos_y_directorios(file_directory: string){
+    const content_directory = await FilesAccess.read_directory(file_directory);
+    let list_of_files: FileInfo[] = content_directory.files;
+    await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
+    for(let i: number = 0; i<list_of_files.length; i++){
+      await Messages.alert_ok(`Archivo - [${i}]`, FilesAccess.showFileDetailsStr(list_of_files[i]));
+    }
+  }
+
   // FUNCIONES PARA OBTENER DATOS
 
   get_data_products_str(products_array: Producto[], extension: string): string{
@@ -90,10 +99,6 @@ export class ExportImportDataPage implements OnInit{
     else{
       return null;
     }
-  }
-
-  private getLocalDate(): string{
-    return (new Date()).toDateString().replace(/ /g, "_");
   }
 
   private convert_csv_to_array_products(contents: ReadFileResult): Producto[]{
@@ -125,24 +130,8 @@ export class ExportImportDataPage implements OnInit{
     Messages.toast_top("La descarga ha terminado!");
   }
 
-  async ver_archivos_y_directorios(file_directory: string){
-    const content_directory = await FilesAccess.read_directory(file_directory);
-    let list_of_files: FileInfo[] = content_directory.files;
-    await Messages.alert_ok(`Resultado!`, `<strong>${list_of_files.length}</strong> Archivos encontrados`);
-    for(let i: number = 0; i<list_of_files.length; i++){
-      await Messages.alert_ok(`Archivo - [${i}]`, this.showFileDetailsStr(list_of_files[i]));
-    }
-  }
-
-  private showFileDetailsStr(file: FileInfo): string{
-    const file_details = `
-    <strong>* Tipo: </strong>${file.type}<hr/>
-    <strong>* Nombre: </strong>${file.name}<hr/>
-    <strong>* Creado: </strong>${(new Date(file.ctime)).toDateString()}<hr/>
-    <strong>* Modificado: </strong>${(new Date(file.mtime)).toDateString()}<hr/>
-    <strong>* Tamaño: </strong>${file.size} bytes<hr/>
-    <strong>* Ruta: </strong>${file.uri}`;
-    return file_details;
+  private getLocalDate(): string{
+    return (new Date()).toDateString().replace(/ /g, "_");
   }
 
   // VALIDACIONES DE RUTA Y ARCHIVO

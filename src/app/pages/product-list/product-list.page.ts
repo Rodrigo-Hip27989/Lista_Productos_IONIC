@@ -19,7 +19,7 @@ export class ProductListPage implements OnInit {
     this.products = LStorageData.getProductsArray();
   }
 
-  private calcular_costo_total(): number{
+  public calcular_costo_total(): number{
     let costo_total: number = 0;
     this.products.forEach(product => {
       costo_total += product.precio_total;
