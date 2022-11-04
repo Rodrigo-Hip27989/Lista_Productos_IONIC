@@ -18,16 +18,18 @@ import { Validations } from 'src/app/funciones/validations';
 
 export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
-  file_name: string;
   file_extension_options: string[];
+  file_name: string;
+  file_extension: string;
   file_directory: string;
 
   constructor(private papa: Papa, public plt: Platform) {
     //Ruta de archivo(s)
-    this.file_name = LStorageConfig.getFileName();
-    this.file_extension_options = ['.csv', '.json'];
-    this.file_directory = LStorageConfig.getFileDirectory();
     this.products_array = LStorageData.getProductsArray();
+    this.file_extension_options = ['.csv', '.json'];
+    this.file_name = LStorageConfig.getFileName();
+    this.file_extension = LStorageConfig.getFileExtension();
+    this.file_directory = LStorageConfig.getFileDirectory();
   }
 
   ngOnInit(): void {}
@@ -117,8 +119,9 @@ export class ExportImportDataPage implements OnInit{
 
   // FUNCIONES PARA GUARDAR DATOS
 
-  public update_localstorage_routes(){
+  public update_localstorage_routes(selected_file_extension){
     LStorageConfig.setFileName(this.file_name);
+    LStorageConfig.setFileExtension(selected_file_extension);
     LStorageConfig.setFileDirectory(this.file_directory);
     Messages.toast_middle("Configuración actualizada!");
   }
@@ -148,8 +151,8 @@ export class ExportImportDataPage implements OnInit{
     }
   }
 
-  is_valid_form(): boolean{
-    return (Validations.file_name_str(this.file_name) && Validations.file_directory_str(this.file_directory));
+  is_valid_form(selected_file_extension: string): boolean{
+    return (Validations.file_name_str(this.file_name) && Validations.file_directory_str(this.file_directory)  && Validations.file_extension_str(selected_file_extension));
   }
 
 }
