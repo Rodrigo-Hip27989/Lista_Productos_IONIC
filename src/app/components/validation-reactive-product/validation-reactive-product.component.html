@@ -1,7 +1,6 @@
 <ion-footer class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
     <ion-list>
-      <ion-button expand="block" fill="outline" color="success" (click)="limpiarFormulario()">Limpiar Formulario</ion-button>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="nombre"></ion-input>
@@ -60,8 +59,15 @@
         <small *ngIf="(form.get('nota')).errors?.maxlength">El máximo de caracteres es 512</small>
       </small>
       <hr>
-      <ion-button expand="block" fill="outline" color="tertiary" (click)="generarEjemplo()">Generar</ion-button>
-      <ion-button expand="block" fill="outline" color="secondary" [disabled]="!form.valid" type="submit">{{button_label}}</ion-button>
+      <ion-button expand="block" fill="outline" color="success" (click)="limpiarFormulario()">
+        <ion-icon name="close"></ion-icon>&nbsp;&nbsp;Limpiar Formulario
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="tertiary" (click)="generarEjemplo()">
+        <ion-icon name="cube"></ion-icon>&nbsp;&nbsp;Generar Ejemplo
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="secondary" [disabled]="!form.valid" type="submit">
+        <ion-icon name="save"></ion-icon>&nbsp;&nbsp;{{button_label}}
+      </ion-button>
     </ion-list>
   </form>
 </ion-footer>
