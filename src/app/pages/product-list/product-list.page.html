@@ -34,12 +34,27 @@
 <!-- Imitación del uso de modales -->
 
 <ion-content *ngIf="can_add_item" [ngClass]="['mi_modal']">
-  <ion-button expand="block" fill="outline" color="secondary" (click)="switch_can_add_item()">Cerrar Formulario</ion-button>
   <app-validation-reactive-product (product_validated_OUTPUT)="add_product($event)" [button_label]="'Agregar'"></app-validation-reactive-product>
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" *ngIf="can_add_item">
+    <ion-fab-button color="dark" (click)="switch_can_add_item()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 
 <ion-content *ngIf="selected_product" [ngClass]="['mi_modal']">
-  <ion-button expand="block" fill="outline" color="danger" (click)="delete_product_alert()">Eliminar</ion-button>
-  <ion-button expand="block" fill="outline" color="secondary" (click)="unselect_product()">Cerrar Formulario</ion-button>
   <app-validation-reactive-product (product_validated_OUTPUT)="update_product($event)" [product_test_INPUT]="selected_product" [button_label]="'Actualizar'"></app-validation-reactive-product>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" *ngIf="selected_product">
+    <ion-fab-button color="danger" (click)="delete_product_alert()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" *ngIf="selected_product">
+    <ion-fab-button color="dark" (click)="unselect_product()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
