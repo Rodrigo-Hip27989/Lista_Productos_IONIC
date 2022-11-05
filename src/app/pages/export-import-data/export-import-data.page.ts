@@ -21,21 +21,11 @@ export class ExportImportDataPage implements OnInit{
   products_array: Producto[];
   file_extension_options: string[];
   file_export_details: SimpleFile;
-//  file_name: string;
-//  file_extension: string;
-//  file_directory: string;
 
   constructor(private papa: Papa, public plt: Platform) {
-    //Ruta de archivo(s)
     this.products_array = LStorageData.getProductsArray();
     this.file_extension_options = ['.csv', '.json'];
     this.file_export_details = LStorageConfig.getConfigExportImport();
-//    this.file_name = this.file_export_details.name;
-//    this.file_extension = this.file_export_details.extension;
-//    this.file_directory = this.file_export_details.path;
-//    this.file_name = LStorageConfig.getFileName();
-//    this.file_extension = LStorageConfig.getFileExtension();
-//    this.file_directory = LStorageConfig.getFileDirectory();
   }
 
   ngOnInit(): void {}
@@ -127,9 +117,6 @@ export class ExportImportDataPage implements OnInit{
 
   public update_localstorage_routes(selected_file_extension: string){
     LStorageConfig.setConfigExportImport(new SimpleFile(this.file_export_details.name, selected_file_extension, this.file_export_details.path));
-//    LStorageConfig.setFileName(this.file_name);
-//    LStorageConfig.setFileExtension(selected_file_extension);
-//    LStorageConfig.setFileDirectory(this.file_directory);
     Messages.toast_middle("Configuración actualizada!");
   }
 
