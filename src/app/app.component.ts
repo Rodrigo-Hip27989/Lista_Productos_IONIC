@@ -17,17 +17,12 @@ export class AppComponent {
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   products_token: string = "products_array";
   options_measure_token: string = "measure_array";
-  token_file_name: string = "file_name";
-  token_file_directory: string = "file_directory";
   token_file_config_export: string = "file_config_export";
 
   constructor() {
     this.initialize_localstorage_productos();
     this.initialize_localstorage_measurement_units();
-    this.initialize_localstorage_path_import_export();
-// *******************************************************
     this.initialize_localstorage_file_export_config();
-// *******************************************************
   }
 
   private initialize_localstorage_productos(){
@@ -42,19 +37,9 @@ export class AppComponent {
     }
   }
 
-  private initialize_localstorage_path_import_export(){
-    if(localStorage.getItem(this.token_file_name) === null){
-      localStorage.setItem(this.token_file_name, "lista_productos");
-    }
-    if(localStorage.getItem(this.token_file_directory) === null){
-      localStorage.setItem(this.token_file_directory, "Toronja/Lista_Productos");
-    }
-  }
-// *******************************************************
   private initialize_localstorage_file_export_config(){
     if(localStorage.getItem(this.token_file_config_export) === null || localStorage.getItem(this.token_file_config_export) === "{}"){
       localStorage.setItem(this.token_file_config_export, JSON.stringify(new SimpleFile("Miscelanea", ".csv", "Toronja/Finanzas")));
     }
   }
-// *******************************************************
 }
