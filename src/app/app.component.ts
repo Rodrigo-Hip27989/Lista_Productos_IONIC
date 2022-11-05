@@ -15,9 +15,9 @@ export class AppComponent {
     { title: 'Configuraciones', url: '/settings', icon: 'settings' },
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  products_token: string = "products_array";
-  options_measure_token: string = "measure_array";
-  token_file_config_export: string = "file_config_export";
+  token_products_array: string = "products_array";
+  token_measure_options: string = "measure_array";
+  token_export_file_details: string = "file_export_details";
 
   constructor() {
     this.initialize_localstorage_productos();
@@ -26,20 +26,20 @@ export class AppComponent {
   }
 
   private initialize_localstorage_productos(){
-    if(localStorage.getItem(this.products_token) === null){
-      localStorage.setItem(this.products_token, "[]");
+    if(localStorage.getItem(this.token_products_array) === null){
+      localStorage.setItem(this.token_products_array, "[]");
     }
   }
 
   private initialize_localstorage_measurement_units(){
-    if(localStorage.getItem(this.options_measure_token) === null || localStorage.getItem(this.options_measure_token) === "[]"){
-      localStorage.setItem(this.options_measure_token, JSON.stringify(Producto.getMedidadDefault()));
+    if(localStorage.getItem(this.token_measure_options) === null || localStorage.getItem(this.token_measure_options) === "[]"){
+      localStorage.setItem(this.token_measure_options, JSON.stringify(Producto.getMedidadDefault()));
     }
   }
 
   private initialize_localstorage_file_export_config(){
-    if(localStorage.getItem(this.token_file_config_export) === null || localStorage.getItem(this.token_file_config_export) === "{}"){
-      localStorage.setItem(this.token_file_config_export, JSON.stringify(new SimpleFile("Miscelanea", ".csv", "Toronja/Finanzas")));
+    if(localStorage.getItem(this.token_export_file_details) === null || localStorage.getItem(this.token_export_file_details) === "{}"){
+      localStorage.setItem(this.token_export_file_details, JSON.stringify(new SimpleFile("Gastos_2022", ".csv", "Documents/Finanzas/Personales")));
     }
   }
 }
