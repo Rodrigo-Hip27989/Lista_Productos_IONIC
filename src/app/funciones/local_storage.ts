@@ -3,14 +3,14 @@ import { Producto } from "../models/producto";
 
 export class LStorageConfig{
 
-    public static token_file_config_export: string = "file_config_export";
+    public static token_file_export_details: string = "file_export_details";
 
     public static getConfigExportImport(): SimpleFile{
-        return JSON.parse(localStorage.getItem(LStorageConfig.token_file_config_export));
+        return JSON.parse(localStorage.getItem(LStorageConfig.token_file_export_details));
     }
 
     public static setConfigExportImport(config: SimpleFile): void{
-        return localStorage.setItem(LStorageConfig.token_file_config_export, JSON.stringify(config));
+        localStorage.setItem(LStorageConfig.token_file_export_details, JSON.stringify(config));
     }
 
 }
