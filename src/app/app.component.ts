@@ -10,7 +10,7 @@ export class AppComponent {
   public appPages = [
     { title: 'Home', url: '/home', icon: 'home' },
     { title: 'Calcular Gastos', url: '/product-list', icon: 'calculator' },
-//    { title: 'Listas de Gastos', url: '/product-list', icon: 'list' },
+    { title: 'Listas de Compras', url: '/shopping-list', icon: 'list' },
     { title: 'Importar / Exportar Datos', url: '/export_import_data', icon: 'arrow-down' },
     { title: 'Configuraciones', url: '/settings', icon: 'settings' },
   ];
