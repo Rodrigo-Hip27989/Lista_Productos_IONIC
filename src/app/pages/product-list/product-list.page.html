@@ -24,6 +24,12 @@
     </ion-fab-button>
   </ion-fab>
 
+  <ion-fab horizontal="center" vertical="bottom" slot="fixed" *ngIf="!selected_product">
+    <ion-fab-button color="success" [routerLink]="['/form-shopping-list']">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-fab horizontal="end" vertical="bottom" slot="fixed" *ngIf="!selected_product">
     <ion-fab-button color="secondary" (click)="switch_can_add_item()">
       <ion-icon name="add"></ion-icon>
