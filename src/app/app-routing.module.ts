@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: 'export_import_data',
     loadChildren: () => import('./pages/export-import-data/export-import-data.module').then( m => m.ExportImportDataPageModule)
+  },
+  {
+    path: 'form-shopping-list',
+    loadChildren: () => import('./pages/form-shopping-list/form-shopping-list.module').then( m => m.FormShoppingListPageModule)
   }
 ];
 
