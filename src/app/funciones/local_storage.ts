@@ -1,5 +1,6 @@
 import { SimpleFile } from "../models/simple_file";
 import { Producto } from "../models/producto";
+import { ShoppingList } from "../models/shopping_list";
 
 export class LStorageConfig{
 
@@ -17,6 +18,7 @@ export class LStorageConfig{
 
 export class LStorageData{
     public static token_products_array: string = "products_array";
+    public static token_shopping_list_array: string = "shopping_list_array";
 
     public static getProductsArray(): Producto[]{
         return JSON.parse(localStorage.getItem(LStorageData.token_products_array));
@@ -24,5 +26,13 @@ export class LStorageData{
 
     public static setProductsArray(products_array: Producto[]): void{
         localStorage.setItem(LStorageData.token_products_array, JSON.stringify(products_array));
+    }
+
+    public static getShoppingList(): ShoppingList[]{
+        return JSON.parse(localStorage.getItem(LStorageData.token_shopping_list_array));
+    }
+
+    public static setShoppingList(shopping_list_array: ShoppingList[]): void{
+        localStorage.setItem(LStorageData.token_shopping_list_array, JSON.stringify(shopping_list_array));
     }
 }

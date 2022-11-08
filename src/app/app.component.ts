@@ -16,6 +16,7 @@ export class AppComponent {
   ];
 //  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   token_products_array: string = "products_array";
+  token_shopping_list_array: string = "shopping_list_array";
   token_measure_options: string = "measure_array";
   token_export_file_details: string = "file_export_details";
 
@@ -23,11 +24,18 @@ export class AppComponent {
     this.initialize_localstorage_productos();
     this.initialize_localstorage_measurement_units();
     this.initialize_localstorage_file_export_config();
+    this.initialize_localstorage_listas_de_compras();
   }
 
   private initialize_localstorage_productos(){
     if(localStorage.getItem(this.token_products_array) === null){
       localStorage.setItem(this.token_products_array, "[]");
+    }
+  }
+
+  private initialize_localstorage_listas_de_compras(){
+    if(localStorage.getItem(this.token_shopping_list_array) === null){
+      localStorage.setItem(this.token_shopping_list_array, "[]");
     }
   }
 
