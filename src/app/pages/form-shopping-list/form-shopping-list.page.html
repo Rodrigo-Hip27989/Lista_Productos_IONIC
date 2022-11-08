@@ -8,5 +8,29 @@
 </ion-header>
 
 <ion-content>
-
+  <form (ngSubmit)="onSubmit()" [formGroup]="this_form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <small *ngIf="this_form.get('name').invalid && (this_form.get('name').dirty || this_form.get('name').touched)">
+        <small *ngIf="(this_form.get('name')).errors?.required">El nombre es requerido</small>
+        <small *ngIf="(this_form.get('name')).errors?.maxlength">No mas de 64 caracteres</small>
+        <small *ngIf="(this_form.get('name')).errors?.pattern">Caracteres permitidos => [A-Za-z]</small>
+      </small>
+      <app-date-picker (newItemEvent)="save_date_picker($event)" [selected_date_INPUT]="this.shopping_list_preview.date"></app-date-picker>
+      <ion-item>
+        <ion-label position="floating">Notas</ion-label>
+        <ion-textarea type="text" formControlName="note"></ion-textarea>
+      </ion-item>
+      <small *ngIf="this_form.get('note').invalid && (this_form.get('note').dirty || this_form.get('note').touched)">
+        <small *ngIf="(this_form.get('note')).errors?.maxlength">La cantidad maxima de caracteres es 256</small>
+      </small>
+      <hr>
+      <ion-button expand="block" fill="outline" color="dark" [disabled]="!this_form.valid" type="submit">
+        <ion-icon name="save"></ion-icon>&nbsp;&nbsp;Guardar
+      </ion-button>
+    </ion-list>
+  </form>
 </ion-content>
