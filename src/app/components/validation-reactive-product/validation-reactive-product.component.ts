@@ -35,12 +35,12 @@ export class ValidationReactiveProductComponent implements OnInit {
       this.product_test_INPUT = new Producto();
     }
     this.form = this.fb.group({
-      nombre: new FormControl(this.product_test_INPUT.nombre, [Validators.required, Validators.maxLength(32), Validators.pattern("^[A-Za-z]+[A-Za-z\ ]*[A-Za-z]+")]),
+      nombre: new FormControl(this.product_test_INPUT.nombre, [Validators.required, Validators.maxLength(64), Validators.pattern("^[A-Za-zÀ-ÿÑñ]+[A-Za-zÀ-ÿÑñ0-9\ \-]*[A-Za-zÀ-ÿÑñ0-9]+")]),
       cantidad: new FormControl(this.product_test_INPUT.cantidad, [Validators.required, Validators.min(0.001), Validators.max(99999999)]),
       medida: new FormControl(this.product_test_INPUT.medida, [Validators.required, Validators.maxLength(16)]),
       precio: new FormControl(this.product_test_INPUT.precio, [Validators.required, Validators.min(0), Validators.max(99999999)]),
       precio_total: new FormControl(this.product_test_INPUT.precio_total, [Validators.required, Validators.min(0), Validators.max(99999999)]),
-      nota: new FormControl(this.product_test_INPUT.nota, [Validators.maxLength(512)]),
+      nota: new FormControl(this.product_test_INPUT.nota, [Validators.maxLength(512), Validators.pattern("^[A-Za-zÀ-ÿÑñ]+[A-Za-zÀ-ÿÑñ0-9,.\ \-]*[A-Za-zÀ-ÿÑñ0-9.]+")]),
     });
   }
 
@@ -83,7 +83,7 @@ export class ValidationReactiveProductComponent implements OnInit {
     });
     this.product_test_INPUT.fecha = (new Date()).toLocaleString();
   }
-  
+
   save_date_picker(fechaRecivida: string){
     this.product_test_INPUT.fecha = fechaRecivida;
   }
