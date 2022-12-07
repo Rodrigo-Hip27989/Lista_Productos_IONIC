@@ -27,12 +27,9 @@ node_modules/
 .browserslistrc
 .eslintrc.json
 .editorconfig
-angular.json
 ionic.config.json
 karma.conf.js
 package-lock.json
-tsconfig.*.*
-tsconfig.*
 ### Fin
 
 /.angular
